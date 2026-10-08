@@ -137,27 +137,31 @@ button{font-family:'DM Sans',sans-serif}
 </head>
 <body>
 <script>
-/* Eenmalige opstart voor Heidi. Overschrijft nooit eigen invoer.
-   Zelfde opslag als heidi.html, zodat haar historiek meeverhuist. */
+/* Opstart voor Heidi. Eigen sleutelruimte (hp.) en vaste identiteit:
+   deze pagina is altijd van Heidi, ook in een browser waar andere HRMNY-apps
+   (bv. die van Gregory) eerder iets bewaarden. */
 (function(){
   try{
-    var ls=window.localStorage;
-    if(!ls.getItem('hrmny_seed_applied')){
-      ls.setItem('hrmny_reg','1');
-      ls.setItem('hrmny_naam','Heidi');
-      ls.setItem('hrmny_user_id','heidi-hp01');
-      ls.setItem('hrmny_wearable','Garmin');
-      ls.setItem('hrmny_leeftijd','56');
-      ls.setItem('hrmny_seed_applied','1');
+    var ls=window.localStorage,P='hp.';
+    if(!ls.getItem(P+'hrmny_migratie')){
+      /* Eenmalig: Heidi's eigen invoer uit de oude opslag meenemen, maar enkel
+         als die oude opslag echt van Heidi was. */
+      if(ls.getItem('hrmny_user_id')==='heidi-hp01'){
+        Object.keys(ls).forEach(function(k){
+          if(k.indexOf('hrmny_')===0 && !/^hrmny_(baseline|rs_|zone_|seed_applied|reg)/.test(k)) ls.setItem(P+k,ls.getItem(k));
+        });
+      }
+      ls.setItem(P+'hrmny_migratie','1');
     }
-    if(!ls.getItem('hrmny_startdatum')) ls.setItem('hrmny_startdatum','2026-09-06');
-    /* Oude moduscodes omzetten naar namen */
+    ls.setItem(P+'hrmny_naam','Heidi');
+    ls.setItem(P+'hrmny_user_id','heidi-hp01');
+    ls.setItem(P+'hrmny_wearable','Garmin');
+    ls.setItem(P+'hrmny_leeftijd','56');
+    ls.setItem(P+'hrmny_startdatum','2026-09-06');
     var oud={PEAK:'Peak',GR:'Peak',SP:'Sportief',FO:'Focus',FC:'Focus',RS:'Relaxatie',RL:'Relaxatie',SH:'Shift',GR2:'Grounded'};
-    var m=ls.getItem('hrmny_modus');
-    if(m && oud[m]) ls.setItem('hrmny_modus',oud[m]);
-    if(!ls.getItem('hrmny_modus')) ls.setItem('hrmny_modus','Grounded');
-    /* Oude rekensleutels uit v1 worden niet meer gebruikt */
-    ['hrmny_baseline','hrmny_rs_vandaag','hrmny_zone_vandaag'].forEach(function(k){ls.removeItem(k);});
+    var m=ls.getItem(P+'hrmny_modus');
+    if(m && oud[m]) ls.setItem(P+'hrmny_modus',oud[m]);
+    if(!ls.getItem(P+'hrmny_modus')) ls.setItem(P+'hrmny_modus','Grounded');
   }catch(e){}
 })();
 </script>
@@ -371,9 +375,10 @@ var RICHTING_PROXY = 'valo-proxy.php';
 var TESTMODUS = /[?&]test\b/.test(location.search);
 
 /* ── OPSLAG (veilig, faalt stil) ── */
-function lees(k){try{return localStorage.getItem(k);}catch(e){return null;}}
-function schrijf(k,v){try{localStorage.setItem(k,v);}catch(e){}}
-function wis(k){try{localStorage.removeItem(k);}catch(e){}}
+var P='hp.';
+function lees(k){try{return localStorage.getItem(P+k);}catch(e){return null;}}
+function schrijf(k,v){try{localStorage.setItem(P+k,v);}catch(e){}}
+function wis(k){try{localStorage.removeItem(P+k);}catch(e){}}
 
 /* ── DATUM (lokale tijd, niet UTC) ── */
 function datumStr(d){var m=d.getMonth()+1,dg=d.getDate();return d.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(dg<10?'0':'')+dg;}
@@ -516,7 +521,7 @@ function toggleWaarom(){
 }
 
 /* ── RICHTING OPHALEN ── */
-function gebruiker(){return lees('hrmny_user_id')||'heidi-hp01';}
+function gebruiker(){return 'heidi-hp01';}
 function verwerkAntwoord(json){
   if(!json||typeof json!=='object')return false;
   var richting=normaliseerRichting(json.richting||json.direction);
@@ -712,7 +717,7 @@ function toonProfiel(){
   tekenModi('profiel-modus-rij','profiel-modus-hint');
   toonScherm('s-profiel');
 }
-function wisAlles(){try{localStorage.clear();}catch(e){}location.reload();}
+function wisAlles(){try{Object.keys(localStorage).forEach(function(k){if(k.indexOf(P)===0&&k!==P+'hrmny_migratie')localStorage.removeItem(k);});}catch(e){}location.reload();}
 
 /* ── LEXICON ── */
 var LEXICON={

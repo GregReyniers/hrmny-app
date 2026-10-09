@@ -158,6 +158,37 @@ button{font-family:'DM Sans',sans-serif}
 .nacht-spark{display:block;width:100%;height:22px;margin-top:0.35rem}
 .nacht-bron{font-size:0.62rem;color:var(--text-muted);margin-top:0.8rem;text-align:center}
 .voor-vandaag{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:0.9rem 1rem;margin-top:1rem}
+
+/* Duidelijkere knoppen (zonder beweging) */
+.nav-btns{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.nav-btns:has(> :only-child){grid-template-columns:1fr}
+.nav-btn{background:var(--white);border:1.5px solid rgba(26,45,90,0.35);border-radius:12px;padding:0.8rem 0.6rem;color:var(--navy);font-size:0.86rem;font-weight:600;cursor:pointer;transition:background 0.15s,border-color 0.15s;text-align:center}
+.nav-btn:hover{border-color:var(--navy);background:rgba(26,45,90,0.04)}
+.nav-btn .pijl{color:var(--gold);margin-left:0.25rem}
+.waarom-btn{font-size:0.74rem;padding:0.55rem 1.3rem;border-color:rgba(26,45,90,0.35);background:var(--white)}
+.terug-knop{font-size:0.86rem;color:var(--navy);font-weight:600}
+.icoon-btn{font-size:0.74rem;padding:0.42rem 0.8rem;border-color:rgba(26,45,90,0.3)}
+/* Gevoel-kaart op het dashboard */
+.gevoel-kaart{background:var(--navy);color:var(--white);border:none;border-radius:16px;padding:1.05rem 1.15rem;text-align:left;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:space-between;gap:0.8rem;transition:background 0.15s}
+.gevoel-kaart:hover{background:var(--navy-deep)}
+.gevoel-kaart .gk-titel{font-size:1rem;font-weight:700}
+.gevoel-kaart .gk-sub{font-size:0.74rem;opacity:0.8;margin-top:0.2rem;line-height:1.4}
+.gevoel-kaart .gk-pijl{font-size:1.3rem;color:var(--gold);flex-shrink:0}
+.gevoel-kaart.ingevuld{background:var(--white);color:var(--navy);border:1.5px solid rgba(26,45,90,0.35)}
+.gevoel-kaart.ingevuld .gk-sub{opacity:1;color:var(--text-mid)}
+/* Formulier */
+.vraag{margin-bottom:1.05rem}
+.vraag-titel{font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:0.15rem}
+.vraag-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem}
+.chip{font-size:0.82rem;padding:0.48rem 0.85rem;border-color:rgba(26,45,90,0.18)}
+.chip.actief{border-color:var(--navy);background:var(--navy);color:var(--white)}
+textarea.notitie{width:100%;min-height:64px;padding:0.6rem 0.8rem;border-radius:9px;border:1.5px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);resize:vertical;outline:none}
+textarea.notitie:focus{border-color:var(--gold);background:var(--white)}
+details.horloge{border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.8rem;margin-top:0.4rem}
+details.horloge summary{cursor:pointer;font-size:0.8rem;color:var(--navy);font-weight:600}
+details.horloge[open] summary{margin-bottom:0.7rem}
+.gevoel-samenvatting{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.2rem}
+.gevoel-tag{font-size:0.74rem;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:0.25rem 0.65rem;color:var(--navy)}
 </style>
 </head>
 <body>
@@ -199,7 +230,7 @@ var APPLE_ID=null;
   </div>
 
   <div class="banner" id="banner-test" style="background:rgba(201,168,76,0.12);border-color:var(--gold-border);color:var(--navy)">Testmodus: er wordt niets verstuurd</div>
-  <div class="banner" id="banner-ingevoerd">Jouw ochtendrapport van vandaag is binnen</div>
+  <div class="banner" id="banner-ingevoerd">Jouw gevoel van vandaag is bewaard</div>
 
   <!-- DASHBOARD -->
   <div id="s-dashboard" class="scherm">
@@ -237,11 +268,11 @@ var APPLE_ID=null;
         <div class="event-tekst" id="event-tekst"></div>
       </div>
 
-      <button class="btn-hoofd" id="rapport-knop" onclick="toonFormulier()">Ochtendrapport invullen</button>
+      <button class="gevoel-kaart" id="rapport-knop" onclick="toonFormulier()"></button>
 
       <div class="nav-btns">
-        <button class="nav-btn" onclick="toonLaag(2)">Jouw nacht</button>
-        <button class="nav-btn" onclick="toonLaag(3)">Jouw ritme</button>
+        <button class="nav-btn" onclick="toonLaag(2)">Jouw nacht <span class="pijl">&rsaquo;</span></button>
+        <button class="nav-btn" onclick="toonLaag(3)">Jouw ritme <span class="pijl">&rsaquo;</span></button>
       </div>
     </div>
 
@@ -258,8 +289,8 @@ var APPLE_ID=null;
         <div class="nacht-bron">Tik op een waarde om het verloop te zien.</div>
       </div>
       <div class="nav-btns">
-        <button class="nav-btn" onclick="toonLaag(1)">Terug naar vandaag</button>
-        <button class="nav-btn" onclick="toonFormulier()">Zelf iets aanvullen</button>
+        <button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button>
+        <button class="nav-btn" onclick="toonFormulier()">Hoe voel je je? <span class="pijl">&rsaquo;</span></button>
       </div>
     </div>
 
@@ -277,7 +308,7 @@ var APPLE_ID=null;
         </div>
         <div class="stil" id="strook-tekst" style="margin-top:0.8rem;text-align:left"></div>
       </div>
-      <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(1)">Terug naar vandaag</button></div>
+      <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button></div>
     </div>
 
     <!-- AVONDREFLECTIE (vanaf 20u) -->
@@ -297,51 +328,47 @@ var APPLE_ID=null;
   <div id="s-formulier" class="scherm">
     <div class="kaart">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <div class="form-titel">Ochtendrapport</div>
-        <button onclick="toonDashboard()" aria-label="Sluiten" style="background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;line-height:1">&times;</button>
+        <div class="form-titel" style="font-size:1.1rem">Hoe gaat het met jou?</div>
+        <button onclick="toonDashboard()" aria-label="Sluiten" style="background:none;border:none;color:var(--navy);font-size:1.4rem;cursor:pointer;line-height:1">&times;</button>
       </div>
-      <div class="form-sub">Vul in wat je wil. Alles mag leeg blijven.</div>
-
-      <div class="sectie-titel">Hoe voel je je?</div>
-      <div class="chip-rij" id="gevoel-rij">
-        <button class="chip" type="button" data-gevoel="leeg" onclick="kiesGevoel(this)">Leeg</button>
-        <button class="chip" type="button" data-gevoel="moe" onclick="kiesGevoel(this)">Moe</button>
-        <button class="chip" type="button" data-gevoel="oke" onclick="kiesGevoel(this)">Oké</button>
-        <button class="chip" type="button" data-gevoel="goed" onclick="kiesGevoel(this)">Goed</button>
-        <button class="chip" type="button" data-gevoel="fris" onclick="kiesGevoel(this)">Fris</button>
-      </div>
-
-      <div class="divider"></div>
-      <div class="sectie-titel">Van je horloge <span style="text-transform:none;font-weight:400">(gaat normaal automatisch)</span></div>
+      <div class="form-sub">Tik aan wat klopt. Alles is vrijblijvend, één tik is al genoeg. Wat jij voelt, telt voor HRMNY even zwaar als wat je horloge meet.</div>
+      <div class="vraag"><div class="vraag-titel">Hoe voel je je?</div>
+        <div class="chip-rij" data-vraag="gevoel">
+          <button class="chip" type="button" data-w="leeg">Leeg</button><button class="chip" type="button" data-w="moe">Moe</button><button class="chip" type="button" data-w="oke">Oké</button><button class="chip" type="button" data-w="goed">Goed</button><button class="chip" type="button" data-w="fris">Fris</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Hoe sliep je, volgens jou?</div>
+        <div class="chip-rij" data-vraag="slaap_gevoel">
+          <button class="chip" type="button" data-w="slecht">Slecht</button><button class="chip" type="button" data-w="onrustig">Onrustig</button><button class="chip" type="button" data-w="oke">Oké</button><button class="chip" type="button" data-w="goed">Goed</button><button class="chip" type="button" data-w="diep">Diep</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Je hoofd</div>
+        <div class="chip-rij" data-vraag="hoofd">
+          <button class="chip" type="button" data-w="wazig">Wazig</button><button class="chip" type="button" data-w="druk">Druk</button><button class="chip" type="button" data-w="rustig">Rustig</button><button class="chip" type="button" data-w="helder">Helder</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Je lichaam</div><div class="vraag-sub">Meerdere mag.</div>
+        <div class="chip-rij" data-vraag="lichaam" data-meer="1">
+          <button class="chip" type="button" data-w="zwaar">Zwaar</button><button class="chip" type="button" data-w="stijf">Stijf</button><button class="chip" type="button" data-w="spierpijn">Spierpijn</button><button class="chip" type="button" data-w="pijn">Pijn of blessure</button><button class="chip" type="button" data-w="licht">Licht</button><button class="chip" type="button" data-w="sterk">Sterk</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Zin om te bewegen</div>
+        <div class="chip-rij" data-vraag="beweegzin">
+          <button class="chip" type="button" data-w="geen">Geen</button><button class="chip" type="button" data-w="weinig">Weinig</button><button class="chip" type="button" data-w="gewoon">Gewoon</button><button class="chip" type="button" data-w="veel">Veel</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Wat speelde er gisteren?</div><div class="vraag-sub">Meerdere mag.</div>
+        <div class="chip-rij" data-vraag="gisteren" data-meer="1">
+          <button class="chip" type="button" data-w="zware_training">Zware training</button><button class="chip" type="button" data-w="zwaar">Zware dag</button><button class="chip" type="button" data-w="rustig">Rustige dag</button><button class="chip" type="button" data-w="topdag">Topdag</button><button class="chip" type="button" data-w="stress">Veel stress</button><button class="chip" type="button" data-w="alcohol">Alcohol</button><button class="chip" type="button" data-w="laat_eten">Laat gegeten</button><button class="chip" type="button" data-w="cafeine">Koffie na 14u</button><button class="chip" type="button" data-w="scherm">Lang op een scherm 's avonds</button><button class="chip" type="button" data-w="laat">Laat opgebleven</button><button class="chip" type="button" data-w="buiten">Veel buiten</button><button class="chip" type="button" data-w="ziek">Niet lekker</button><button class="chip" type="button" data-w="reizen">Reizen</button>
+        </div>
+        <div class="hint" id="ctx-hint"></div></div>
+      <div class="vraag"><div class="vraag-titel">Nog iets kwijt?</div><div class="vraag-sub">Eén zin is genoeg. Mag leeg.</div>
+        <textarea class="notitie" id="inp-notitie" maxlength="280" placeholder="bv. drukke week, slecht geslapen door de kinderen"></textarea></div>
+      <details class="horloge"><summary>Waarden van je horloge aanvullen (gaat normaal vanzelf)</summary>
       <div class="fields-2">
         <div class="field"><label>HRV <small>ms</small></label><input id="inp-hrv" type="number" inputmode="numeric" placeholder="overslaan" min="10" max="200"></div>
         <div class="field"><label>Rusthartslag <small>bpm</small></label><input id="inp-rhr" type="number" inputmode="numeric" placeholder="overslaan" min="30" max="120"></div>
         <div class="field"><label>Ademhaling <small>per min</small></label><input id="inp-adem" type="number" inputmode="decimal" step="0.1" placeholder="overslaan" min="5" max="40"></div>
         <div class="field"><label>Slaapscore <small>0-100</small></label><input id="inp-slaap" type="number" inputmode="numeric" placeholder="overslaan" min="0" max="100"></div>
       </div>
+      </details>
 
-      <div class="divider"></div>
-      <div class="sectie-titel">Wat speelde er gisteren?</div>
-      <div class="chip-rij">
-        <button class="chip ctx" type="button" data-groep="1" data-ctx="alcohol" onclick="kiesCtx(this)">Alcohol</button>
-        <button class="chip ctx" type="button" data-groep="1" data-ctx="laat" onclick="kiesCtx(this)">Laat opgebleven</button>
-        <button class="chip ctx" type="button" data-groep="1" data-ctx="stress" onclick="kiesCtx(this)">Veel stress</button>
-        <button class="chip ctx" type="button" data-groep="1" data-ctx="ziek" onclick="kiesCtx(this)">Niet lekker</button>
-        <button class="chip ctx" type="button" data-groep="1" data-ctx="reizen" onclick="kiesCtx(this)">Reizen</button>
-      </div>
-      <div class="chip-rij">
-        <button class="chip ctx" type="button" data-groep="2" data-ctx="topdag" onclick="kiesCtx(this)">Topdag</button>
-        <button class="chip ctx" type="button" data-groep="2" data-ctx="zwaar" onclick="kiesCtx(this)">Zware dag</button>
-        <button class="chip ctx" type="button" data-groep="2" data-ctx="rustig" onclick="kiesCtx(this)">Rustige dag</button>
-      </div>
-      <div class="hint" id="ctx-hint"></div>
-
-      <div class="divider"></div>
-      <div class="sectie-titel">Modus</div>
-      <div class="chip-rij" id="modus-rij"></div>
-      <div class="hint zichtbaar" id="modus-hint" style="font-style:normal;color:var(--text-muted)"></div>
-
-      <button class="btn-hoofd" id="verstuur-knop" style="margin-top:1rem" onclick="versturen()">Verstuur</button>
+      <button class="btn-hoofd" id="verstuur-knop" style="margin-top:1.1rem" onclick="versturen()">Bewaren</button>
       <div class="form-melding" id="form-melding"></div>
     </div>
   </div>
@@ -522,7 +549,7 @@ function toonLaag(n){
 }
 function toonDashboard(){
   toonScherm('s-dashboard');toonLaag(1);
-  document.getElementById('rapport-knop').style.display=heeftRapportVandaag()?'none':'block';
+  tekenGevoelKaart();
   document.getElementById('avond-kaart').style.display=new Date().getHours()>=20?'block':'none';
   toonRichting(laatsteRichtingVandaag());
   renderEventStatus();
@@ -635,8 +662,7 @@ function haalRichtingOp(){
 }
 function vernieuwRichting(){wis('hrmny_richting_data');toonDashboard();haalRichtingOp();}
 
-/* ── FORMULIER ── */
-var GEVOEL='',CTX={groep1:null,groep2:null};
+/* ── HOE GAAT HET MET JOU (subjectieve invoer, telt even zwaar als het horloge) ── */
 var CTX_HINTS={
   alcohol:'Alcohol kan Night Work onrustiger maken. HRMNY neemt het mee.',
   laat:'Een late avond verschuift The Anchor. HRMNY neemt het mee.',
@@ -645,36 +671,52 @@ var CTX_HINTS={
   reizen:'Reizen verstoort The Rhythm soms even. HRMNY neemt het mee.',
   topdag:'Fijn om te horen. HRMNY noteert het.',
   zwaar:'Een zware dag vraagt herstel. HRMNY noteert het.',
-  rustig:'Een rustige dag geeft The Charge ruimte. HRMNY noteert het.'
+  zware_training:'Na een zware training doet je lichaam vannacht extra werk. HRMNY noteert het.',
+  rustig:'Een rustige dag geeft The Charge ruimte. HRMNY noteert het.',
+  laat_eten:'Laat eten houdt je lichaam ook in de nacht bezig. HRMNY neemt het mee.',
+  cafeine:'Koffie in de namiddag kan Night Work lichter maken. HRMNY neemt het mee.',
+  scherm:'Licht van een scherm stelt je slaap soms uit. HRMNY neemt het mee.',
+  buiten:'Daglicht helpt The Rhythm. HRMNY noteert het.'
 };
-function kiesGevoel(btn){
-  var aan=!btn.classList.contains('actief');
-  document.querySelectorAll('#gevoel-rij .chip').forEach(function(b){b.classList.remove('actief');});
-  if(aan){btn.classList.add('actief');GEVOEL=btn.getAttribute('data-gevoel');}else GEVOEL='';
+var LABELS={};
+var ANTW={};
+function initVragen(){
+  document.querySelectorAll('#s-formulier .chip-rij[data-vraag]').forEach(function(rij){
+    var vraag=rij.getAttribute('data-vraag'),meer=rij.hasAttribute('data-meer');
+    rij.querySelectorAll('.chip').forEach(function(b){
+      LABELS[vraag+':'+b.getAttribute('data-w')]=b.textContent;
+      b.onclick=function(){
+        var w=b.getAttribute('data-w'),aan=!b.classList.contains('actief');
+        if(meer){
+          b.classList.toggle('actief',aan);
+          var l=ANTW[vraag]||[];l=l.filter(function(x){return x!==w;});if(aan)l.push(w);ANTW[vraag]=l;
+        } else {
+          rij.querySelectorAll('.chip').forEach(function(x){x.classList.remove('actief');});
+          if(aan){b.classList.add('actief');ANTW[vraag]=w;}else delete ANTW[vraag];
+        }
+        if(vraag==='gisteren'){var h=document.getElementById('ctx-hint');if(aan&&CTX_HINTS[w]){h.innerHTML='';h.textContent=CTX_HINTS[w];voegTooltipsToe(h);h.classList.add('zichtbaar');}else h.classList.remove('zichtbaar');}
+      };
+    });
+  });
 }
-function kiesCtx(btn){
-  var g=btn.getAttribute('data-groep'),c=btn.getAttribute('data-ctx'),hint=document.getElementById('ctx-hint');
-  if(btn.classList.contains('actief')){btn.classList.remove('actief');CTX['groep'+g]=null;}
-  else{
-    document.querySelectorAll('.ctx[data-groep="'+g+'"]').forEach(function(b){b.classList.remove('actief');});
-    btn.classList.add('actief');CTX['groep'+g]=c;
-  }
-  var laatste=CTX['groep'+g]||CTX.groep1||CTX.groep2;
-  if(laatste){hint.innerHTML='';hint.textContent=CTX_HINTS[laatste]||'';voegTooltipsToe(hint);hint.classList.add('zichtbaar');}
-  else hint.classList.remove('zichtbaar');
-}
+function gevoelVandaag(){try{return JSON.parse(lees('hrmny_subj_'+vandaagStr())||'null');}catch(e){return null;}}
 function toonFormulier(){
-  ['inp-hrv','inp-rhr','inp-adem','inp-slaap'].forEach(function(id){document.getElementById(id).value='';});
-  GEVOEL='';CTX={groep1:null,groep2:null};
-  document.querySelectorAll('#s-formulier .chip').forEach(function(b){b.classList.remove('actief');});
+  ANTW={};var opgeslagen=gevoelVandaag()||{};
+  Object.keys(opgeslagen).forEach(function(k){if(k!=='notitie')ANTW[k]=opgeslagen[k];});
+  document.querySelectorAll('#s-formulier .chip-rij[data-vraag]').forEach(function(rij){
+    var v=ANTW[rij.getAttribute('data-vraag')];
+    rij.querySelectorAll('.chip').forEach(function(b){var w=b.getAttribute('data-w');b.classList.toggle('actief',Array.isArray(v)?v.indexOf(w)>=0:v===w);});
+  });
+  document.getElementById('inp-notitie').value=opgeslagen.notitie||'';
+  document.querySelectorAll('#s-formulier input[type=number]').forEach(function(i){var k=i.id.replace('inp-','');var x=lees('hrmny_'+k+'_'+vandaagStr());i.value=x!==null?x:'';});
   document.getElementById('ctx-hint').classList.remove('zichtbaar');
   document.getElementById('form-melding').style.display='none';
-  var k=document.getElementById('verstuur-knop');k.disabled=false;k.textContent='Verstuur';
-  tekenModi('modus-rij','modus-hint');
+  var k=document.getElementById('verstuur-knop');k.disabled=false;k.textContent='Bewaren';
   toonScherm('s-formulier');
 }
 function getal(id,min,max){
-  var v=parseFloat(String(document.getElementById(id).value).replace(',','.'));
+  var el=document.getElementById(id);if(!el)return null;
+  var v=parseFloat(String(el.value).replace(',','.'));
   if(isNaN(v)||v<min||v>max)return null;return v;
 }
 function stuur(payload){
@@ -682,25 +724,46 @@ function stuur(payload){
   try{fetch(INVOER_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){}
 }
 function versturen(){
-  var w={hrv:getal('inp-hrv',10,200),rhr:getal('inp-rhr',30,120),adem:getal('inp-adem',5,40),slaap:getal('inp-slaap',0,100)};
   var vandaag=vandaagStr();
-  var sleutels={hrv:'hrv',rhr:'rhr',adem:'adem',slaap:'slaap'};
-  Object.keys(sleutels).forEach(function(k){if(w[k]!==null)schrijf('hrmny_'+sleutels[k]+'_'+vandaag,w[k]);});
-  if(GEVOEL)schrijf('hrmny_gevoel_'+vandaag,GEVOEL);
+  var grenzen={hrv:[10,200],rhr:[30,120],adem:[5,40],slaap:[0,100],bb:[0,100],stress:[0,100]};
+  var w={};Object.keys(grenzen).forEach(function(k){w[k]=getal('inp-'+k,grenzen[k][0],grenzen[k][1]);if(w[k]!==null)schrijf('hrmny_'+k+'_'+vandaag,w[k]);});
+  /* Horlogewaarden van vandaag meesturen, zodat het nieuwe dagrecord volledig is */
+  Object.keys(w).forEach(function(k){if(w[k]===null){var x=waarde(k,vandaag);if(x!==null)w[k]=x;}});
+  var notitie=(document.getElementById('inp-notitie').value||'').trim();
+  var subj=JSON.parse(JSON.stringify(ANTW));if(notitie)subj.notitie=notitie;
+  schrijf('hrmny_subj_'+vandaag,JSON.stringify(subj));
   schrijf('hrmny_rapport_datum',vandaag);
-
+  function leeg(x){return x===null||x===undefined?'':x;}
   stuur({
     user_id:gebruiker(),naam:lees('hrmny_naam')||'',wearable:'Apple Watch',
     leeftijd:parseInt(lees('hrmny_leeftijd'))||'',
-    hrv_night:w.hrv===null?'':w.hrv,rhr_night:w.rhr===null?'':w.rhr,resting_hr:w.rhr===null?'':w.rhr,
-    breath_rate:w.adem===null?'':w.adem,sleep_score:w.slaap===null?'':w.slaap,
-    gevoel:GEVOEL,context_energie:CTX.groep1||'',context_dag:CTX.groep2||'',
+    hrv_night:leeg(w.hrv),rhr_night:leeg(w.rhr),resting_hr:leeg(w.rhr),breath_rate:leeg(w.adem),
+    sleep_score:leeg(w.slaap),body_battery:leeg(w.bb),stress_score:leeg(w.stress),
+    gevoel:subj.gevoel||'',subjectief:JSON.stringify(subj),notitie:notitie,
     modus:huidigeModus(),datum:vandaag,trigger:'apple_v2'
   });
-
-  var k=document.getElementById('verstuur-knop');k.disabled=true;k.textContent='Ontvangen';
-  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. HRMNY neemt dit mee.';
-  setTimeout(function(){toonDashboard();setTimeout(haalRichtingOp,8000);},900);
+  var k=document.getElementById('verstuur-knop');k.disabled=true;k.textContent='Bewaard';
+  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat je horloge meet.';
+  setTimeout(function(){toonDashboard();setTimeout(haalRichtingOp,8000);},1100);
+}
+function samenvattingGevoel(subj){
+  var delen=[];
+  ['gevoel','slaap_gevoel','hoofd','beweegzin'].forEach(function(v){if(subj[v])delen.push(LABELS[v+':'+subj[v]]);});
+  (subj.lichaam||[]).forEach(function(x){delen.push(LABELS['lichaam:'+x]);});
+  return delen.filter(Boolean);
+}
+function tekenGevoelKaart(){
+  var k=document.getElementById('rapport-knop');if(!k)return;
+  var s=gevoelVandaag();
+  if(s&&Object.keys(s).length){
+    k.className='gevoel-kaart ingevuld';
+    var tags=samenvattingGevoel(s).map(function(t){return '<span class="gevoel-tag">'+t+'</span>';}).join('');
+    k.innerHTML='<div><div class="gk-titel" style="font-size:0.9rem">Jouw gevoel vandaag</div>'+(tags?'<div class="gevoel-samenvatting">'+tags+'</div>':'<div class="gk-sub">Bewaard.</div>')+'</div><div class="gk-pijl" style="font-size:0.78rem;font-weight:600;color:var(--navy)">Aanpassen</div>';
+  } else {
+    k.className='gevoel-kaart';
+    k.innerHTML='<div><div class="gk-titel">Hoe voel je je vandaag?</div><div class="gk-sub">Eén tik is al genoeg. Wat jij voelt, telt even zwaar als je horloge.</div></div><div class="gk-pijl">&rsaquo;</div>';
+  }
+  k.style.display='flex';
 }
 
 /* ── JOUW NACHT (waarden van het horloge, aangevuld met eigen invoer) ── */
@@ -749,7 +812,12 @@ function tekenSignalen(){
     });
     html+='</div>';
   });
+  var sg=gevoelVandaag();
+  html+='<div class="groep-titel">Hoe jij je voelt</div><div class="groep-sub">telt even zwaar als je horloge</div>';
+  if(sg&&Object.keys(sg).length){var tg=samenvattingGevoel(sg).map(function(t){return '<span class="gevoel-tag">'+t+'</span>';}).join('');html+='<div class="gevoel-samenvatting">'+(tg||'<span class="gevoel-tag">bewaard</span>')+'</div>'+(sg.notitie?'<div class="nacht-vgl" style="margin-top:0.45rem;font-style:italic"></div>':'');}
+  else html+='<button class="nav-btn" style="width:100%" onclick="toonFormulier()">Vertel hoe je je voelt <span class="pijl">&rsaquo;</span></button>';
   document.getElementById('nacht-groepen').innerHTML=html;
+  if(sg&&sg.notitie){var nv=document.querySelector('#nacht-groepen .nacht-vgl:last-child');if(nv)nv.textContent='"'+sg.notitie+'"';}
   var intro=document.getElementById('nacht-intro');
   intro.textContent=aantal>0?'Dit vertelt je horloge over je nacht en over de energie waarmee je vandaag begint.':'Je horloge heeft je nacht nog niet doorgestuurd. Meestal komt dat in de loop van de voormiddag of rond de middag binnen.';
   var r=laatsteRichtingVandaag(),vv=document.getElementById('voor-vandaag'),t=document.getElementById('nacht-tips');
@@ -924,6 +992,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ── START ── */
+initVragen();
 (function(){
   var el=document.getElementById('datum-label');
   if(el)el.textContent=new Date().toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});

@@ -181,7 +181,7 @@ button{font-family:'DM Sans',sans-serif}
 .vraag-titel{font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:0.15rem}
 .vraag-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem}
 .chip{font-size:0.82rem;padding:0.48rem 0.85rem;border-color:rgba(26,45,90,0.18)}
-.chip.actief{border-color:var(--navy);background:var(--navy);color:var(--white)}
+.chip.actief,.chip.actief:hover{border-color:var(--navy);background:var(--navy);color:var(--white)}
 textarea.notitie{width:100%;min-height:64px;padding:0.6rem 0.8rem;border-radius:9px;border:1.5px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);resize:vertical;outline:none}
 textarea.notitie:focus{border-color:var(--gold);background:var(--white)}
 details.horloge{border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.8rem;margin-top:0.4rem}
@@ -189,6 +189,29 @@ details.horloge summary{cursor:pointer;font-size:0.8rem;color:var(--navy);font-w
 details.horloge[open] summary{margin-bottom:0.7rem}
 .gevoel-samenvatting{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.2rem}
 .gevoel-tag{font-size:0.74rem;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:0.25rem 0.65rem;color:var(--navy)}
+
+#profiel-modus-rij,#modus-rij{position:relative}
+.modus-chip{position:static}
+.modus-chip .modus-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;width:auto;background:var(--navy);color:var(--white);font-size:0.72rem;font-weight:400;line-height:1.5;padding:0.5rem 0.75rem;border-radius:9px;width:220px;white-space:normal;text-align:left;z-index:999;pointer-events:none;box-shadow:0 4px 16px rgba(17,30,63,0.18)}
+.modus-chip:hover .modus-tip,.modus-chip:focus .modus-tip{display:block}
+.modus-chip.actief .modus-tip{color:var(--white)}
+details.klein{margin-top:1.4rem}
+details.klein summary{cursor:pointer;font-size:0.7rem;color:var(--text-muted);list-style:none;text-align:center}
+details.klein summary::-webkit-details-marker{display:none}
+.wis-link{background:none;border:none;color:var(--text-muted);font-size:0.7rem;text-decoration:underline;cursor:pointer;display:block;margin:0.6rem auto 0}
+.form-kop{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.2rem}
+/* Agenda */
+.moment-lijst{display:flex;flex-direction:column;gap:0.5rem;margin:0.6rem 0 0.9rem}
+.moment-item{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:0.75rem 0.9rem;cursor:pointer;text-align:left;width:100%;transition:border-color 0.15s}
+.moment-item:hover{border-color:rgba(26,45,90,0.35)}
+.moment-naam{font-size:0.9rem;font-weight:700;color:var(--navy)}
+.moment-meta{font-size:0.72rem;color:var(--text-muted);margin-top:0.15rem}
+.schuif-wrap{margin:0.3rem 0 0.2rem}
+.schuif-wrap input[type=range]{width:100%;accent-color:var(--navy);height:28px}
+.schuif-label{font-size:0.86rem;font-weight:600;color:var(--navy);margin-top:0.15rem;min-height:1.2rem}
+.schuif-as{display:flex;justify-content:space-between;font-size:0.62rem;color:var(--text-muted)}
+.event-regel{font-size:0.84rem;color:var(--navy);line-height:1.55;margin-top:0.3rem}
+.event-regel+.event-regel{border-top:1px solid var(--border);padding-top:0.45rem;margin-top:0.45rem}
 </style>
 </head>
 <body>
@@ -249,7 +272,7 @@ details.horloge[open] summary{margin-bottom:0.7rem}
         <div class="undercurrent" id="undercurrent" tabindex="0">The Undercurrent</div>
         <div class="fase-label" id="fase-label"></div>
         <div class="dagzin" id="dagzin"></div>
-        <button class="waarom-btn" id="waarom-btn" onclick="toggleWaarom()" style="display:none">Waarom?</button>
+        <button class="waarom-btn" id="waarom-btn" onclick="toggleWaarom()" style="display:none">Het verhaal erachter</button>
         <div class="waarom-blok" id="waarom-blok">
           <div class="reden" id="reden"></div>
           <div id="tips"></div>
@@ -257,7 +280,7 @@ details.horloge[open] summary{margin-bottom:0.7rem}
       </div>
 
       <div class="event-kaart" id="event-kaart" onclick="toonKalender()" style="cursor:pointer">
-        <div class="label-mono">Op weg naar</div>
+        <div class="label-mono">Jouw momenten</div>
         <div class="event-tekst" id="event-tekst"></div>
       </div>
 
@@ -283,7 +306,6 @@ details.horloge[open] summary{margin-bottom:0.7rem}
       </div>
       <div class="nav-btns">
         <button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button>
-        <button class="nav-btn" onclick="toonFormulier()">Hoe voel je je? <span class="pijl">&rsaquo;</span></button>
       </div>
     </div>
 
@@ -320,11 +342,9 @@ details.horloge[open] summary{margin-bottom:0.7rem}
   <!-- FORMULIER -->
   <div id="s-formulier" class="scherm">
     <div class="kaart">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div class="form-titel" style="font-size:1.1rem">Hoe gaat het met jou?</div>
-        <button onclick="toonDashboard()" aria-label="Sluiten" style="background:none;border:none;color:var(--navy);font-size:1.4rem;cursor:pointer;line-height:1">&times;</button>
-      </div>
-      <div class="form-sub">Tik aan wat klopt. Alles is vrijblijvend, één tik is al genoeg. Wat jij voelt, telt voor HRMNY even zwaar als wat je horloge meet.</div>
+      <button class="terug-knop" onclick="terugVanFormulier()">&lsaquo; Terug</button>
+      <div class="form-titel" style="font-size:1.1rem">Hoe gaat het met jou?</div>
+      <div class="form-sub">Tik aan wat klopt. Alles is vrijblijvend, één tik is al genoeg. Wat jij voelt, telt voor HRMNY even zwaar als wat er gemeten wordt.</div>
       <div class="vraag"><div class="vraag-titel">Hoe voel je je?</div>
         <div class="chip-rij" data-vraag="gevoel">
           <button class="chip" type="button" data-w="leeg">Leeg</button><button class="chip" type="button" data-w="moe">Moe</button><button class="chip" type="button" data-w="oke">Oké</button><button class="chip" type="button" data-w="goed">Goed</button><button class="chip" type="button" data-w="fris">Fris</button>
@@ -352,7 +372,7 @@ details.horloge[open] summary{margin-bottom:0.7rem}
         <div class="hint" id="ctx-hint"></div></div>
       <div class="vraag"><div class="vraag-titel">Nog iets kwijt?</div><div class="vraag-sub">Eén zin is genoeg. Mag leeg.</div>
         <textarea class="notitie" id="inp-notitie" maxlength="280" placeholder="bv. drukke week, slecht geslapen door de kinderen"></textarea></div>
-      <details class="horloge"><summary>Waarden van je horloge aanvullen (gaat normaal vanzelf)</summary>
+      <details class="horloge"><summary>Waarden zelf aanvullen (komt normaal vanzelf binnen)</summary>
       <div class="fields-2">
         <div class="field"><label>HRV <small>ms</small></label><input id="inp-hrv" type="number" inputmode="numeric" placeholder="overslaan" min="10" max="200"></div>
         <div class="field"><label>Rusthartslag <small>bpm</small></label><input id="inp-rhr" type="number" inputmode="numeric" placeholder="overslaan" min="30" max="120"></div>
@@ -364,32 +384,57 @@ details.horloge[open] summary{margin-bottom:0.7rem}
       </details>
 
       <button class="btn-hoofd" id="verstuur-knop" style="margin-top:1.1rem" onclick="versturen()">Bewaren</button>
+      <button class="btn-zacht" style="margin-top:0.5rem" onclick="terugVanFormulier()">Annuleren</button>
       <div class="form-melding" id="form-melding"></div>
     </div>
   </div>
 
   <!-- AGENDA -->
   <div id="s-kalender" class="scherm">
-    <div class="kaart">
-      <button class="terug-knop" onclick="toonDashboard()">&larr; Terug</button>
-      <div class="form-titel">Jouw moment</div>
-      <div class="form-uitleg">Plan een moment waar je naartoe leeft. HRMNY telt mee af en houdt er daarna ook rekening mee dat je even moet herstellen.</div>
-      <div class="field"><label>Soort moment</label>
-        <select id="kal-type" onchange="toggleKalTijdzone()">
+    <div class="kaart" id="kal-lijst-kaart">
+      <button class="terug-knop" onclick="toonDashboard()">&lsaquo; Terug</button>
+      <div class="form-titel" style="font-size:1.1rem">Jouw momenten</div>
+      <div class="form-uitleg">Momenten waar je naartoe leeft. HRMNY houdt rekening met hoe belangrijk ze voor je zijn, en met het herstel erna.</div>
+      <div class="moment-lijst" id="moment-lijst"></div>
+      <button class="btn-hoofd" onclick="nieuwMoment()">+ Moment toevoegen</button>
+    </div>
+    <div class="kaart" id="kal-edit-kaart" style="display:none">
+      <button class="terug-knop" onclick="toonMomentenLijst()">&lsaquo; Terug naar je momenten</button>
+      <div class="form-titel" id="kal-edit-titel" style="font-size:1.1rem">Nieuw moment</div>
+      <div class="field" style="margin-top:0.8rem"><label>Soort moment</label>
+        <select id="kal-type" onchange="toggleKalVelden()">
           <option value="">Kies</option>
           <option value="race">Wedstrijd of grote tocht</option>
+          <option value="activiteit">Activiteit (wandeling, fietstocht, uitstap)</option>
           <option value="examen">Examen of belangrijke presentatie</option>
+          <option value="meeting">Grote meeting of pitch</option>
           <option value="sociaal">Feest, trouw of familiedag</option>
           <option value="reis">Reis met tijdsverschil</option>
-          <option value="meeting">Grote meeting of pitch</option>
-          <option value="activiteit">Activiteit (wandeling, fietstocht, uitstap)</option>
         </select></div>
       <div class="field"><label>Naam <small>mag leeg</small></label><input id="kal-naam" type="text" placeholder="bv. Gravel Fondo Hageland"></div>
       <div class="field"><label>Datum</label><input id="kal-datum" type="date"></div>
+
+      <div class="vraag" style="margin-top:0.6rem"><div class="vraag-titel">Hoe belangrijk is dit moment voor jou?</div>
+        <div class="schuif-wrap"><input type="range" id="kal-inzet" min="1" max="5" step="1" value="3" oninput="toonSchuifLabels()">
+          <div class="schuif-as"><span>ontspannen</span><span>alles geven</span></div>
+          <div class="schuif-label" id="kal-inzet-label"></div></div></div>
+
+      <div class="vraag" id="kal-opbouw-vraag"><div class="vraag-titel">Wil je er nog extra voor opbouwen?</div>
+        <div class="schuif-wrap"><input type="range" id="kal-opbouw" min="1" max="3" step="1" value="1" oninput="toonSchuifLabels()">
+          <div class="schuif-as"><span>niets extra</span><span>gericht opbouwen</span></div>
+          <div class="schuif-label" id="kal-opbouw-label"></div></div></div>
+
+      <div class="vraag" id="kal-duur-vraag"><div class="vraag-titel">Hoe lang duurt het?</div>
+        <div class="chip-rij" id="kal-duur">
+          <button class="chip" type="button" data-w="uren">Enkele uren</button><button class="chip" type="button" data-w="halve_dag">Halve dag</button><button class="chip" type="button" data-w="dag">Hele dag</button><button class="chip" type="button" data-w="meerdaags">Meerdere dagen</button>
+        </div></div>
+
       <div class="field" id="kal-tijdzone-veld" style="display:none"><label>Tijdsverschil <small>uren, mag leeg</small></label><input id="kal-tijdzone" type="number" inputmode="numeric" min="0" max="14" placeholder="overslaan"></div>
-      <button class="btn-hoofd" onclick="slaEventOp()">Bewaren</button>
+
+      <button class="btn-hoofd" style="margin-top:0.6rem" onclick="slaEventOp()">Bewaren</button>
+      <button class="btn-zacht" style="margin-top:0.5rem" onclick="toonMomentenLijst()">Annuleren</button>
       <div class="form-melding" id="kal-melding"></div>
-      <button class="reset-knop" id="kal-verwijder-btn" style="display:none" onclick="document.getElementById('kal-bevestig').classList.add('open')">Moment verwijderen</button>
+      <button class="wis-link" id="kal-verwijder-btn" style="display:none" onclick="document.getElementById('kal-bevestig').classList.add('open')">Dit moment verwijderen</button>
       <div class="bevestig" id="kal-bevestig">Dit moment verwijderen?
         <div class="fb-btns">
           <button class="fb-btn" onclick="verwijderEvent()">Verwijderen</button>
@@ -402,7 +447,7 @@ details.horloge[open] summary{margin-bottom:0.7rem}
   <!-- PROFIEL -->
   <div id="s-profiel" class="scherm">
     <div class="kaart">
-      <button class="terug-knop" onclick="toonDashboard()">&larr; Terug</button>
+      <button class="terug-knop" onclick="toonDashboard()">&lsaquo; Terug</button>
       <div class="profiel-rij"><div><div class="profiel-rij-label">Voornaam</div><div class="profiel-rij-waarde" id="pv-naam">·</div></div></div>
       <div class="profiel-rij"><div><div class="profiel-rij-label">Wearable</div><div class="profiel-rij-waarde" id="pv-wearable">·</div></div></div>
       <div class="profiel-rij"><div><div class="profiel-rij-label">Bij HRMNY sinds</div><div class="profiel-rij-waarde" id="pv-start">·</div></div></div>
@@ -412,14 +457,16 @@ details.horloge[open] summary{margin-bottom:0.7rem}
         <div class="hint zichtbaar" id="profiel-modus-hint" style="font-style:normal;color:var(--text-muted)"></div>
       </div>
       <button class="btn-zacht" style="margin-top:0.8rem" onclick="vernieuwRichting()">Richting opnieuw ophalen</button>
-      <button class="reset-knop" onclick="document.getElementById('bevestig').classList.add('open')">Alles op dit toestel wissen</button>
-      <div class="bevestig" id="bevestig">
-        Alle invoer op dit toestel wordt gewist. Je gegevens bij HRMNY blijven bestaan.
-        <div class="fb-btns">
-          <button class="fb-btn" onclick="wisAlles()">Wissen</button>
-          <button class="fb-btn" onclick="document.getElementById('bevestig').classList.remove('open')">Annuleren</button>
+      <details class="klein"><summary>Meer opties</summary>
+        <button class="wis-link" onclick="document.getElementById('bevestig').classList.add('open')">Gegevens op dit toestel wissen</button>
+        <div class="bevestig" id="bevestig">
+          Alles wat op dit toestel bewaard is, wordt gewist. Je gegevens bij HRMNY blijven bestaan.
+          <div class="fb-btns">
+            <button class="fb-btn" onclick="wisAlles()">Wissen</button>
+            <button class="fb-btn" onclick="document.getElementById('bevestig').classList.remove('open')">Annuleren</button>
+          </div>
         </div>
-      </div>
+      </details>
     </div>
   </div>
 
@@ -504,12 +551,12 @@ function normaliseerUndercurrent(u){
 
 /* ── MODI ── */
 var MODI=[
-  {id:'Peak',      uitleg:'Kort en direct.'},
-  {id:'Sportief',  uitleg:'Ritmisch en warm, met oog voor beweging.'},
-  {id:'Focus',     uitleg:'Helder en rustig, met oog voor je hoofd.'},
-  {id:'Grounded',  uitleg:'Nuchter en menselijk. Een goed vertrekpunt.'},
-  {id:'Relaxatie', uitleg:'Zacht en ademend.'},
-  {id:'Shift',     uitleg:'Los van de klok, voor een wisselend ritme.'}
+  {id:'Peak',      uitleg:'Kort, direct, zonder omwegen. Voor wie zijn lichaam goed kent en feiten wil.'},
+  {id:'Sportief',  uitleg:'Ritmisch en warm, met oog voor beweging en training.'},
+  {id:'Focus',     uitleg:'Helder en rustig. Vertaalt je herstel naar ruimte in je hoofd en je werk.'},
+  {id:'Grounded',  uitleg:'Nuchter en menselijk. Voor wie gewoon goed wil leven. Een goed vertrekpunt.'},
+  {id:'Relaxatie', uitleg:'Zacht en ademend. Geeft je toestemming om te vertragen.'},
+  {id:'Shift',     uitleg:'Los van de klok. Voor wie in wisselende diensten of een eigen ritme leeft.'}
 ];
 function huidigeModus(){return lees('hrmny_modus')||'Peak';}
 function tekenModi(rijId,hintId){
@@ -519,6 +566,7 @@ function tekenModi(rijId,hintId){
     var b=document.createElement('button');b.type='button';
     b.className='chip modus-chip'+(m.id===huidigeModus()?' actief':'');
     b.textContent=m.id;
+    var tip=document.createElement('span');tip.className='modus-tip';tip.textContent=m.uitleg;b.appendChild(tip);
     b.onclick=function(){
       schrijf('hrmny_modus',m.id);
       tekenModi('modus-rij','modus-hint');tekenModi('profiel-modus-rij','profiel-modus-hint');
@@ -601,7 +649,7 @@ function toonRichting(data){
 }
 function toggleWaarom(){
   var b=document.getElementById('waarom-blok');b.classList.toggle('open');
-  document.getElementById('waarom-btn').textContent=b.classList.contains('open')?'Minder':'Waarom?';
+  document.getElementById('waarom-btn').textContent=b.classList.contains('open')?'Sluiten':'Het verhaal erachter';
 }
 
 /* ── RICHTING OPHALEN ── */
@@ -686,7 +734,11 @@ function initVragen(){
   });
 }
 function gevoelVandaag(){try{return JSON.parse(lees('hrmny_subj_'+vandaagStr())||'null');}catch(e){return null;}}
+var TERUG_LAAG=1;
+function huidigeLaag(){return document.getElementById('s-dashboard').classList.contains('actief')?(document.getElementById('laag2').style.display==='flex'?2:document.getElementById('laag3').style.display==='flex'?3:1):1;}
+function terugVanFormulier(){toonDashboard();toonLaag(TERUG_LAAG);}
 function toonFormulier(){
+  TERUG_LAAG=huidigeLaag();
   ANTW={};var opgeslagen=gevoelVandaag()||{};
   Object.keys(opgeslagen).forEach(function(k){if(k!=='notitie')ANTW[k]=opgeslagen[k];});
   document.querySelectorAll('#s-formulier .chip-rij[data-vraag]').forEach(function(rij){
@@ -717,6 +769,8 @@ function versturen(){
   Object.keys(w).forEach(function(k){if(w[k]===null){var x=waarde(k,vandaag);if(x!==null)w[k]=x;}});
   var notitie=(document.getElementById('inp-notitie').value||'').trim();
   var subj=JSON.parse(JSON.stringify(ANTW));if(notitie)subj.notitie=notitie;
+  var ietsIngevuld=Object.keys(subj).some(function(k){return Array.isArray(subj[k])?subj[k].length>0:!!subj[k];})||Object.keys(grenzen).some(function(k){return getal('inp-'+k,grenzen[k][0],grenzen[k][1])!==null;});
+  if(!ietsIngevuld){var mm=document.getElementById('form-melding');mm.style.display='block';mm.textContent='Je hebt nog niets aangeduid. Er is niets verstuurd.';return;}
   schrijf('hrmny_subj_'+vandaag,JSON.stringify(subj));
   schrijf('hrmny_rapport_datum',vandaag);
   function leeg(x){return x===null||x===undefined?'':x;}
@@ -725,12 +779,12 @@ function versturen(){
     leeftijd:parseInt(lees('hrmny_leeftijd'))||'',
     hrv_night:leeg(w.hrv),rhr_night:leeg(w.rhr),resting_hr:leeg(w.rhr),breath_rate:leeg(w.adem),
     sleep_score:leeg(w.slaap),body_battery:leeg(w.bb),stress_score:leeg(w.stress),
-    gevoel:subj.gevoel||'',subjectief:JSON.stringify(subj),notitie:notitie,
+    gevoel:subj.gevoel||'',subjectief:JSON.stringify(subj),notitie:notitie,agenda:JSON.stringify(agendaVoorPipeline()),
     modus:huidigeModus(),datum:vandaag,trigger:'gregory_v2'
   });
   var k=document.getElementById('verstuur-knop');k.disabled=true;k.textContent='Bewaard';
-  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat je horloge meet.';
-  setTimeout(function(){toonDashboard();setTimeout(haalRichtingOp,8000);},1100);
+  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat er gemeten wordt.';
+  setTimeout(function(){terugVanFormulier();setTimeout(haalRichtingOp,8000);},1100);
 }
 function samenvattingGevoel(subj){
   var delen=[];
@@ -747,7 +801,7 @@ function tekenGevoelKaart(){
     k.innerHTML='<div><div class="gk-titel" style="font-size:0.9rem">Jouw gevoel vandaag</div>'+(tags?'<div class="gevoel-samenvatting">'+tags+'</div>':'<div class="gk-sub">Bewaard.</div>')+'</div><div class="gk-pijl" style="font-size:0.78rem;font-weight:600;color:var(--navy)">Aanpassen</div>';
   } else {
     k.className='gevoel-kaart';
-    k.innerHTML='<div><div class="gk-titel">Hoe voel je je vandaag?</div><div class="gk-sub">Eén tik is al genoeg. Wat jij voelt, telt even zwaar als je horloge.</div></div><div class="gk-pijl">&rsaquo;</div>';
+    k.innerHTML='<div><div class="gk-titel">Hoe voel je je vandaag?</div><div class="gk-sub">Eén tik is al genoeg. Wat jij voelt, telt even zwaar als wat er gemeten wordt.</div></div><div class="gk-pijl">&rsaquo;</div>';
   }
   k.style.display='flex';
 }
@@ -799,13 +853,13 @@ function tekenSignalen(){
     html+='</div>';
   });
   var sg=gevoelVandaag();
-  html+='<div class="groep-titel">Hoe jij je voelt</div><div class="groep-sub">telt even zwaar als je horloge</div>';
-  if(sg&&Object.keys(sg).length){var tg=samenvattingGevoel(sg).map(function(t){return '<span class="gevoel-tag">'+t+'</span>';}).join('');html+='<div class="gevoel-samenvatting">'+(tg||'<span class="gevoel-tag">bewaard</span>')+'</div>'+(sg.notitie?'<div class="nacht-vgl" style="margin-top:0.45rem;font-style:italic"></div>':'');}
+  html+='<div class="groep-titel">Hoe jij je voelt</div><div class="groep-sub">telt even zwaar als wat er gemeten wordt</div>';
+  if(sg&&Object.keys(sg).length){var tg=samenvattingGevoel(sg).map(function(t){return '<span class="gevoel-tag">'+t+'</span>';}).join('');html+='<div class="gevoel-samenvatting">'+(tg||'<span class="gevoel-tag">bewaard</span>')+'</div>'+(sg.notitie?'<div class="nacht-vgl" style="margin-top:0.45rem;font-style:italic"></div>':'')+'<button class="wis-link" style="margin:0.5rem 0 0;color:var(--navy)" onclick="toonFormulier()">Aanpassen</button>';}
   else html+='<button class="nav-btn" style="width:100%" onclick="toonFormulier()">Vertel hoe je je voelt <span class="pijl">&rsaquo;</span></button>';
   document.getElementById('nacht-groepen').innerHTML=html;
-  if(sg&&sg.notitie){var nv=document.querySelector('#nacht-groepen .nacht-vgl:last-child');if(nv)nv.textContent='"'+sg.notitie+'"';}
+  if(sg&&sg.notitie){var nv=document.querySelector('#nacht-groepen .gevoel-samenvatting + .nacht-vgl');if(nv)nv.textContent='"'+sg.notitie+'"';}
   var intro=document.getElementById('nacht-intro');
-  intro.textContent=aantal>0?'Dit vertelt je horloge over je nacht en over de energie waarmee je vandaag begint.':'Je horloge heeft je nacht nog niet doorgestuurd. Meestal komt dat in de loop van de voormiddag of rond de middag binnen.';
+  intro.textContent=aantal>0?'Zo verliep je nacht, en met deze energie begin je aan vandaag.':'Je nacht is nog niet binnen. Meestal komt die in de loop van de voormiddag of rond de middag.';
   var r=laatsteRichtingVandaag(),vv=document.getElementById('voor-vandaag'),t=document.getElementById('nacht-tips');
   if(r&&r.tip&&(typeof fase!=='function'||fase()!=='observatie'||!window.APPLE_ID)){
     t.innerHTML='';r.tip.split('|').map(function(s){return s.trim();}).filter(Boolean).forEach(function(s){var d=document.createElement('div');d.className='tip-item';var sp=document.createElement('span');sp.textContent=s;d.appendChild(sp);t.appendChild(d);voegTooltipsToe(sp);});
@@ -920,50 +974,123 @@ function voegTooltipsToe(el){
 }
 
 
-/* ── AGENDA: JOUW MOMENT (enkel op dit toestel) ── */
-var EVENT_HERSTEL_DAGEN={race:5,examen:2,meeting:2,sociaal:1,reis:3,activiteit:2};
+/* ── AGENDA: JOUW MOMENTEN (meerdere, met inzet en opbouw) ── */
+var INZET_LABELS={1:'Ontspannen, puur genieten',2:'Rustig, zonder druk',3:'Goed voorbereid zijn',4:'Belangrijk, ik wil scherp staan',5:'Alles geven, 100%'};
+var OPBOUW_LABELS={1:'Niets extra, gewoon mijn ritme volgen',2:'Wat extra, als het past',3:'Gericht opbouwen naar dit moment'};
+var DUUR_LABELS={uren:'enkele uren',halve_dag:'een halve dag',dag:'een hele dag',meerdaags:'meerdere dagen'};
+var FYSIEK={race:1,activiteit:1};
+var EDIT_ID=null,EDIT_DUUR='';
 function eventTypeLabel(t){return {race:'jouw wedstrijd',examen:'jouw examen',sociaal:'jouw feest',reis:'jouw reis',meeting:'jouw meeting',activiteit:'jouw activiteit'}[t]||'jouw moment';}
-function toggleKalTijdzone(){document.getElementById('kal-tijdzone-veld').style.display=document.getElementById('kal-type').value==='reis'?'block':'none';}
-function toonKalender(){
-  document.getElementById('kal-type').value=lees('hrmny_event_type')||'';
-  document.getElementById('kal-naam').value=lees('hrmny_event_naam_eigen')||'';
-  document.getElementById('kal-datum').value=lees('hrmny_event_datum')||'';
-  document.getElementById('kal-tijdzone').value=lees('hrmny_event_tijdzone')||'';
+function laadEvents(){
+  var l=[];try{l=JSON.parse(lees('hrmny_events')||'[]')||[];}catch(e){l=[];}
+  /* Eenmalig: oud enkel moment omzetten naar de lijst */
+  var ot=lees('hrmny_event_type'),od=lees('hrmny_event_datum');
+  if(ot&&od){l.push({id:'m'+Date.now(),type:ot,naam:lees('hrmny_event_naam_eigen')||lees('hrmny_event_naam')||'',datum:od,inzet:3,opbouw:1,duur:'',tz:lees('hrmny_event_tijdzone')||''});
+    ['hrmny_event_type','hrmny_event_datum','hrmny_event_naam_eigen','hrmny_event_naam','hrmny_event_tijdzone'].forEach(wis);bewaarEvents(l);}
+  return l;
+}
+function bewaarEvents(l){schrijf('hrmny_events',JSON.stringify(l));}
+function dagenTot(ds){var p=ds.split('-');var e=new Date(+p[0],+p[1]-1,+p[2]);var n=new Date();n.setHours(0,0,0,0);return Math.round((e-n)/86400000);}
+function momentNaam(e){return e.naam||eventTypeLabel(e.type);}
+function herstelDagen(e){
+  if(e.type==='reis')return Math.max(1,parseInt(e.tz,10)||2);
+  var basis={race:2,activiteit:1,examen:1,meeting:1,sociaal:1}[e.type]||1;
+  var duurF={uren:1,halve_dag:1.5,dag:2,meerdaags:3}[e.duur]||1.5;
+  var inzetF=FYSIEK[e.type]?(0.6+(e.inzet||3)*0.2):1;
+  return Math.max(1,Math.min(7,Math.round(basis*duurF*inzetF)));
+}
+function toonMomentenLijst(){
+  document.getElementById('kal-lijst-kaart').style.display='block';
+  document.getElementById('kal-edit-kaart').style.display='none';
+  var l=laadEvents().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e);}).sort(function(a,b){return a.datum<b.datum?-1:1;});
+  var box=document.getElementById('moment-lijst');box.innerHTML='';
+  if(!l.length){box.innerHTML='<div class="stil" style="text-align:left">Nog geen momenten gepland.</div>';}
+  l.forEach(function(e){
+    var d=dagenTot(e.datum),b=document.createElement('button');b.className='moment-item';b.type='button';
+    var wanneer=d>1?'over '+d+' dagen':d===1?'morgen':d===0?'vandaag':'herstel loopt nog';
+    var dt=new Date(e.datum+'T12:00:00').toLocaleDateString('nl-BE',{day:'numeric',month:'long'});
+    b.innerHTML='<div class="moment-naam"></div><div class="moment-meta"></div>';
+    b.querySelector('.moment-naam').textContent=momentNaam(e);
+    b.querySelector('.moment-meta').textContent=dt+' · '+wanneer+' · '+(INZET_LABELS[e.inzet]||'').toLowerCase();
+    b.onclick=function(){bewerkMoment(e.id);};box.appendChild(b);
+  });
+  toonScherm('s-kalender');
+}
+function toonKalender(){toonMomentenLijst();}
+function vulEditor(e){
+  document.getElementById('kal-type').value=e.type||'';
+  document.getElementById('kal-naam').value=e.naam||'';
+  document.getElementById('kal-datum').value=e.datum||'';
+  document.getElementById('kal-tijdzone').value=e.tz||'';
+  document.getElementById('kal-inzet').value=e.inzet||3;
+  document.getElementById('kal-opbouw').value=e.opbouw||1;
+  EDIT_DUUR=e.duur||'';
+  document.querySelectorAll('#kal-duur .chip').forEach(function(c){c.classList.toggle('actief',c.getAttribute('data-w')===EDIT_DUUR);});
   document.getElementById('kal-melding').style.display='none';
   document.getElementById('kal-bevestig').classList.remove('open');
-  document.getElementById('kal-verwijder-btn').style.display=lees('hrmny_event_datum')?'block':'none';
-  toggleKalTijdzone();toonScherm('s-kalender');
+  toggleKalVelden();toonSchuifLabels();
+  document.getElementById('kal-lijst-kaart').style.display='none';
+  document.getElementById('kal-edit-kaart').style.display='block';
+  window.scrollTo(0,0);
+}
+function nieuwMoment(){EDIT_ID=null;document.getElementById('kal-edit-titel').textContent='Nieuw moment';document.getElementById('kal-verwijder-btn').style.display='none';vulEditor({});}
+function bewerkMoment(id){var e=laadEvents().filter(function(x){return x.id===id;})[0];if(!e)return;EDIT_ID=id;document.getElementById('kal-edit-titel').textContent=momentNaam(e);document.getElementById('kal-verwijder-btn').style.display='block';vulEditor(e);}
+function toggleKalVelden(){
+  var t=document.getElementById('kal-type').value;
+  document.getElementById('kal-tijdzone-veld').style.display=t==='reis'?'block':'none';
+  document.getElementById('kal-opbouw-vraag').style.display=FYSIEK[t]?'block':'none';
+  document.getElementById('kal-duur-vraag').style.display=(FYSIEK[t]||t==='sociaal')?'block':'none';
+}
+function toonSchuifLabels(){
+  document.getElementById('kal-inzet-label').textContent=INZET_LABELS[document.getElementById('kal-inzet').value];
+  document.getElementById('kal-opbouw-label').textContent=OPBOUW_LABELS[document.getElementById('kal-opbouw').value];
 }
 function slaEventOp(){
-  var t=document.getElementById('kal-type').value,n=document.getElementById('kal-naam').value.trim(),d=document.getElementById('kal-datum').value,tz=document.getElementById('kal-tijdzone').value;
-  var m=document.getElementById('kal-melding');
+  var t=document.getElementById('kal-type').value,d=document.getElementById('kal-datum').value,m=document.getElementById('kal-melding');
   if(!t||!d){m.textContent='Kies een soort moment en een datum.';m.style.display='block';return;}
-  schrijf('hrmny_event_type',t);schrijf('hrmny_event_datum',d);
-  if(n)schrijf('hrmny_event_naam_eigen',n);else wis('hrmny_event_naam_eigen');
-  if(tz)schrijf('hrmny_event_tijdzone',tz);else wis('hrmny_event_tijdzone');
-  toonDashboard();
+  var e={id:EDIT_ID||('m'+Date.now()),type:t,naam:document.getElementById('kal-naam').value.trim(),datum:d,
+    inzet:parseInt(document.getElementById('kal-inzet').value,10),opbouw:FYSIEK[t]?parseInt(document.getElementById('kal-opbouw').value,10):1,
+    duur:EDIT_DUUR,tz:document.getElementById('kal-tijdzone').value};
+  var l=laadEvents().filter(function(x){return x.id!==e.id;});l.push(e);bewaarEvents(l);
+  toonMomentenLijst();
 }
-function wisEvent(){['hrmny_event_type','hrmny_event_datum','hrmny_event_naam_eigen','hrmny_event_tijdzone'].forEach(wis);}
-function verwijderEvent(){wisEvent();toonDashboard();}
-function dagenTot(ds){var p=ds.split('-');var e=new Date(+p[0],+p[1]-1,+p[2]);var n=new Date();n.setHours(0,0,0,0);return Math.round((e-n)/86400000);}
-function eventFaseTekst(d,t,naam){
-  var pre='Nog '+d+' dag'+(d===1?'':'en')+' tot '+naam+'. ';
-  if(t==='race'){if(d>28)return pre+'Dit is de periode om rustig op te bouwen.';if(d>=8)return pre+'Minder doen wordt nu belangrijker dan meer doen.';if(d>=2)return pre+'Slaap is nu je beste voorbereiding.';if(d===1)return pre+'Vroeg slapen is vanavond de belangrijkste keuze.';if(d===0)return 'Vandaag is het zover: '+naam+'. Het hoeft niet perfect te voelen om goed te zijn.';}
-  if(t==='examen'||t==='meeting'){if(d>7)return pre+'De aftelling is begonnen.';if(d>=2)return pre+'Rust en slaap krijgen nu voorrang.';if(d===1)return pre+'Een rustige avond en op tijd naar bed.';if(d===0)return 'Vandaag is het zover: '+naam+'. Neem je tijd.';}
-  if(t==='sociaal'){if(d>1)return pre+'De aftelling is begonnen.';if(d===1)return pre+'Vanavond wat vroeger naar bed helpt je morgen.';if(d===0)return 'Vandaag: '+naam+'. Geniet ervan.';}
-  if(t==='activiteit'){if(d>2)return pre+'Je hoeft niets anders te doen dan je ritme te volgen.';if(d>=1)return pre+'Een rustige dag ervoor is genoeg voorbereiding.';if(d===0)return 'Vandaag: '+naam+'. Geniet ervan, op je eigen tempo.';}
-  if(t==='reis'){if(d>=1)return pre+'Probeer je slaapmoment de laatste dagen al wat te verschuiven.';if(d===0)return 'Vandaag vertrek je: '+naam+'. Goede reis.';}
+function verwijderEvent(){bewaarEvents(laadEvents().filter(function(x){return x.id!==EDIT_ID;}));toonMomentenLijst();}
+function eventFaseTekst(e,d){
+  var naam=momentNaam(e),I=e.inzet||3,O=e.opbouw||1,pre='Nog '+d+' dag'+(d===1?'':'en')+' tot '+naam+'. ';
+  if(FYSIEK[e.type]){
+    var taper=I>=5?10:I===4?7:I===3?3:1;
+    if(d===0)return I>=4?'Vandaag is het zover: '+naam+'. Je hebt ernaartoe gewerkt. Vertrouw daarop.':I<=2?'Vandaag: '+naam+'. Geniet ervan, op je eigen tempo.':'Vandaag: '+naam+'. Ga op je gevoel.';
+    if(d===1)return I>=3?'Morgen is het zover. Vroeg slapen is vanavond de belangrijkste keuze.':'Morgen: '+naam+'. Een rustige avond is genoeg voorbereiding.';
+    if(d<=taper){if(I>=4)return pre+'Minder doen wordt nu belangrijker dan meer doen. Zo kom je fris aan de start.';return pre+'Hou het de laatste dagen wat lichter.';}
+    if(I<=2||O===1)return pre+'Je hoeft niets anders te doen dan je richting van de dag te volgen.';
+    if(O===2)return pre+'Wat extra beweging past, op de dagen dat je richting het toelaat.';
+    if(d>28)return pre+'Tijd genoeg om rustig en gericht op te bouwen, stap voor stap.';
+    return pre+'Dit is de periode waarin opbouwen het meest oplevert. Bouw op de dagen dat je richting het toelaat, rust op de andere.';
+  }
+  if(e.type==='examen'||e.type==='meeting'){if(d===0)return 'Vandaag is het zover: '+naam+'. Neem je tijd.';if(d===1)return pre+'Een rustige avond en op tijd naar bed.';if(d<=(I>=4?4:2))return pre+'Rust en slaap krijgen nu voorrang.';return pre+'De aftelling is begonnen.';}
+  if(e.type==='sociaal'){if(d===0)return 'Vandaag: '+naam+'. Geniet ervan.';if(d===1)return pre+'Vanavond wat vroeger naar bed helpt je morgen.';return pre+'De aftelling is begonnen.';}
+  if(e.type==='reis'){if(d===0)return 'Vandaag vertrek je: '+naam+'. Goede reis.';if(d<=3)return pre+'Probeer je slaapmoment de laatste dagen al wat te verschuiven.';return pre+'De aftelling is begonnen.';}
   return pre+'De aftelling is begonnen.';
 }
 function renderEventStatus(){
   var k=document.getElementById('event-kaart'),tx=document.getElementById('event-tekst');if(!k)return;
-  var t=lees('hrmny_event_type'),ds=lees('hrmny_event_datum');
-  if(!t||!ds){k.style.display='none';return;}
-  var naam=lees('hrmny_event_naam_eigen')||eventTypeLabel(t),d=dagenTot(ds);
-  if(d>=0){tx.textContent=eventFaseTekst(d,t,naam);k.style.display='block';return;}
-  var duur=EVENT_HERSTEL_DAGEN[t]||2;if(t==='reis')duur=Math.max(1,parseInt(lees('hrmny_event_tijdzone'),10)||duur);
-  if(-d<=duur){tx.textContent='Dag '+(-d)+' van je herstel na '+naam+'. Rust is ook bouwen.';k.style.display='block';}
-  else{wisEvent();k.style.display='none';}
+  var l=laadEvents(),regels=[];
+  var herstel=l.filter(function(e){var d=dagenTot(e.datum);return d<0&&-d<=herstelDagen(e);}).sort(function(a,b){return a.datum<b.datum?1:-1;})[0];
+  var komend=l.filter(function(e){return dagenTot(e.datum)>=0;}).sort(function(a,b){return a.datum<b.datum?-1:1;});
+  if(herstel){
+    var dh=-dagenTot(herstel.datum),r='Dag '+dh+' van je herstel na '+momentNaam(herstel)+'. Rust is ook bouwen.';
+    if(komend[0]&&dagenTot(komend[0].datum)<=7)r='Dag '+dh+' van je herstel na '+momentNaam(herstel)+'. Over '+dagenTot(komend[0].datum)+' dagen volgt '+momentNaam(komend[0])+': herstellen is nu de beste voorbereiding.';
+    regels.push(r);
+  }
+  if(komend[0]&&!(herstel&&dagenTot(komend[0].datum)<=7))regels.push(eventFaseTekst(komend[0],dagenTot(komend[0].datum)));
+  if(komend[1]&&dagenTot(komend[1].datum)-dagenTot(komend[0].datum)<=14&&!herstel)regels.push('Kort daarna volgt '+momentNaam(komend[1])+'. HRMNY houdt rekening met allebei.');
+  else if(komend.length>1&&!herstel)regels.push('Nog '+(komend.length-1)+' ander'+(komend.length>2?'e':'')+' moment'+(komend.length>2?'en':'')+' gepland.');
+  if(!regels.length){k.style.display='none';return;}
+  tx.innerHTML='';regels.forEach(function(t){var dv=document.createElement('div');dv.className='event-regel';dv.textContent=t;tx.appendChild(dv);});
+  k.style.display='block';
+}
+function agendaVoorPipeline(){
+  return laadEvents().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e)&&dagenTot(e.datum)<=60;}).map(function(e){return {soort:e.type,datum:e.datum,dagen_tot:dagenTot(e.datum),inzet:e.inzet,opbouw:e.opbouw,duur:e.duur};});
 }
 
 /* ── UITLEG BIJ DE RICHTING ── */
@@ -979,6 +1106,7 @@ document.addEventListener('click',function(e){
 
 /* ── START ── */
 initVragen();
+document.querySelectorAll('#kal-duur .chip').forEach(function(c){c.onclick=function(){var w=c.getAttribute('data-w');EDIT_DUUR=(EDIT_DUUR===w)?'':w;document.querySelectorAll('#kal-duur .chip').forEach(function(x){x.classList.toggle('actief',x.getAttribute('data-w')===EDIT_DUUR);});};});
 (function(){
   var el=document.getElementById('datum-label');
   if(el)el.textContent=new Date().toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});

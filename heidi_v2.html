@@ -228,6 +228,11 @@ details.klein summary::-webkit-details-marker{display:none}
 .dag-knoppen{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-top:0.4rem}
 .sectie-kop{font-size:0.66rem;color:var(--navy);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin:1.1rem 0 0.4rem}
 .spiegel{font-size:0.8rem;color:var(--text-mid);margin-top:0.2rem;font-style:italic}
+
+.datum-veld{position:relative;display:flex;gap:0.4rem;align-items:stretch}
+.datum-veld input[type=text]{flex:1;min-width:0}
+.datum-knop{background:var(--white);border:1.5px solid rgba(26,45,90,0.3);border-radius:9px;padding:0 0.8rem;color:var(--navy);font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.datum-native{position:absolute;left:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none;border:0;padding:0}
 </style>
 </head>
 <body>
@@ -444,7 +449,7 @@ details.klein summary::-webkit-details-marker{display:none}
           <option value="reis">Reis met tijdsverschil</option>
         </select></div>
       <div class="field"><label>Naam <small>mag leeg</small></label><input id="kal-naam" type="text" placeholder="bv. Gravel Fondo Hageland"></div>
-      <div class="field"><label>Datum</label><input id="kal-datum" type="date"></div>
+      <div class="field"><label>Datum</label><div class="datum-veld"><input id="kal-datum__t" type="text" inputmode="numeric" placeholder="dd/mm/jjjj" maxlength="10" autocomplete="off" oninput="datumTyp(this,'kal-datum')"><button type="button" class="datum-knop" onclick="openKalender('kal-datum')">Kalender</button><input id="kal-datum" type="date" class="datum-native" tabindex="-1" aria-hidden="true" onchange="datumGekozen('kal-datum')"></div></div>
       <div class="vraag" style="margin-top:0.6rem"><div class="vraag-titel">Hoe belangrijk is dit moment voor jou?</div>
         <div class="schuif-wrap"><input type="range" id="kal-inzet" min="1" max="5" step="1" value="3" oninput="toonSchuifLabels()">
           <div class="schuif-as"><span>ontspannen</span><span>alles geven</span></div>
@@ -492,7 +497,7 @@ details.klein summary::-webkit-details-marker{display:none}
         </div>
         <div class="field" id="tr-moment-veld" style="display:none;margin-top:0.5rem"><label>Voor welk moment?</label><select id="tr-moment" onchange="momentGekozen()"></select></div></div>
       <div class="vraag"><div class="vraag-titel">Wanneer?</div>
-        <div class="field"><label>Eerste keer</label><input id="tr-datum" type="date" onchange="standaardDag()"></div>
+        <div class="field"><label>Eerste keer</label><div class="datum-veld"><input id="tr-datum__t" type="text" inputmode="numeric" placeholder="dd/mm/jjjj" maxlength="10" autocomplete="off" oninput="datumTyp(this,'tr-datum')"><button type="button" class="datum-knop" onclick="openKalender('tr-datum')">Kalender</button><input id="tr-datum" type="date" class="datum-native" tabindex="-1" aria-hidden="true" onchange="datumGekozen('tr-datum');standaardDag()"></div></div>
         <div class="chip-rij" id="tr-herhaal">
           <button class="chip" type="button" data-w="nee">Eenmalig</button><button class="chip" type="button" data-w="week">Elke week</button><button class="chip" type="button" data-w="2week">Om de week</button>
         </div>
@@ -501,7 +506,7 @@ details.klein summary::-webkit-details-marker{display:none}
           <div class="chip-rij" id="tr-dagen">
             <button class="chip" type="button" data-w="1">Ma</button><button class="chip" type="button" data-w="2">Di</button><button class="chip" type="button" data-w="3">Wo</button><button class="chip" type="button" data-w="4">Do</button><button class="chip" type="button" data-w="5">Vr</button><button class="chip" type="button" data-w="6">Za</button><button class="chip" type="button" data-w="0">Zo</button>
           </div>
-          <div class="field" style="margin-top:0.4rem"><label>Tot <small>mag leeg</small></label><input id="tr-tot" type="date"></div>
+          <div class="field" style="margin-top:0.4rem"><label>Tot <small>mag leeg</small></label><div class="datum-veld"><input id="tr-tot__t" type="text" inputmode="numeric" placeholder="dd/mm/jjjj" maxlength="10" autocomplete="off" oninput="datumTyp(this,'tr-tot')"><button type="button" class="datum-knop" onclick="openKalender('tr-tot')">Kalender</button><input id="tr-tot" type="date" class="datum-native" tabindex="-1" aria-hidden="true" onchange="datumGekozen('tr-tot')"></div></div>
         </div></div>
       <button class="btn-hoofd" style="margin-top:0.6rem" onclick="slaTrainingOp()">Bewaren</button>
       <button class="btn-zacht" style="margin-top:0.5rem" onclick="toonMomentenLijst()">Annuleren</button>
@@ -1048,6 +1053,20 @@ function voegTooltipsToe(el){
 }
 
 
+/* ── DATUMVELDEN: altijd dd/mm/jjjj, los van de taal van de browser ── */
+function isoNaarNl(iso){if(!iso)return '';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function datumTyp(el,id){
+  var v=el.value.replace(/[^0-9]/g,'').slice(0,8),o=v.slice(0,2);
+  if(v.length>2)o+='/'+v.slice(2,4);if(v.length>4)o+='/'+v.slice(4);el.value=o;
+  var n=document.getElementById(id);
+  if(v.length===8){var d=+v.slice(0,2),m=+v.slice(2,4),y=+v.slice(4),dt=new Date(y,m-1,d);
+    if(dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d){n.value=y+'-'+v.slice(2,4)+'-'+v.slice(0,2);n.dispatchEvent(new Event('change'));}}
+  else if(!v.length)n.value='';
+}
+function datumGekozen(id){var t=document.getElementById(id+'__t');if(t)t.value=isoNaarNl(document.getElementById(id).value);}
+function openKalender(id){var n=document.getElementById(id);try{n.showPicker();}catch(e){try{n.focus();n.click();}catch(f){}}}
+function syncDatums(){['kal-datum','tr-datum','tr-tot'].forEach(function(id){if(document.getElementById(id))datumGekozen(id);});}
+
 /* ── AGENDA: MOMENTEN EN TRAININGEN (eigen plan, HRMNY spiegelt enkel) ── */
 var INZET_LABELS={1:'Ontspannen, puur genieten',2:'Rustig, zonder druk',3:'Goed voorbereid zijn',4:'Belangrijk, ik wil scherp staan',5:'Alles geven, 100%'};
 var OPBOUW_LABELS={1:'Niets extra, gewoon mijn ritme volgen',2:'Wat extra, als het past',3:'Gericht opbouwen naar dit moment'};
@@ -1153,7 +1172,7 @@ function vulEditor(e){
   EDIT_DUUR=e.duur||'';chipKeuze('kal-duur',EDIT_DUUR);
   document.getElementById('kal-melding').style.display='none';
   document.getElementById('kal-bevestig').classList.remove('open');
-  toggleKalVelden();toonSchuifLabels();toonKaart('kal-edit-kaart');
+  toggleKalVelden();toonSchuifLabels();syncDatums();toonKaart('kal-edit-kaart');
 }
 function nieuwMoment(ds){EDIT_ID=null;document.getElementById('kal-edit-titel').textContent='Nieuw moment';document.getElementById('kal-verwijder-btn').style.display='none';vulEditor({datum:ds||''});}
 function bewerkMoment(id){var e=laadEvents().filter(function(x){return x.id===id;})[0];if(!e)return;EDIT_ID=id;document.getElementById('kal-edit-titel').textContent=momentNaam(e);document.getElementById('kal-verwijder-btn').style.display='block';vulEditor(e);}
@@ -1189,7 +1208,7 @@ function toonTrBlokken(){
   document.getElementById('tr-herhaal-blok').style.display=(TR.herhaal&&TR.herhaal!=='nee')?'block':'none';
 }
 function standaardDag(){var d=document.getElementById('tr-datum').value;if(d&&(!TR.dagen||!TR.dagen.length)){TR.dagen=[dagStrNaarDate(d).getDay()];chipKeuze('tr-dagen',TR.dagen.map(String));}}
-function momentGekozen(){var id=document.getElementById('tr-moment').value;var m=momenten().filter(function(x){return x.id===id;})[0];if(m&&!document.getElementById('tr-tot').value){var t=dagStrNaarDate(m.datum);t.setDate(t.getDate()-1);document.getElementById('tr-tot').value=datumStr(t);}}
+function momentGekozen(){var id=document.getElementById('tr-moment').value;var m=momenten().filter(function(x){return x.id===id;})[0];if(m&&!document.getElementById('tr-tot').value){var t=dagStrNaarDate(m.datum);t.setDate(t.getDate()-1);document.getElementById('tr-tot').value=datumStr(t);syncDatums();}}
 function vulTraining(t,ds){
   TR=JSON.parse(JSON.stringify(t));TR_DATUM_OPEN=ds||null;
   chipKeuze('tr-sport',TR.sport||'');chipKeuze('tr-duur',TR.duur||'');chipKeuze('tr-doel',TR.doel||'');chipKeuze('tr-herhaal',TR.herhaal||'nee');chipKeuze('tr-dagen',(TR.dagen||[]).map(String));
@@ -1197,7 +1216,7 @@ function vulTraining(t,ds){
   document.getElementById('tr-datum').value=TR.datum||'';document.getElementById('tr-tot').value=TR.tot||'';
   vulMomentKeuze(TR.moment_id);toonTrBlokken();
   document.getElementById('tr-melding').style.display='none';document.getElementById('tr-bevestig').classList.remove('open');
-  toonKaart('kal-train-kaart');
+  syncDatums();toonKaart('kal-train-kaart');
 }
 function nieuweTraining(ds){EDIT_ID=null;document.getElementById('tr-titel').textContent='Nieuwe training';document.getElementById('tr-verwijder-btn').style.display='none';document.getElementById('tr-skip-btn').style.display='none';var d=ds||vandaagStr();vulTraining({kind:'training',datum:d,herhaal:'nee',int:2,dagen:[dagStrNaarDate(d).getDay()]},null);}
 function bewerkTraining(id,ds){var t=laadEvents().filter(function(x){return x.id===id;})[0];if(!t)return;EDIT_ID=id;document.getElementById('tr-titel').textContent=SPORT_LABELS[t.sport]||'Training';document.getElementById('tr-verwijder-btn').style.display='block';document.getElementById('tr-skip-btn').style.display=(ds&&t.herhaal&&t.herhaal!=='nee')?'block':'none';vulTraining(t,ds);}

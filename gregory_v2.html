@@ -212,6 +212,22 @@ details.klein summary::-webkit-details-marker{display:none}
 .schuif-as{display:flex;justify-content:space-between;font-size:0.62rem;color:var(--text-muted)}
 .event-regel{font-size:0.84rem;color:var(--navy);line-height:1.55;margin-top:0.3rem}
 .event-regel+.event-regel{border-top:1px solid var(--border);padding-top:0.45rem;margin-top:0.45rem}
+
+.week-strook{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:0.7rem 0 0.4rem}
+.week-dag{background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:0.4rem 0 0.35rem;text-align:center;cursor:pointer;font-family:'DM Sans',sans-serif}
+.week-dag.gekozen{border-color:var(--navy);background:var(--white)}
+.week-dag .wd-naam{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em}
+.week-dag .wd-nr{font-size:0.95rem;font-weight:700;color:var(--navy);line-height:1.3}
+.week-dag .wd-stip{display:flex;justify-content:center;gap:2px;min-height:6px;margin-top:2px}
+.week-dag .wd-stip i{width:6px;height:6px;border-radius:50%;display:inline-block}
+.dag-paneel{background:var(--cream);border-radius:12px;padding:0.75rem 0.85rem;margin-bottom:0.4rem}
+.dag-titel{font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem}
+.dag-item{display:flex;justify-content:space-between;align-items:center;gap:0.5rem;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:0.55rem 0.7rem;margin-bottom:0.35rem;cursor:pointer;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.dag-item .di-naam{font-size:0.84rem;font-weight:600;color:var(--navy)}
+.dag-item .di-meta{font-size:0.7rem;color:var(--text-muted)}
+.dag-knoppen{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-top:0.4rem}
+.sectie-kop{font-size:0.66rem;color:var(--navy);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin:1.1rem 0 0.4rem}
+.spiegel{font-size:0.8rem;color:var(--text-mid);margin-top:0.2rem;font-style:italic}
 </style>
 </head>
 <body>
@@ -280,7 +296,7 @@ details.klein summary::-webkit-details-marker{display:none}
       </div>
 
       <div class="event-kaart" id="event-kaart" onclick="toonKalender()" style="cursor:pointer">
-        <div class="label-mono">Jouw momenten</div>
+        <div class="label-mono">Jouw agenda</div>
         <div class="event-tekst" id="event-tekst"></div>
       </div>
 
@@ -393,13 +409,19 @@ details.klein summary::-webkit-details-marker{display:none}
   <div id="s-kalender" class="scherm">
     <div class="kaart" id="kal-lijst-kaart">
       <button class="terug-knop" onclick="toonDashboard()">&lsaquo; Terug</button>
-      <div class="form-titel" style="font-size:1.1rem">Jouw momenten</div>
-      <div class="form-uitleg">Momenten waar je naartoe leeft. HRMNY houdt rekening met hoe belangrijk ze voor je zijn, en met het herstel erna.</div>
+      <div class="form-titel" style="font-size:1.1rem">Jouw agenda</div>
+      <div class="form-uitleg">Wat jij plant: trainingen, voorbereidingen en momenten waar je naartoe leeft. HRMNY legt niets op, maar laat zien of je plan past bij je richting van de dag.</div>
+      <div class="week-strook" id="week-strook"></div>
+      <div class="dag-paneel" id="dag-paneel"></div>
+      <div class="sectie-kop">Momenten</div>
       <div class="moment-lijst" id="moment-lijst"></div>
-      <button class="btn-hoofd" onclick="nieuwMoment()">+ Moment toevoegen</button>
+      <div class="sectie-kop">Vaste trainingen</div>
+      <div class="moment-lijst" id="reeks-lijst"></div>
     </div>
+
+    <!-- editor moment -->
     <div class="kaart" id="kal-edit-kaart" style="display:none">
-      <button class="terug-knop" onclick="toonMomentenLijst()">&lsaquo; Terug naar je momenten</button>
+      <button class="terug-knop" onclick="toonMomentenLijst()">&lsaquo; Terug naar je agenda</button>
       <div class="form-titel" id="kal-edit-titel" style="font-size:1.1rem">Nieuw moment</div>
       <div class="field" style="margin-top:0.8rem"><label>Soort moment</label>
         <select id="kal-type" onchange="toggleKalVelden()">
@@ -413,24 +435,19 @@ details.klein summary::-webkit-details-marker{display:none}
         </select></div>
       <div class="field"><label>Naam <small>mag leeg</small></label><input id="kal-naam" type="text" placeholder="bv. Gravel Fondo Hageland"></div>
       <div class="field"><label>Datum</label><input id="kal-datum" type="date"></div>
-
       <div class="vraag" style="margin-top:0.6rem"><div class="vraag-titel">Hoe belangrijk is dit moment voor jou?</div>
         <div class="schuif-wrap"><input type="range" id="kal-inzet" min="1" max="5" step="1" value="3" oninput="toonSchuifLabels()">
           <div class="schuif-as"><span>ontspannen</span><span>alles geven</span></div>
           <div class="schuif-label" id="kal-inzet-label"></div></div></div>
-
       <div class="vraag" id="kal-opbouw-vraag"><div class="vraag-titel">Wil je er nog extra voor opbouwen?</div>
         <div class="schuif-wrap"><input type="range" id="kal-opbouw" min="1" max="3" step="1" value="1" oninput="toonSchuifLabels()">
           <div class="schuif-as"><span>niets extra</span><span>gericht opbouwen</span></div>
           <div class="schuif-label" id="kal-opbouw-label"></div></div></div>
-
       <div class="vraag" id="kal-duur-vraag"><div class="vraag-titel">Hoe lang duurt het?</div>
         <div class="chip-rij" id="kal-duur">
           <button class="chip" type="button" data-w="uren">Enkele uren</button><button class="chip" type="button" data-w="halve_dag">Halve dag</button><button class="chip" type="button" data-w="dag">Hele dag</button><button class="chip" type="button" data-w="meerdaags">Meerdere dagen</button>
         </div></div>
-
       <div class="field" id="kal-tijdzone-veld" style="display:none"><label>Tijdsverschil <small>uren, mag leeg</small></label><input id="kal-tijdzone" type="number" inputmode="numeric" min="0" max="14" placeholder="overslaan"></div>
-
       <button class="btn-hoofd" style="margin-top:0.6rem" onclick="slaEventOp()">Bewaren</button>
       <button class="btn-zacht" style="margin-top:0.5rem" onclick="toonMomentenLijst()">Annuleren</button>
       <div class="form-melding" id="kal-melding"></div>
@@ -439,6 +456,52 @@ details.klein summary::-webkit-details-marker{display:none}
         <div class="fb-btns">
           <button class="fb-btn" onclick="verwijderEvent()">Verwijderen</button>
           <button class="fb-btn" onclick="document.getElementById('kal-bevestig').classList.remove('open')">Annuleren</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- editor training -->
+    <div class="kaart" id="kal-train-kaart" style="display:none">
+      <button class="terug-knop" onclick="toonMomentenLijst()">&lsaquo; Terug naar je agenda</button>
+      <div class="form-titel" id="tr-titel" style="font-size:1.1rem">Nieuwe training</div>
+      <div class="vraag" style="margin-top:0.8rem"><div class="vraag-titel">Wat ga je doen?</div>
+        <div class="chip-rij" id="tr-sport">
+          <button class="chip" type="button" data-w="fietsen">Fietsen</button><button class="chip" type="button" data-w="lopen">Lopen</button><button class="chip" type="button" data-w="wandelen">Wandelen</button><button class="chip" type="button" data-w="kracht">Kracht</button><button class="chip" type="button" data-w="zwemmen">Zwemmen</button><button class="chip" type="button" data-w="yoga">Yoga of mobiliteit</button><button class="chip" type="button" data-w="andere">Iets anders</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Hoe zwaar?</div>
+        <div class="schuif-wrap"><input type="range" id="tr-int" min="1" max="5" step="1" value="2" oninput="toonTrLabels()">
+          <div class="schuif-as"><span>heel rustig</span><span>zwaar</span></div>
+          <div class="schuif-label" id="tr-int-label"></div></div></div>
+      <div class="vraag"><div class="vraag-titel">Hoe lang?</div>
+        <div class="chip-rij" id="tr-duur">
+          <button class="chip" type="button" data-w="kort">Tot 45 min</button><button class="chip" type="button" data-w="middel">45 tot 90 min</button><button class="chip" type="button" data-w="lang">1,5 tot 3 uur</button><button class="chip" type="button" data-w="heel_lang">Meer dan 3 uur</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Waarom deze training?</div>
+        <div class="chip-rij" id="tr-doel">
+          <button class="chip" type="button" data-w="conditie">Conditie opbouwen</button><button class="chip" type="button" data-w="voorbereiding">Voorbereiding op een moment</button><button class="chip" type="button" data-w="herstel">Actief herstel</button><button class="chip" type="button" data-w="plezier">Gewoon plezier</button>
+        </div>
+        <div class="field" id="tr-moment-veld" style="display:none;margin-top:0.5rem"><label>Voor welk moment?</label><select id="tr-moment" onchange="momentGekozen()"></select></div></div>
+      <div class="vraag"><div class="vraag-titel">Wanneer?</div>
+        <div class="field"><label>Eerste keer</label><input id="tr-datum" type="date" onchange="standaardDag()"></div>
+        <div class="chip-rij" id="tr-herhaal">
+          <button class="chip" type="button" data-w="nee">Eenmalig</button><button class="chip" type="button" data-w="week">Elke week</button><button class="chip" type="button" data-w="2week">Om de week</button>
+        </div>
+        <div id="tr-herhaal-blok" style="display:none;margin-top:0.5rem">
+          <div class="vraag-sub">Op welke dagen?</div>
+          <div class="chip-rij" id="tr-dagen">
+            <button class="chip" type="button" data-w="1">Ma</button><button class="chip" type="button" data-w="2">Di</button><button class="chip" type="button" data-w="3">Wo</button><button class="chip" type="button" data-w="4">Do</button><button class="chip" type="button" data-w="5">Vr</button><button class="chip" type="button" data-w="6">Za</button><button class="chip" type="button" data-w="0">Zo</button>
+          </div>
+          <div class="field" style="margin-top:0.4rem"><label>Tot <small>mag leeg</small></label><input id="tr-tot" type="date"></div>
+        </div></div>
+      <button class="btn-hoofd" style="margin-top:0.6rem" onclick="slaTrainingOp()">Bewaren</button>
+      <button class="btn-zacht" style="margin-top:0.5rem" onclick="toonMomentenLijst()">Annuleren</button>
+      <div class="form-melding" id="tr-melding"></div>
+      <button class="wis-link" id="tr-skip-btn" style="display:none" onclick="slaKeerOver()">Alleen deze keer overslaan</button>
+      <button class="wis-link" id="tr-verwijder-btn" style="display:none" onclick="document.getElementById('tr-bevestig').classList.add('open')">Deze training verwijderen</button>
+      <div class="bevestig" id="tr-bevestig">Deze training verwijderen? Bij een vaste training verdwijnen alle keren.
+        <div class="fb-btns">
+          <button class="fb-btn" onclick="verwijderTraining()">Verwijderen</button>
+          <button class="fb-btn" onclick="document.getElementById('tr-bevestig').classList.remove('open')">Annuleren</button>
         </div>
       </div>
     </div>
@@ -678,6 +741,7 @@ function verwerkEen(json){
   };
   schrijf('hrmny_richting_data',JSON.stringify(data));
   toonRichting(data);
+  renderEventStatus();
   if(document.getElementById('laag2').style.display==='flex')tekenSignalen();
   return true;
 }
@@ -974,23 +1038,29 @@ function voegTooltipsToe(el){
 }
 
 
-/* ── AGENDA: JOUW MOMENTEN (meerdere, met inzet en opbouw) ── */
+/* ── AGENDA: MOMENTEN EN TRAININGEN (eigen plan, HRMNY spiegelt enkel) ── */
 var INZET_LABELS={1:'Ontspannen, puur genieten',2:'Rustig, zonder druk',3:'Goed voorbereid zijn',4:'Belangrijk, ik wil scherp staan',5:'Alles geven, 100%'};
 var OPBOUW_LABELS={1:'Niets extra, gewoon mijn ritme volgen',2:'Wat extra, als het past',3:'Gericht opbouwen naar dit moment'};
-var DUUR_LABELS={uren:'enkele uren',halve_dag:'een halve dag',dag:'een hele dag',meerdaags:'meerdere dagen'};
+var INT_LABELS={1:'Heel rustig, herstel',2:'Rustig, op duur',3:'Gemiddeld',4:'Stevig',5:'Zwaar, intervallen of wedstrijdtempo'};
+var SPORT_LABELS={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',yoga:'Yoga of mobiliteit',andere:'Training'};
+var TRDUUR_LABELS={kort:'tot 45 min',middel:'45 tot 90 min',lang:'1,5 tot 3 uur',heel_lang:'meer dan 3 uur'};
+var DOEL_LABELS={conditie:'conditie',voorbereiding:'voorbereiding',herstel:'actief herstel',plezier:'plezier'};
+var WD=['zo','ma','di','wo','do','vr','za'];
 var FYSIEK={race:1,activiteit:1};
-var EDIT_ID=null,EDIT_DUUR='';
+var EDIT_ID=null,EDIT_DUUR='',GEKOZEN_DAG=null,TR={},TR_DATUM_OPEN=null;
 function eventTypeLabel(t){return {race:'jouw wedstrijd',examen:'jouw examen',sociaal:'jouw feest',reis:'jouw reis',meeting:'jouw meeting',activiteit:'jouw activiteit'}[t]||'jouw moment';}
 function laadEvents(){
   var l=[];try{l=JSON.parse(lees('hrmny_events')||'[]')||[];}catch(e){l=[];}
-  /* Eenmalig: oud enkel moment omzetten naar de lijst */
   var ot=lees('hrmny_event_type'),od=lees('hrmny_event_datum');
   if(ot&&od){l.push({id:'m'+Date.now(),type:ot,naam:lees('hrmny_event_naam_eigen')||lees('hrmny_event_naam')||'',datum:od,inzet:3,opbouw:1,duur:'',tz:lees('hrmny_event_tijdzone')||''});
     ['hrmny_event_type','hrmny_event_datum','hrmny_event_naam_eigen','hrmny_event_naam','hrmny_event_tijdzone'].forEach(wis);bewaarEvents(l);}
   return l;
 }
 function bewaarEvents(l){schrijf('hrmny_events',JSON.stringify(l));}
-function dagenTot(ds){var p=ds.split('-');var e=new Date(+p[0],+p[1]-1,+p[2]);var n=new Date();n.setHours(0,0,0,0);return Math.round((e-n)/86400000);}
+function momenten(){return laadEvents().filter(function(e){return e.kind!=='training';});}
+function trainingen(){return laadEvents().filter(function(e){return e.kind==='training';});}
+function dagStrNaarDate(ds){var p=ds.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function dagenTot(ds){var e=dagStrNaarDate(ds);var n=new Date();n.setHours(0,0,0,0);return Math.round((e-n)/86400000);}
 function momentNaam(e){return e.naam||eventTypeLabel(e.type);}
 function herstelDagen(e){
   if(e.type==='reis')return Math.max(1,parseInt(e.tz,10)||2);
@@ -999,24 +1069,70 @@ function herstelDagen(e){
   var inzetF=FYSIEK[e.type]?(0.6+(e.inzet||3)*0.2):1;
   return Math.max(1,Math.min(7,Math.round(basis*duurF*inzetF)));
 }
+/* Valt een training op deze dag? (ook herhalingen) */
+function trainingOpDag(t,ds){
+  if((t.skip||[]).indexOf(ds)>=0)return false;
+  if(ds<t.datum)return false;
+  if(t.tot&&ds>t.tot)return false;
+  if(!t.herhaal||t.herhaal==='nee')return ds===t.datum;
+  var d=dagStrNaarDate(ds);if((t.dagen||[]).indexOf(d.getDay())<0)return false;
+  if(t.herhaal==='2week'){var w=Math.floor((d-dagStrNaarDate(t.datum))/(7*86400000));if(w%2!==0)return false;}
+  return true;
+}
+function plannenOpDag(ds){
+  var tr=trainingen().filter(function(t){return trainingOpDag(t,ds);});
+  var mo=momenten().filter(function(m){return m.datum===ds;});
+  return {trainingen:tr,momenten:mo};
+}
+function trainingTekst(t){return (SPORT_LABELS[t.sport]||'Training')+' · '+(INT_LABELS[t.int]||'').toLowerCase()+(t.duur?' · '+TRDUUR_LABELS[t.duur]:'');}
+function chipKeuze(rijId,waarde){document.querySelectorAll('#'+rijId+' .chip').forEach(function(c){c.classList.toggle('actief',Array.isArray(waarde)?waarde.indexOf(c.getAttribute('data-w'))>=0:c.getAttribute('data-w')===String(waarde));});}
+function toonKaart(id){['kal-lijst-kaart','kal-edit-kaart','kal-train-kaart'].forEach(function(k){document.getElementById(k).style.display=k===id?'block':'none';});window.scrollTo(0,0);}
 function toonMomentenLijst(){
-  document.getElementById('kal-lijst-kaart').style.display='block';
-  document.getElementById('kal-edit-kaart').style.display='none';
-  var l=laadEvents().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e);}).sort(function(a,b){return a.datum<b.datum?-1:1;});
+  toonKaart('kal-lijst-kaart');
+  if(!GEKOZEN_DAG)GEKOZEN_DAG=vandaagStr();
+  /* weekstrook */
+  var ws=document.getElementById('week-strook');ws.innerHTML='';
+  for(var i=0;i<7;i++){(function(i){
+    var d=new Date();d.setDate(d.getDate()+i);var ds=datumStr(d),p=plannenOpDag(ds);
+    var b=document.createElement('button');b.type='button';b.className='week-dag'+(ds===GEKOZEN_DAG?' gekozen':'');
+    var stip='';p.trainingen.forEach(function(){stip+='<i style="background:var(--navy)"></i>';});p.momenten.forEach(function(){stip+='<i style="background:var(--gold)"></i>';});
+    b.innerHTML='<div class="wd-naam">'+(i===0?'vand.':WD[d.getDay()])+'</div><div class="wd-nr">'+d.getDate()+'</div><div class="wd-stip">'+stip+'</div>';
+    b.onclick=function(){GEKOZEN_DAG=ds;toonMomentenLijst();};ws.appendChild(b);
+  })(i);}
+  /* paneel van de gekozen dag */
+  var pn=document.getElementById('dag-paneel'),p=plannenOpDag(GEKOZEN_DAG);
+  var titel=GEKOZEN_DAG===vandaagStr()?'Vandaag':dagStrNaarDate(GEKOZEN_DAG).toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
+  pn.innerHTML='<div class="dag-titel"></div>';pn.querySelector('.dag-titel').textContent=titel;
+  p.momenten.forEach(function(m){var b=document.createElement('button');b.className='dag-item';b.type='button';b.innerHTML='<div><div class="di-naam"></div><div class="di-meta"></div></div>';b.querySelector('.di-naam').textContent=momentNaam(m);b.querySelector('.di-meta').textContent=(INZET_LABELS[m.inzet]||'').toLowerCase();b.onclick=function(){bewerkMoment(m.id);};pn.appendChild(b);});
+  p.trainingen.forEach(function(t){var b=document.createElement('button');b.className='dag-item';b.type='button';b.innerHTML='<div><div class="di-naam"></div><div class="di-meta"></div></div>';b.querySelector('.di-naam').textContent=SPORT_LABELS[t.sport]||'Training';b.querySelector('.di-meta').textContent=(INT_LABELS[t.int]||'').toLowerCase()+(t.duur?' · '+TRDUUR_LABELS[t.duur]:'')+(t.herhaal&&t.herhaal!=='nee'?' · vast':'');b.onclick=function(){bewerkTraining(t.id,GEKOZEN_DAG);};pn.appendChild(b);});
+  if(!p.momenten.length&&!p.trainingen.length){var leeg=document.createElement('div');leeg.className='stil';leeg.style.textAlign='left';leeg.textContent='Niets gepland.';pn.appendChild(leeg);}
+  var kn=document.createElement('div');kn.className='dag-knoppen';kn.innerHTML='<button class="nav-btn" type="button">+ Training op deze dag</button><button class="nav-btn" type="button">+ Moment</button>';
+  kn.children[0].onclick=function(){nieuweTraining(GEKOZEN_DAG);};kn.children[1].onclick=function(){nieuwMoment(GEKOZEN_DAG);};pn.appendChild(kn);
+  /* momenten */
+  var l=momenten().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e);}).sort(function(a,b){return a.datum<b.datum?-1:1;});
   var box=document.getElementById('moment-lijst');box.innerHTML='';
-  if(!l.length){box.innerHTML='<div class="stil" style="text-align:left">Nog geen momenten gepland.</div>';}
+  if(!l.length)box.innerHTML='<div class="stil" style="text-align:left">Nog geen momenten gepland.</div>';
   l.forEach(function(e){
     var d=dagenTot(e.datum),b=document.createElement('button');b.className='moment-item';b.type='button';
     var wanneer=d>1?'over '+d+' dagen':d===1?'morgen':d===0?'vandaag':'herstel loopt nog';
-    var dt=new Date(e.datum+'T12:00:00').toLocaleDateString('nl-BE',{day:'numeric',month:'long'});
     b.innerHTML='<div class="moment-naam"></div><div class="moment-meta"></div>';
     b.querySelector('.moment-naam').textContent=momentNaam(e);
-    b.querySelector('.moment-meta').textContent=dt+' · '+wanneer+' · '+(INZET_LABELS[e.inzet]||'').toLowerCase();
+    b.querySelector('.moment-meta').textContent=dagStrNaarDate(e.datum).toLocaleDateString('nl-BE',{day:'numeric',month:'long'})+' · '+wanneer+' · '+(INZET_LABELS[e.inzet]||'').toLowerCase();
     b.onclick=function(){bewerkMoment(e.id);};box.appendChild(b);
   });
+  /* vaste trainingen */
+  var rl=trainingen().filter(function(t){return t.herhaal&&t.herhaal!=='nee'&&(!t.tot||t.tot>=vandaagStr());});
+  var rb=document.getElementById('reeks-lijst');rb.innerHTML='';
+  if(!rl.length)rb.innerHTML='<div class="stil" style="text-align:left">Nog geen vaste trainingen.</div>';
+  rl.forEach(function(t){var b=document.createElement('button');b.className='moment-item';b.type='button';b.innerHTML='<div class="moment-naam"></div><div class="moment-meta"></div>';
+    var dg=(t.dagen||[]).slice().sort(function(a,b){return ((a+6)%7)-((b+6)%7);}).map(function(x){return WD[x];}).join(', ');
+    b.querySelector('.moment-naam').textContent=(SPORT_LABELS[t.sport]||'Training')+(t.herhaal==='2week'?', om de week':', elke week');
+    b.querySelector('.moment-meta').textContent=dg+' · '+(INT_LABELS[t.int]||'').toLowerCase()+(t.tot?' · tot '+dagStrNaarDate(t.tot).toLocaleDateString('nl-BE',{day:'numeric',month:'short'}):'');
+    b.onclick=function(){bewerkTraining(t.id,null);};rb.appendChild(b);});
   toonScherm('s-kalender');
 }
-function toonKalender(){toonMomentenLijst();}
+function toonKalender(){GEKOZEN_DAG=vandaagStr();toonMomentenLijst();}
+/* ── momenten ── */
 function vulEditor(e){
   document.getElementById('kal-type').value=e.type||'';
   document.getElementById('kal-naam').value=e.naam||'';
@@ -1024,16 +1140,12 @@ function vulEditor(e){
   document.getElementById('kal-tijdzone').value=e.tz||'';
   document.getElementById('kal-inzet').value=e.inzet||3;
   document.getElementById('kal-opbouw').value=e.opbouw||1;
-  EDIT_DUUR=e.duur||'';
-  document.querySelectorAll('#kal-duur .chip').forEach(function(c){c.classList.toggle('actief',c.getAttribute('data-w')===EDIT_DUUR);});
+  EDIT_DUUR=e.duur||'';chipKeuze('kal-duur',EDIT_DUUR);
   document.getElementById('kal-melding').style.display='none';
   document.getElementById('kal-bevestig').classList.remove('open');
-  toggleKalVelden();toonSchuifLabels();
-  document.getElementById('kal-lijst-kaart').style.display='none';
-  document.getElementById('kal-edit-kaart').style.display='block';
-  window.scrollTo(0,0);
+  toggleKalVelden();toonSchuifLabels();toonKaart('kal-edit-kaart');
 }
-function nieuwMoment(){EDIT_ID=null;document.getElementById('kal-edit-titel').textContent='Nieuw moment';document.getElementById('kal-verwijder-btn').style.display='none';vulEditor({});}
+function nieuwMoment(ds){EDIT_ID=null;document.getElementById('kal-edit-titel').textContent='Nieuw moment';document.getElementById('kal-verwijder-btn').style.display='none';vulEditor({datum:ds||''});}
 function bewerkMoment(id){var e=laadEvents().filter(function(x){return x.id===id;})[0];if(!e)return;EDIT_ID=id;document.getElementById('kal-edit-titel').textContent=momentNaam(e);document.getElementById('kal-verwijder-btn').style.display='block';vulEditor(e);}
 function toggleKalVelden(){
   var t=document.getElementById('kal-type').value;
@@ -1055,6 +1167,49 @@ function slaEventOp(){
   toonMomentenLijst();
 }
 function verwijderEvent(){bewaarEvents(laadEvents().filter(function(x){return x.id!==EDIT_ID;}));toonMomentenLijst();}
+/* ── trainingen ── */
+function toonTrLabels(){document.getElementById('tr-int-label').textContent=INT_LABELS[document.getElementById('tr-int').value];}
+function vulMomentKeuze(sel){
+  var s=document.getElementById('tr-moment');s.innerHTML='<option value="">Kies een moment</option>';
+  momenten().filter(function(m){return dagenTot(m.datum)>=0;}).sort(function(a,b){return a.datum<b.datum?-1:1;}).forEach(function(m){var o=document.createElement('option');o.value=m.id;o.textContent=momentNaam(m)+' ('+dagStrNaarDate(m.datum).toLocaleDateString('nl-BE',{day:'numeric',month:'short'})+')';s.appendChild(o);});
+  s.value=sel||'';
+}
+function toonTrBlokken(){
+  document.getElementById('tr-moment-veld').style.display=TR.doel==='voorbereiding'?'block':'none';
+  document.getElementById('tr-herhaal-blok').style.display=(TR.herhaal&&TR.herhaal!=='nee')?'block':'none';
+}
+function standaardDag(){var d=document.getElementById('tr-datum').value;if(d&&(!TR.dagen||!TR.dagen.length)){TR.dagen=[dagStrNaarDate(d).getDay()];chipKeuze('tr-dagen',TR.dagen.map(String));}}
+function momentGekozen(){var id=document.getElementById('tr-moment').value;var m=momenten().filter(function(x){return x.id===id;})[0];if(m&&!document.getElementById('tr-tot').value){var t=dagStrNaarDate(m.datum);t.setDate(t.getDate()-1);document.getElementById('tr-tot').value=datumStr(t);}}
+function vulTraining(t,ds){
+  TR=JSON.parse(JSON.stringify(t));TR_DATUM_OPEN=ds||null;
+  chipKeuze('tr-sport',TR.sport||'');chipKeuze('tr-duur',TR.duur||'');chipKeuze('tr-doel',TR.doel||'');chipKeuze('tr-herhaal',TR.herhaal||'nee');chipKeuze('tr-dagen',(TR.dagen||[]).map(String));
+  document.getElementById('tr-int').value=TR.int||2;toonTrLabels();
+  document.getElementById('tr-datum').value=TR.datum||'';document.getElementById('tr-tot').value=TR.tot||'';
+  vulMomentKeuze(TR.moment_id);toonTrBlokken();
+  document.getElementById('tr-melding').style.display='none';document.getElementById('tr-bevestig').classList.remove('open');
+  toonKaart('kal-train-kaart');
+}
+function nieuweTraining(ds){EDIT_ID=null;document.getElementById('tr-titel').textContent='Nieuwe training';document.getElementById('tr-verwijder-btn').style.display='none';document.getElementById('tr-skip-btn').style.display='none';var d=ds||vandaagStr();vulTraining({kind:'training',datum:d,herhaal:'nee',int:2,dagen:[dagStrNaarDate(d).getDay()]},null);}
+function bewerkTraining(id,ds){var t=laadEvents().filter(function(x){return x.id===id;})[0];if(!t)return;EDIT_ID=id;document.getElementById('tr-titel').textContent=SPORT_LABELS[t.sport]||'Training';document.getElementById('tr-verwijder-btn').style.display='block';document.getElementById('tr-skip-btn').style.display=(ds&&t.herhaal&&t.herhaal!=='nee')?'block':'none';vulTraining(t,ds);}
+function initTrainingChips(){
+  function enkel(rij,veld,na){document.querySelectorAll('#'+rij+' .chip').forEach(function(c){c.onclick=function(){var w=c.getAttribute('data-w');TR[veld]=(TR[veld]===w&&veld!=='herhaal')?'':w;chipKeuze(rij,TR[veld]);if(na)na();};});}
+  enkel('tr-sport','sport');enkel('tr-duur','duur');enkel('tr-doel','doel',toonTrBlokken);enkel('tr-herhaal','herhaal',function(){standaardDag();toonTrBlokken();});
+  document.querySelectorAll('#tr-dagen .chip').forEach(function(c){c.onclick=function(){var w=parseInt(c.getAttribute('data-w'),10);TR.dagen=TR.dagen||[];var i=TR.dagen.indexOf(w);if(i>=0)TR.dagen.splice(i,1);else TR.dagen.push(w);chipKeuze('tr-dagen',TR.dagen.map(String));};});
+}
+function slaTrainingOp(){
+  var m=document.getElementById('tr-melding');
+  TR.datum=document.getElementById('tr-datum').value;TR.tot=document.getElementById('tr-tot').value;TR.int=parseInt(document.getElementById('tr-int').value,10);
+  TR.moment_id=TR.doel==='voorbereiding'?document.getElementById('tr-moment').value:'';
+  if(!TR.sport||!TR.datum){m.textContent='Kies wat je gaat doen en wanneer.';m.style.display='block';return;}
+  if(TR.herhaal&&TR.herhaal!=='nee'&&(!TR.dagen||!TR.dagen.length)){m.textContent='Kies op welke dagen.';m.style.display='block';return;}
+  TR.kind='training';TR.id=EDIT_ID||('t'+Date.now());TR.skip=TR.skip||[];
+  var l=laadEvents().filter(function(x){return x.id!==TR.id;});l.push(TR);bewaarEvents(l);
+  if(TR.herhaal==='nee')GEKOZEN_DAG=TR.datum;
+  toonMomentenLijst();
+}
+function slaKeerOver(){if(!EDIT_ID||!TR_DATUM_OPEN)return;var l=laadEvents();l.forEach(function(x){if(x.id===EDIT_ID){x.skip=x.skip||[];if(x.skip.indexOf(TR_DATUM_OPEN)<0)x.skip.push(TR_DATUM_OPEN);}});bewaarEvents(l);toonMomentenLijst();}
+function verwijderTraining(){bewaarEvents(laadEvents().filter(function(x){return x.id!==EDIT_ID;}));toonMomentenLijst();}
+/* ── teksten op het dashboard ── */
 function eventFaseTekst(e,d){
   var naam=momentNaam(e),I=e.inzet||3,O=e.opbouw||1,pre='Nog '+d+' dag'+(d===1?'':'en')+' tot '+naam+'. ';
   if(FYSIEK[e.type]){
@@ -1072,25 +1227,35 @@ function eventFaseTekst(e,d){
   if(e.type==='reis'){if(d===0)return 'Vandaag vertrek je: '+naam+'. Goede reis.';if(d<=3)return pre+'Probeer je slaapmoment de laatste dagen al wat te verschuiven.';return pre+'De aftelling is begonnen.';}
   return pre+'De aftelling is begonnen.';
 }
+/* Spiegel: past de geplande training bij de richting van vandaag? Geen bevel. */
+function spiegelTraining(t){
+  var r=laatsteRichtingVandaag();if(!r)return '';var I=t.int||2;
+  if(r.richting==='cautela')return I>=2?'Vandaag vraagt je lichaam zorg. Misschien wordt dit vandaag een wandeling, of schuift het een dag.':'Rustig en kort past ook vandaag.';
+  if(r.richting==='recovery')return I>=4?'Je richting is vandaag Recovery. Deze training mag lichter, of een dag later.':I===3?'Je richting is Recovery. Hou het gerust wat rustiger dan gepland.':'Dit past bij een dag van herstel.';
+  if(r.richting==='build')return I>=5?'Een zware dag gepland op een dag van opbouwen. Luister onderweg goed.':'Dit past bij je richting van vandaag.';
+  return 'Dit past bij je richting van vandaag.';
+}
 function renderEventStatus(){
   var k=document.getElementById('event-kaart'),tx=document.getElementById('event-tekst');if(!k)return;
-  var l=laadEvents(),regels=[];
+  var l=momenten(),regels=[];
+  plannenOpDag(vandaagStr()).trainingen.forEach(function(t){regels.push({t:'Vandaag: '+trainingTekst(t)+'.',s:spiegelTraining(t)});});
   var herstel=l.filter(function(e){var d=dagenTot(e.datum);return d<0&&-d<=herstelDagen(e);}).sort(function(a,b){return a.datum<b.datum?1:-1;})[0];
   var komend=l.filter(function(e){return dagenTot(e.datum)>=0;}).sort(function(a,b){return a.datum<b.datum?-1:1;});
   if(herstel){
     var dh=-dagenTot(herstel.datum),r='Dag '+dh+' van je herstel na '+momentNaam(herstel)+'. Rust is ook bouwen.';
     if(komend[0]&&dagenTot(komend[0].datum)<=7)r='Dag '+dh+' van je herstel na '+momentNaam(herstel)+'. Over '+dagenTot(komend[0].datum)+' dagen volgt '+momentNaam(komend[0])+': herstellen is nu de beste voorbereiding.';
-    regels.push(r);
+    regels.push({t:r});
   }
-  if(komend[0]&&!(herstel&&dagenTot(komend[0].datum)<=7))regels.push(eventFaseTekst(komend[0],dagenTot(komend[0].datum)));
-  if(komend[1]&&dagenTot(komend[1].datum)-dagenTot(komend[0].datum)<=14&&!herstel)regels.push('Kort daarna volgt '+momentNaam(komend[1])+'. HRMNY houdt rekening met allebei.');
-  else if(komend.length>1&&!herstel)regels.push('Nog '+(komend.length-1)+' ander'+(komend.length>2?'e':'')+' moment'+(komend.length>2?'en':'')+' gepland.');
+  if(komend[0]&&!(herstel&&dagenTot(komend[0].datum)<=7))regels.push({t:eventFaseTekst(komend[0],dagenTot(komend[0].datum))});
+  if(komend[1]&&dagenTot(komend[1].datum)-dagenTot(komend[0].datum)<=14&&!herstel)regels.push({t:'Kort daarna volgt '+momentNaam(komend[1])+'. HRMNY houdt rekening met allebei.'});
   if(!regels.length){k.style.display='none';return;}
-  tx.innerHTML='';regels.forEach(function(t){var dv=document.createElement('div');dv.className='event-regel';dv.textContent=t;tx.appendChild(dv);});
+  tx.innerHTML='';regels.forEach(function(x){var dv=document.createElement('div');dv.className='event-regel';dv.textContent=x.t;if(x.s){var sp=document.createElement('div');sp.className='spiegel';sp.textContent=x.s;dv.appendChild(sp);}tx.appendChild(dv);});
   k.style.display='block';
 }
 function agendaVoorPipeline(){
-  return laadEvents().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e)&&dagenTot(e.datum)<=60;}).map(function(e){return {soort:e.type,datum:e.datum,dagen_tot:dagenTot(e.datum),inzet:e.inzet,opbouw:e.opbouw,duur:e.duur};});
+  var mo=momenten().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e)&&dagenTot(e.datum)<=60;}).map(function(e){return {soort:e.type,datum:e.datum,dagen_tot:dagenTot(e.datum),inzet:e.inzet,opbouw:e.opbouw,duur:e.duur};});
+  var tr=[];for(var i=0;i<7;i++){var d=new Date();d.setDate(d.getDate()+i);var ds=datumStr(d);plannenOpDag(ds).trainingen.forEach(function(t){tr.push({datum:ds,sport:t.sport,zwaarte:t.int,duur:t.duur,doel:t.doel});});}
+  return {momenten:mo,trainingen_komende_7_dagen:tr};
 }
 
 /* ── UITLEG BIJ DE RICHTING ── */
@@ -1106,6 +1271,7 @@ document.addEventListener('click',function(e){
 
 /* ── START ── */
 initVragen();
+initTrainingChips();
 document.querySelectorAll('#kal-duur .chip').forEach(function(c){c.onclick=function(){var w=c.getAttribute('data-w');EDIT_DUUR=(EDIT_DUUR===w)?'':w;document.querySelectorAll('#kal-duur .chip').forEach(function(x){x.classList.toggle('actief',x.getAttribute('data-w')===EDIT_DUUR);});};});
 (function(){
   var el=document.getElementById('datum-label');

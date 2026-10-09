@@ -140,6 +140,24 @@ button{font-family:'DM Sans',sans-serif}
 .event-kaart{display:none;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1.1rem}
 .event-tekst{font-size:0.84rem;color:var(--navy);line-height:1.55;margin-top:0.3rem}
 .form-uitleg{font-size:0.78rem;color:var(--text-muted);line-height:1.55;margin:0.2rem 0 1rem}
+
+.nacht-kop{display:flex;justify-content:space-between;align-items:baseline}
+.nacht-titel{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--navy)}
+.nacht-intro{font-size:0.8rem;color:var(--text-mid);line-height:1.6;margin:0.35rem 0 0.2rem}
+.groep-titel{font-size:0.66rem;color:var(--navy);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin:1rem 0 0.1rem}
+.groep-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:0.55rem}
+.nacht-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.nacht-kaart{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:0.75rem 0.8rem 0.6rem;cursor:pointer;transition:border-color 0.15s}
+.nacht-kaart:hover{border-color:rgba(26,45,90,0.25)}
+.nacht-lbl{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:500}
+.nacht-val{font-family:'DM Mono',monospace;font-size:1.45rem;font-weight:500;color:var(--navy);line-height:1.1;margin-top:0.25rem}
+.nacht-val small{font-size:0.62rem;color:var(--text-muted);font-weight:400;margin-left:2px}
+.nacht-leeg{font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-top:0.35rem;line-height:1.3}
+.nacht-term{font-size:0.6rem;color:var(--gold);font-family:'DM Mono',monospace;margin-top:2px;min-height:0.8rem}
+.nacht-vgl{font-size:0.68rem;color:var(--text-mid);margin-top:0.3rem;line-height:1.3}
+.nacht-spark{display:block;width:100%;height:22px;margin-top:0.35rem}
+.nacht-bron{font-size:0.62rem;color:var(--text-muted);margin-top:0.8rem;text-align:center}
+.voor-vandaag{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:0.9rem 1rem;margin-top:1rem}
 </style>
 </head>
 <body>
@@ -222,24 +240,27 @@ var APPLE_ID=null;
       <button class="btn-hoofd" id="rapport-knop" onclick="toonFormulier()">Ochtendrapport invullen</button>
 
       <div class="nav-btns">
-        <button class="nav-btn" onclick="toonLaag(2)">Jouw signalen</button>
+        <button class="nav-btn" onclick="toonLaag(2)">Jouw nacht</button>
         <button class="nav-btn" onclick="toonLaag(3)">Jouw ritme</button>
       </div>
     </div>
 
-    <!-- LAAG 2: SIGNALEN (eigen invoer) -->
+    <!-- LAAG 2: JOUW NACHT -->
     <div id="laag2" style="display:none;flex-direction:column;gap:0.6rem">
       <div class="kaart" style="padding:1.1rem">
-        <div class="label-mono" style="margin-bottom:0.7rem">Wat je vandaag invulde</div>
-        <div class="metrics-grid">
-          <div class="metric-kaart" onclick="toonHistoriek('hrv')"><div class="metric-val" id="m-hrv">·</div><div class="metric-lbl">HRV</div><div class="metric-term">The Ground</div></div>
-          <div class="metric-kaart" onclick="toonHistoriek('rhr')"><div class="metric-val" id="m-rhr">·</div><div class="metric-lbl">Rusthartslag</div><div class="metric-term">&nbsp;</div></div>
-          <div class="metric-kaart" onclick="toonHistoriek('adem')"><div class="metric-val" id="m-adem">·</div><div class="metric-lbl">Ademhaling</div><div class="metric-term">The Breath</div></div>
-          <div class="metric-kaart" onclick="toonHistoriek('slaap')"><div class="metric-val" id="m-slaap">·</div><div class="metric-lbl">Slaapscore</div><div class="metric-term">Night Work</div></div>
+        <div class="nacht-kop"><div class="nacht-titel">Jouw nacht</div><div class="label-mono" id="nacht-datum"></div></div>
+        <div class="nacht-intro" id="nacht-intro"></div>
+        <div id="nacht-groepen"></div>
+        <div class="voor-vandaag" id="voor-vandaag" style="display:none">
+          <div class="label-mono" style="margin-bottom:0.4rem">Wat je ermee kan vandaag</div>
+          <div id="nacht-tips"></div>
         </div>
-        <div class="stil" id="signalen-leeg" style="margin-top:0.8rem;display:none">Vandaag nog niets ingevuld. Dat hoeft ook niet: je horloge stuurt zelf mee.</div>
+        <div class="nacht-bron">Tik op een waarde om het verloop te zien.</div>
       </div>
-      <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(1)">Terug naar vandaag</button></div>
+      <div class="nav-btns">
+        <button class="nav-btn" onclick="toonLaag(1)">Terug naar vandaag</button>
+        <button class="nav-btn" onclick="toonFormulier()">Zelf iets aanvullen</button>
+      </div>
     </div>
 
     <!-- LAAG 3: RITME (richting per dag) -->
@@ -398,6 +419,7 @@ var APPLE_ID=null;
       <svg class="hist-svg" id="hist-svg" viewBox="0 0 320 80" preserveAspectRatio="none"></svg>
       <div class="hist-as"><span id="hist-as-links"></span><span>vandaag</span></div>
     </div>
+    <div class="stil" id="hist-stat" style="text-align:left;margin-bottom:0.5rem"></div>
     <button class="btn-zacht sluit-btn" onclick="sluitHistoriek()">Sluiten</button>
   </div>
 </div>
@@ -571,13 +593,18 @@ function toggleWaarom(){
 /* ── RICHTING OPHALEN ── */
 function gebruiker(){return lees('hrmny_user_id')||APPLE_ID||'';}
 function verwerkAntwoord(json){
+  if(Array.isArray(json)){var ok=false;json.slice().reverse().forEach(function(x){if(verwerkEen(x))ok=true;});return ok;}
+  return verwerkEen(json);
+}
+function verwerkEen(json){
   if(!json||typeof json!=='object')return false;
   var richting=normaliseerRichting(json.richting||json.direction);
   var dagzin=json.dagzin||json.daily_sentence||'';
-  if(!richting||!dagzin)return false;
   /* Datum van het record: hoort het bij vandaag? */
   var bron=json.datum||json.date||'',bronDag=vandaagStr();
   if(bron){var bd=new Date(bron);if(!isNaN(bd))bronDag=datumStr(bd);}
+  bewaarNacht(json.nacht,bronDag);
+  if(!richting||!dagzin)return false;
   if(fase()!=='observatie')schrijf('hrmny_richting_'+bronDag,richting);
   if(bronDag!==vandaagStr())return false;
   var data={
@@ -590,6 +617,7 @@ function verwerkAntwoord(json){
   if(fase()==='observatie'){toonRichting(null);return true;}
   schrijf('hrmny_richting_data',JSON.stringify(data));
   toonRichting(data);
+  if(document.getElementById('laag2').style.display==='flex')tekenSignalen();
   return true;
 }
 function haalRichtingOp(){
@@ -675,13 +703,61 @@ function versturen(){
   setTimeout(function(){toonDashboard();setTimeout(haalRichtingOp,8000);},900);
 }
 
-/* ── SIGNALEN (eigen invoer, geen berekening) ── */
+/* ── JOUW NACHT (waarden van het horloge, aangevuld met eigen invoer) ── */
+var METRIEK={
+  hrv:{lbl:'HRV',eenheid:'ms',term:'The Ground',kleur:'#1D9E75',drempel:function(m){return Math.max(2,m*0.08);}},
+  rhr:{lbl:'Rusthartslag',eenheid:'bpm',term:'',kleur:'#1A2D5A',drempel:function(){return 2;}},
+  adem:{lbl:'Ademhaling',eenheid:'/min',term:'The Breath',kleur:'#2A3F6F',drempel:function(){return 0.7;}},
+  slaap:{lbl:'Slaapscore',eenheid:'/100',term:'Night Work',kleur:'#378ADD',drempel:function(){return 5;}},
+  bb:{lbl:'Body Battery',eenheid:'/100',term:'The Charge',kleur:'#C9A84C',drempel:function(){return 7;}},
+  stress:{lbl:'Stress',eenheid:'/100',term:'gemiddeld gisteren',kleur:'#E24B4A',drempel:function(){return 5;}}
+};
+var NACHT_GROEPEN=[{titel:'Herstel',sub:'hoe je nacht was',keys:['hrv','slaap','rhr','adem']}];
+function bewaarNacht(n,dag){
+  if(!n||typeof n!=='object')return;
+  Object.keys(METRIEK).forEach(function(k){var v=n[k];if(v!==undefined&&v!==null&&String(v)!=='')schrijf('hrmny_w_'+k+'_'+dag,v);});
+}
+function waarde(k,dag){
+  var v=lees('hrmny_w_'+k+'_'+dag);if(v===null||v==='')v=lees('hrmny_'+k+'_'+dag);
+  if(v===null||v==='')return null;var f=parseFloat(v);return isNaN(f)?null:f;
+}
+function opmaak(k,v){return (k==='adem'||k==='hrv')?(Math.round(v*10)/10).toString().replace('.',','):Math.round(v).toString();}
+function vergelijk(k,v){
+  var vals=[];for(var i=1;i<=14;i++){var x=waarde(k,dagenTerug(i));if(x!==null)vals.push(x);}
+  if(vals.length<5)return '';
+  var m=vals.reduce(function(a,b){return a+b;},0)/vals.length,d=METRIEK[k].drempel(m);
+  if(v>m+d)return 'hoger dan je gewoonte';if(v<m-d)return 'lager dan je gewoonte';return 'rond je gewoonte';
+}
+function spark(k){
+  var data=[];for(var i=6;i>=0;i--)data.push(waarde(k,dagenTerug(i)));
+  var aan=data.filter(function(v){return v!==null;});if(aan.length<2)return '';
+  var min=Math.min.apply(null,aan),max=Math.max.apply(null,aan),br=(max-min)||1,W=100,H=22;
+  var pts=[];data.forEach(function(v,i){if(v!==null)pts.push((i/6*(W-4)+2).toFixed(1)+','+(H-3-((v-min)/br)*(H-6)).toFixed(1));});
+  return '<svg class="nacht-spark" viewBox="0 0 100 22" preserveAspectRatio="none"><polyline points="'+pts.join(' ')+'" fill="none" stroke="'+METRIEK[k].kleur+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
+}
 function tekenSignalen(){
-  var v=vandaagStr(),iets=false;
-  [['m-hrv','hrv'],['m-rhr','rhr'],['m-adem','adem'],['m-slaap','slaap']].forEach(function(p){
-    var x=lees('hrmny_'+p[1]+'_'+v);document.getElementById(p[0]).textContent=(x!==null&&x!=='')?x:'·';if(x)iets=true;
+  var v=vandaagStr(),aantal=0,html='';
+  document.getElementById('nacht-datum').textContent=new Date().toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
+  NACHT_GROEPEN.forEach(function(g){
+    html+='<div class="groep-titel">'+g.titel+'</div><div class="groep-sub">'+g.sub+'</div><div class="nacht-grid">';
+    g.keys.forEach(function(k){
+      var m=METRIEK[k],x=waarde(k,v);if(x!==null)aantal++;
+      html+='<div class="nacht-kaart" onclick="toonHistoriek(\''+k+'\')"><div class="nacht-lbl">'+m.lbl+'</div>';
+      if(x!==null){var c=vergelijk(k,x);html+='<div class="nacht-val">'+opmaak(k,x)+'<small>'+m.eenheid+'</small></div><div class="nacht-term">'+m.term+'</div>'+(c?'<div class="nacht-vgl">'+c+'</div>':'')+spark(k);}
+      else html+='<div class="nacht-leeg">nog niet binnen</div><div class="nacht-term">'+m.term+'</div>'+spark(k);
+      html+='</div>';
+    });
+    html+='</div>';
   });
-  document.getElementById('signalen-leeg').style.display=iets?'none':'block';
+  document.getElementById('nacht-groepen').innerHTML=html;
+  var intro=document.getElementById('nacht-intro');
+  intro.textContent=aantal>0?'Dit vertelt je horloge over je nacht en over de energie waarmee je vandaag begint.':'Je horloge heeft je nacht nog niet doorgestuurd. Meestal komt dat in de loop van de voormiddag of rond de middag binnen.';
+  var r=laatsteRichtingVandaag(),vv=document.getElementById('voor-vandaag'),t=document.getElementById('nacht-tips');
+  if(r&&r.tip&&(typeof fase!=='function'||fase()!=='observatie'||!window.APPLE_ID)){
+    t.innerHTML='';r.tip.split('|').map(function(s){return s.trim();}).filter(Boolean).forEach(function(s){var d=document.createElement('div');d.className='tip-item';var sp=document.createElement('span');sp.textContent=s;d.appendChild(sp);t.appendChild(d);voegTooltipsToe(sp);});
+    vv.style.display='block';
+  } else vv.style.display='none';
+  voegTooltipsToe(intro);
 }
 
 /* ── RITME-STROOK (richting per dag) ── */
@@ -700,20 +776,12 @@ function tekenStrook(){
   t.textContent=zinnen[meest];
 }
 
-/* ── HISTORIEK (eigen invoer) ── */
-var HIST={
-  hrv:{lbl:'HRV',term:'The Ground',kleur:'#1D9E75'},
-  rhr:{lbl:'Rusthartslag',term:'Rusthartslag',kleur:'#1A2D5A'},
-  stress:{lbl:'Stress',term:'Stress',kleur:'#E24B4A'},
-  adem:{lbl:'Ademhaling',term:'The Breath',kleur:'#1A2D5A'},
-  slaap:{lbl:'Slaapscore',term:'Night Work',kleur:'#378ADD'},
-  bb:{lbl:'Body Battery',term:'The Charge',kleur:'#C9A84C'}
-};
-var HIST_TYPE='rhr';
+/* ── HISTORIEK ── */
+var HIST_TYPE='slaap';
 function toonHistoriek(type){
-  HIST_TYPE=type;
-  document.getElementById('hist-label').textContent=HIST[type].lbl;
-  var t=document.getElementById('hist-term');t.innerHTML='';t.textContent=HIST[type].term;voegTooltipsToe(t);
+  HIST_TYPE=type;var m=METRIEK[type];
+  document.getElementById('hist-label').textContent=m.lbl;
+  var t=document.getElementById('hist-term');t.innerHTML='';t.textContent=m.term&&m.term.indexOf('The ')===0?m.term:m.lbl;voegTooltipsToe(t);
   document.querySelectorAll('.hist-tab').forEach(function(x){x.classList.toggle('actief',x.getAttribute('data-dagen')==='7');});
   tekenHist(7);
   document.getElementById('historiek-overlay').classList.add('open');
@@ -724,22 +792,24 @@ function kiesHistTab(el){
   tekenHist(parseInt(el.getAttribute('data-dagen')));
 }
 function tekenHist(n){
-  var c=HIST[HIST_TYPE],data=[];
-  for(var i=n-1;i>=0;i--){var v=lees('hrmny_'+HIST_TYPE+'_'+dagenTerug(i));data.push(v!==null&&v!==''?parseFloat(v):null);}
+  var c=METRIEK[HIST_TYPE],data=[];
+  for(var i=n-1;i>=0;i--)data.push(waarde(HIST_TYPE,dagenTerug(i)));
   var aan=data.filter(function(v){return v!==null;});
-  var W=320,H=80,P=12;
+  var W=320,H=80,P=14;
   var min=aan.length?Math.min.apply(null,aan):0,max=aan.length?Math.max.apply(null,aan):1,br=(max-min)||10;
-  var lo=min-br*0.2,hi=max+br*0.2;
+  var lo=min-br*0.25,hi=max+br*0.25;
   function px(i){return P+(i/Math.max(n-1,1))*(W-2*P);}
   function py(v){return H-P-((v-lo)/(hi-lo))*(H-2*P);}
-  var pts=[];data.forEach(function(v,i){if(v!==null)pts.push([px(i),py(v)]);});
+  var pts=[];data.forEach(function(v,i){if(v!==null)pts.push([px(i),py(v),v]);});
   var svg='<line x1="'+P+'" x2="'+(W-P)+'" y1="'+(H-P)+'" y2="'+(H-P)+'" stroke="rgba(26,45,90,0.1)"/>';
-  if(pts.length>1)svg+='<polyline points="'+pts.map(function(p){return p.join(',');}).join(' ')+'" stroke="'+c.kleur+'" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
-  pts.forEach(function(p,i){svg+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(i===pts.length-1?4:2.5)+'" fill="'+(i===pts.length-1?c.kleur:'#fff')+'" stroke="'+c.kleur+'" stroke-width="1.5"/>';});
+  if(pts.length>1)svg+='<polyline points="'+pts.map(function(p){return p[0]+','+p[1];}).join(' ')+'" stroke="'+c.kleur+'" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+  pts.forEach(function(p,i){var last=i===pts.length-1;svg+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(last?4:2.5)+'" fill="'+(last?c.kleur:'#fff')+'" stroke="'+c.kleur+'" stroke-width="1.5"/>';if(last)svg+='<text x="'+p[0]+'" y="'+(p[1]-8)+'" text-anchor="end" font-size="10" font-family="DM Mono,monospace" fill="'+c.kleur+'">'+opmaak(HIST_TYPE,p[2])+'</text>';});
   data.forEach(function(v,i){if(v===null)svg+='<circle cx="'+px(i)+'" cy="'+(H-P)+'" r="2" fill="rgba(26,45,90,0.12)"/>';});
-  if(!pts.length)svg+='<text x="160" y="44" text-anchor="middle" font-size="11" font-family="DM Sans,sans-serif" fill="rgba(26,45,90,0.35)">Nog niets ingevuld in deze periode</text>';
+  if(!pts.length)svg+='<text x="160" y="44" text-anchor="middle" font-size="11" font-family="DM Sans,sans-serif" fill="rgba(26,45,90,0.35)">Nog geen gegevens in deze periode</text>';
   document.getElementById('hist-svg').innerHTML=svg;
   document.getElementById('hist-as-links').textContent=n+' dagen geleden';
+  var st=document.getElementById('hist-stat');
+  if(st){if(aan.length>=2){var gem=aan.reduce(function(a,b){return a+b;},0)/aan.length;st.textContent='Gemiddeld '+opmaak(HIST_TYPE,gem)+' '+c.eenheid+' over '+aan.length+' dagen. Laagst '+opmaak(HIST_TYPE,Math.min.apply(null,aan))+', hoogst '+opmaak(HIST_TYPE,Math.max.apply(null,aan))+'.';}else st.textContent='Hoe meer dagen binnenkomen, hoe duidelijker jouw eigen patroon wordt.';}
 }
 
 /* ── AVONDREFLECTIE ── */

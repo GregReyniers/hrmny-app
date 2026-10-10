@@ -1,0 +1,1426 @@
+<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HRMNY · Dimitri</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F7F5F0;--white:#FFFFFF;--navy:#1A2D5A;--navy-deep:#111E3F;
+  --gold:#C9A84C;--gold-light:rgba(201,168,76,0.12);--gold-border:rgba(201,168,76,0.3);
+  --green:#1D9E75;--blue:#378ADD;--red:#E24B4A;
+  --border:rgba(26,45,90,0.1);--text:#111E3F;--text-mid:#2A3F6F;--text-muted:#6B7A9E;
+  --accent:#6B7A9E;
+}
+html,body{min-height:100vh;background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.page{max-width:390px;margin:0 auto;padding:1.25rem 1rem 3rem;display:flex;flex-direction:column;gap:0.75rem}
+.scherm{display:none;flex-direction:column;gap:0.75rem}
+.scherm.actief{display:flex}
+button{font-family:'DM Sans',sans-serif}
+
+/* LOGO */
+.logo-row{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0 0.25rem}
+.date-label{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--text-muted)}
+.icoon-btn{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:0.35rem 0.7rem;cursor:pointer;color:var(--navy);font-size:0.7rem;font-weight:500;font-family:'DM Mono',monospace;letter-spacing:0.04em;transition:border-color 0.15s}
+.icoon-btn:hover{border-color:var(--navy)}
+
+/* KAARTEN */
+.kaart{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.4rem 1.25rem}
+.label-mono{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted)}
+.banner{background:rgba(29,158,117,0.08);border:1px solid rgba(29,158,117,0.25);border-radius:10px;padding:0.55rem 1rem;font-size:0.72rem;color:var(--green);text-align:center;font-weight:500;display:none}
+
+/* KOMPAS */
+.kompas-kaart{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.1rem 1.25rem;display:flex;flex-direction:column;align-items:center;gap:0.45rem;position:relative;overflow:hidden}
+.kompas-kaart::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transition:background 0.6s}
+.kompas-wrap svg{width:220px;height:118px;display:block}
+.richting-naam{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--accent);line-height:1.05;text-align:center;transition:color 0.6s}
+.richting-sub{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-align:center}
+.fase-label{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--text-muted);text-align:center;opacity:0.75;letter-spacing:0.04em;display:none}
+.undercurrent{display:none;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--navy);background:rgba(26,45,90,0.05);border:1px solid var(--border);border-radius:20px;padding:0.25rem 0.7rem}
+.dagzin{font-family:'Cormorant Garamond',serif;font-style:italic;text-align:center;font-size:1.2rem;line-height:1.55;color:var(--navy);max-width:310px;font-weight:300;margin-top:0.35rem}
+.waarom-btn{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--navy);letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:0.42rem 1.1rem;margin-top:0.35rem;transition:all 0.15s;font-weight:500}
+.waarom-btn:hover{border-color:var(--navy);background:var(--navy);color:var(--white)}
+.waarom-blok{display:none;width:100%;margin-top:0.4rem}
+.waarom-blok.open{display:block}
+.reden{font-size:0.84rem;color:var(--text-mid);line-height:1.7;background:var(--cream);border-radius:12px;padding:0.85rem 1rem;margin-bottom:0.5rem}
+.tip-item{font-size:0.8rem;color:var(--text-mid);line-height:1.6;padding:0.32rem 0;border-bottom:1px solid var(--border);display:flex;gap:0.55rem;align-items:baseline}
+.tip-item:last-child{border-bottom:none}
+.tip-item::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;transform:translateY(-1px)}
+.stil{font-size:0.75rem;color:var(--text-muted);text-align:center;line-height:1.55}
+
+/* KNOPPEN */
+.btn-hoofd{width:100%;padding:0.85rem;background:var(--navy);color:var(--white);border:none;border-radius:12px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.2s}
+.btn-hoofd:hover{background:var(--gold);color:var(--navy)}
+.btn-hoofd:disabled{opacity:0.45;cursor:not-allowed}
+.btn-zacht{width:100%;padding:0.75rem;background:none;border:1.5px solid var(--border);border-radius:12px;font-size:0.82rem;color:var(--navy);font-weight:600;cursor:pointer;transition:border-color 0.15s}
+.btn-zacht:hover{border-color:var(--navy)}
+.nav-btns{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap}
+.nav-btn{background:var(--cream);border:1px solid var(--border);border-radius:9px;padding:0.42rem 0.85rem;color:var(--text-muted);font-size:0.7rem;cursor:pointer;transition:all 0.2s}
+.nav-btn:hover{border-color:var(--navy);color:var(--navy)}
+.terug-knop{background:none;border:none;color:var(--text-muted);font-size:0.8rem;cursor:pointer;padding:0;margin-bottom:0.6rem}
+
+/* FORMULIER */
+.form-titel{font-size:0.98rem;font-weight:700;color:var(--navy)}
+.form-sub{font-size:0.72rem;color:var(--text-muted);margin:0.15rem 0 1.1rem;line-height:1.5}
+.sectie-titel{font-size:0.62rem;color:var(--text-muted);font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin:0.2rem 0 0.55rem}
+.field{margin-bottom:0.7rem}
+.field label{display:flex;justify-content:space-between;font-size:0.62rem;color:var(--text-muted);margin-bottom:5px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em}
+.field label small{text-transform:none;font-weight:400;opacity:0.75}
+.field input,.field select{width:100%;padding:0.6rem 0.8rem;border-radius:9px;border:1.5px solid var(--border);background:var(--cream);color:var(--text);font-size:0.95rem;font-weight:600;outline:none;-webkit-appearance:none;appearance:none;font-family:'DM Sans',sans-serif}
+.field input:focus,.field select:focus{border-color:var(--gold);background:var(--white)}
+.field input::placeholder{color:rgba(107,122,158,0.4);font-weight:300;font-style:italic}
+.fields-2{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.divider{height:1px;background:var(--border);margin:0.9rem 0}
+.chip-rij{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.35rem}
+.chip{padding:0.38rem 0.75rem;border-radius:20px;border:1.5px solid var(--border);background:var(--cream);color:var(--text-mid);font-size:0.76rem;cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.chip:hover{border-color:var(--gold-border);background:var(--gold-light)}
+.chip.actief{border-color:var(--gold);background:var(--gold-light);color:var(--navy);font-weight:600}
+.modus-chip.actief{border-color:var(--navy);background:var(--navy);color:var(--white)}
+.hint{font-size:0.7rem;color:var(--text-mid);font-style:italic;line-height:1.5;margin-top:0.3rem;display:none}
+.hint.zichtbaar{display:block}
+.form-melding{display:none;text-align:center;font-size:0.76rem;color:var(--text-muted);margin-top:0.55rem}
+
+/* METRICS */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.metric-kaart{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:0.85rem 0.6rem;text-align:center;cursor:pointer;transition:border-color 0.15s}
+.metric-kaart:hover{border-color:rgba(26,45,90,0.25)}
+.metric-val{font-family:'DM Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--navy);line-height:1}
+.metric-lbl{font-size:0.58rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:6px}
+.metric-term{font-size:0.62rem;color:var(--gold);margin-top:3px;font-weight:500;font-family:'DM Mono',monospace}
+
+/* RITME-STROOK */
+.strook{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin:0.6rem 0 0.3rem}
+.strook-dag{height:28px;border-radius:5px;background:rgba(26,45,90,0.06)}
+.strook-as{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:0.57rem;color:var(--text-muted)}
+.legende{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.7rem;font-size:0.68rem;color:var(--text-mid)}
+.legende span{display:inline-flex;align-items:center;gap:0.3rem}
+.legende i{display:inline-block;width:9px;height:9px;border-radius:3px}
+
+/* FEEDBACK */
+.fb-btns{display:flex;gap:0.45rem}
+.fb-btn{flex:1;padding:0.62rem 0.4rem;border-radius:10px;border:1.5px solid var(--border);background:var(--cream);color:var(--navy);font-size:0.84rem;cursor:pointer;transition:all 0.2s}
+.fb-btn.gekozen{background:rgba(29,158,117,0.1);border-color:var(--green);color:var(--green)}
+.fb-dank{display:none;font-size:0.72rem;color:var(--green);text-align:center;margin-top:0.5rem;line-height:1.5}
+
+/* PROFIEL */
+.profiel-rij{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 0;border-bottom:1px solid var(--border)}
+.profiel-rij:last-of-type{border-bottom:none}
+.profiel-rij-label{font-size:0.66rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:500}
+.profiel-rij-waarde{font-size:0.9rem;color:var(--navy);font-weight:600;margin-top:2px}
+.reset-knop{width:100%;padding:0.72rem;border:1.5px solid var(--border);border-radius:10px;background:none;color:var(--text-muted);font-size:0.78rem;cursor:pointer;margin-top:0.5rem}
+.bevestig{display:none;margin-top:0.6rem;font-size:0.78rem;color:var(--navy);line-height:1.5;background:var(--cream);border-radius:10px;padding:0.75rem}
+.bevestig.open{display:block}
+.bevestig .fb-btns{margin-top:0.55rem}
+
+/* LEXICON TOOLTIP */
+.hrmny-term{border-bottom:1px dotted var(--gold);cursor:help;position:relative;white-space:nowrap}
+.hrmny-term .hrmny-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-style:normal;font-size:0.72rem;font-weight:400;line-height:1.5;padding:0.5rem 0.75rem;border-radius:9px;white-space:normal;width:210px;text-align:left;z-index:999;pointer-events:none;box-shadow:0 4px 16px rgba(17,30,63,0.18)}
+.hrmny-tooltip{text-transform:none;letter-spacing:normal}
+.hrmny-term:hover .hrmny-tooltip,.hrmny-term:focus .hrmny-tooltip{display:block}
+
+/* HISTORIEK */
+.historiek-overlay{position:fixed;inset:0;background:rgba(17,30,63,0.35);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.historiek-overlay.open{opacity:1;pointer-events:all}
+.historiek-paneel{background:var(--cream);border-radius:20px 20px 0 0;width:100%;max-width:390px;padding:1.25rem 1.25rem 2.5rem;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);max-height:82vh;overflow-y:auto}
+.historiek-overlay.open .historiek-paneel{transform:translateY(0)}
+.historiek-handel{width:36px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 1.1rem}
+.historiek-term{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--navy);margin:0.2rem 0 0.9rem}
+.hist-tabs{display:flex;gap:0.3rem;margin-bottom:1rem}
+.hist-tab{flex:1;padding:0.38rem 0;text-align:center;border:1.5px solid var(--border);border-radius:8px;background:var(--white);color:var(--text-muted);font-family:'DM Mono',monospace;font-size:0.65rem;cursor:pointer}
+.hist-tab.actief{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.hist-grafiek-wrap{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:0.75rem}
+.hist-svg{width:100%;height:80px;display:block}
+.hist-as{display:flex;justify-content:space-between;margin-top:4px;font-family:'DM Mono',monospace;font-size:0.57rem;color:var(--text-muted)}
+.sluit-btn{width:100%;margin-top:0.5rem}
+.page-footer{text-align:center;font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--text-muted);letter-spacing:0.08em;margin-top:0.25rem;opacity:0.6}
+
+.hrmny-term.open .hrmny-tooltip{display:block}
+.richting-term{border-bottom:1px dotted currentColor;cursor:pointer;white-space:nowrap;position:relative}
+.richting-term .hrmny-tooltip{bottom:calc(100% + 6px)}
+.event-kaart{display:none;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1.1rem}
+.event-tekst{font-size:0.84rem;color:var(--navy);line-height:1.55;margin-top:0.3rem}
+.form-uitleg{font-size:0.78rem;color:var(--text-muted);line-height:1.55;margin:0.2rem 0 1rem}
+
+.nacht-kop{display:flex;justify-content:space-between;align-items:baseline}
+.nacht-titel{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:var(--navy)}
+.nacht-intro{font-size:0.8rem;color:var(--text-mid);line-height:1.6;margin:0.35rem 0 0.2rem}
+.groep-titel{font-size:0.66rem;color:var(--navy);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin:1rem 0 0.1rem}
+.groep-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:0.55rem}
+.nacht-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.nacht-kaart{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:0.75rem 0.8rem 0.6rem;cursor:pointer;transition:border-color 0.15s}
+.nacht-kaart:hover{border-color:rgba(26,45,90,0.25)}
+.nacht-lbl{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:500}
+.nacht-val{font-family:'DM Mono',monospace;font-size:1.45rem;font-weight:500;color:var(--navy);line-height:1.1;margin-top:0.25rem}
+.nacht-val small{font-size:0.62rem;color:var(--text-muted);font-weight:400;margin-left:2px}
+.nacht-leeg{font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-top:0.35rem;line-height:1.3}
+.nacht-term{font-size:0.6rem;color:var(--gold);font-family:'DM Mono',monospace;margin-top:2px;min-height:0.8rem}
+.nacht-vgl{font-size:0.68rem;color:var(--text-mid);margin-top:0.3rem;line-height:1.3}
+.nacht-spark{display:block;width:100%;height:22px;margin-top:0.35rem}
+.nacht-bron{font-size:0.62rem;color:var(--text-muted);margin-top:0.8rem;text-align:center}
+.voor-vandaag{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:0.9rem 1rem;margin-top:1rem}
+
+/* Duidelijkere knoppen (zonder beweging) */
+.nav-btns{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.nav-btns:has(> :only-child){grid-template-columns:1fr}
+.nav-btn{background:var(--white);border:1.5px solid rgba(26,45,90,0.35);border-radius:12px;padding:0.8rem 0.6rem;color:var(--navy);font-size:0.86rem;font-weight:600;cursor:pointer;transition:background 0.15s,border-color 0.15s;text-align:center}
+.nav-btn:hover{border-color:var(--navy);background:rgba(26,45,90,0.04)}
+.nav-btn .pijl{color:var(--gold);margin-left:0.25rem}
+.waarom-btn{font-size:0.74rem;padding:0.55rem 1.3rem;border-color:rgba(26,45,90,0.35);background:var(--white)}
+.terug-knop{font-size:0.86rem;color:var(--navy);font-weight:600}
+.icoon-btn{font-size:0.74rem;padding:0.42rem 0.8rem;border-color:rgba(26,45,90,0.3)}
+/* Gevoel-kaart op het dashboard */
+.gevoel-kaart{background:var(--navy);color:var(--white);border:none;border-radius:16px;padding:1.05rem 1.15rem;text-align:left;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:space-between;gap:0.8rem;transition:background 0.15s}
+.gevoel-kaart:hover{background:var(--navy-deep)}
+.gevoel-kaart .gk-titel{font-size:1rem;font-weight:700}
+.gevoel-kaart .gk-sub{font-size:0.74rem;opacity:0.8;margin-top:0.2rem;line-height:1.4}
+.gevoel-kaart .gk-pijl{font-size:1.3rem;color:var(--gold);flex-shrink:0}
+.gevoel-kaart.ingevuld{background:var(--white);color:var(--navy);border:1.5px solid rgba(26,45,90,0.35)}
+.gevoel-kaart.ingevuld .gk-sub{opacity:1;color:var(--text-mid)}
+/* Formulier */
+.vraag{margin-bottom:1.05rem}
+.vraag-titel{font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:0.15rem}
+.vraag-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem}
+.chip{font-size:0.82rem;padding:0.48rem 0.85rem;border-color:rgba(26,45,90,0.18)}
+.chip.actief,.chip.actief:hover{border-color:var(--navy);background:var(--navy);color:var(--white)}
+textarea.notitie{width:100%;min-height:64px;padding:0.6rem 0.8rem;border-radius:9px;border:1.5px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);resize:vertical;outline:none}
+textarea.notitie:focus{border-color:var(--gold);background:var(--white)}
+details.horloge{border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.8rem;margin-top:0.4rem}
+details.horloge summary{cursor:pointer;font-size:0.8rem;color:var(--navy);font-weight:600}
+details.horloge[open] summary{margin-bottom:0.7rem}
+.gevoel-samenvatting{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.2rem}
+.gevoel-tag{font-size:0.74rem;background:var(--cream);border:1px solid var(--border);border-radius:20px;padding:0.25rem 0.65rem;color:var(--navy)}
+
+#profiel-modus-rij,#modus-rij{position:relative}
+.modus-chip{position:static}
+.modus-chip .modus-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;width:auto;background:var(--navy);color:var(--white);font-size:0.72rem;font-weight:400;line-height:1.5;padding:0.5rem 0.75rem;border-radius:9px;width:220px;white-space:normal;text-align:left;z-index:999;pointer-events:none;box-shadow:0 4px 16px rgba(17,30,63,0.18)}
+.modus-chip:hover .modus-tip,.modus-chip:focus .modus-tip{display:block}
+.modus-chip.actief .modus-tip{color:var(--white)}
+details.klein{margin-top:1.4rem}
+details.klein summary{cursor:pointer;font-size:0.7rem;color:var(--text-muted);list-style:none;text-align:center}
+details.klein summary::-webkit-details-marker{display:none}
+.wis-link{background:none;border:none;color:var(--text-muted);font-size:0.7rem;text-decoration:underline;cursor:pointer;display:block;margin:0.6rem auto 0}
+.form-kop{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.2rem}
+/* Agenda */
+.moment-lijst{display:flex;flex-direction:column;gap:0.5rem;margin:0.6rem 0 0.9rem}
+.moment-item{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:0.75rem 0.9rem;cursor:pointer;text-align:left;width:100%;transition:border-color 0.15s}
+.moment-item:hover{border-color:rgba(26,45,90,0.35)}
+.moment-naam{font-size:0.9rem;font-weight:700;color:var(--navy)}
+.moment-meta{font-size:0.72rem;color:var(--text-muted);margin-top:0.15rem}
+.schuif-wrap{margin:0.3rem 0 0.2rem}
+.schuif-wrap input[type=range]{width:100%;accent-color:var(--navy);height:28px}
+.schuif-label{font-size:0.86rem;font-weight:600;color:var(--navy);margin-top:0.15rem;min-height:1.2rem}
+.schuif-as{display:flex;justify-content:space-between;font-size:0.62rem;color:var(--text-muted)}
+.event-regel{font-size:0.84rem;color:var(--navy);line-height:1.55;margin-top:0.3rem}
+.event-regel+.event-regel{border-top:1px solid var(--border);padding-top:0.45rem;margin-top:0.45rem}
+
+.week-strook{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:0.7rem 0 0.4rem}
+.week-dag{background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:0.4rem 0 0.35rem;text-align:center;cursor:pointer;font-family:'DM Sans',sans-serif}
+.week-dag.gekozen{border-color:var(--navy);background:var(--white)}
+.week-dag .wd-naam{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em}
+.week-dag .wd-nr{font-size:0.95rem;font-weight:700;color:var(--navy);line-height:1.3}
+.week-dag .wd-stip{display:flex;justify-content:center;gap:2px;min-height:6px;margin-top:2px}
+.week-dag .wd-stip i{width:6px;height:6px;border-radius:50%;display:inline-block}
+.dag-paneel{background:var(--cream);border-radius:12px;padding:0.75rem 0.85rem;margin-bottom:0.4rem}
+.dag-titel{font-size:0.78rem;font-weight:700;color:var(--navy);margin-bottom:0.4rem}
+.dag-item{display:flex;justify-content:space-between;align-items:center;gap:0.5rem;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:0.55rem 0.7rem;margin-bottom:0.35rem;cursor:pointer;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.dag-item .di-naam{font-size:0.84rem;font-weight:600;color:var(--navy)}
+.dag-item .di-meta{font-size:0.7rem;color:var(--text-muted)}
+.dag-knoppen{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin-top:0.4rem}
+.sectie-kop{font-size:0.66rem;color:var(--navy);font-weight:700;letter-spacing:0.07em;text-transform:uppercase;margin:1.1rem 0 0.4rem}
+.spiegel{font-size:0.8rem;color:var(--text-mid);margin-top:0.2rem;font-style:italic}
+
+.datum-veld{position:relative;display:flex;gap:0.4rem;align-items:stretch}
+.datum-veld input[type=text]{flex:1;min-width:0}
+.datum-knop{background:var(--white);border:1.5px solid rgba(26,45,90,0.3);border-radius:9px;padding:0 0.8rem;color:var(--navy);font-size:0.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.datum-native{position:absolute;left:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none;border:0;padding:0}
+
+.quarter-kaart{border:1.5px solid var(--navy);background:var(--white)}
+.quarter-zin{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;color:var(--navy);line-height:1.5;margin-top:0.35rem}
+.quarter-sub{font-size:0.82rem;color:var(--text-muted);margin-top:0.35rem;line-height:1.5}
+.tfb-titel{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:300;color:var(--navy);line-height:1.4;margin:0.3rem 0 0.6rem}
+.tfb-vraag{font-size:0.86rem;font-weight:600;color:var(--navy);margin:0.55rem 0 0.3rem}
+.tfb-acties{display:flex;gap:0.6rem;align-items:center;margin-top:0.8rem;flex-wrap:wrap}
+.tfb-acties .link{background:none;border:0;color:var(--text-muted);font-size:0.82rem;text-decoration:underline;cursor:pointer}
+.tfb-dank{font-size:0.88rem;color:var(--navy);line-height:1.5}
+</style>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="HRMNY"><meta name="theme-color" content="#1A2D5A"><link rel="apple-touch-icon" href="data:image/png;base64,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"><link rel="icon" href="data:image/png;base64,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">
+</head>
+<body>
+<script>
+/* Eenmalige opstart voor Dimitri. Eigen sleutelruimte (db.), zodat deze pagina
+   nooit botst met de app van Heidi op hetzelfde adres. */
+(function(){
+  try{
+    var ls=window.localStorage,P='db.';
+    if(!ls.getItem(P+'hrmny_seed_applied')){
+      ls.setItem(P+'hrmny_naam','Dimitri');
+      ls.setItem(P+'hrmny_user_id','dimitri-db01');
+      ls.setItem(P+'hrmny_wearable','Garmin');
+      ls.setItem(P+'hrmny_leeftijd','45');
+      ls.setItem(P+'hrmny_startdatum','2026-10-11');
+      ls.setItem(P+'hrmny_modus','Sportief');
+      ls.setItem(P+'hrmny_seed_applied','1');
+    }
+  }catch(e){}
+})();
+</script>
+
+<div class="page">
+
+  <div class="logo-row">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAOABUADACIAAREBAhEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMAAAERAhEAPwDxSjNFFdhgFIaXNJQAUUUUAApaSigBaTNFFABRRRQAUUUUAFFIaKAFooooAKM0UUAGaXNJRQAtFJRQAtFJRQAUUUUAFFFFABRRRQAUUlGaAFopM0ZoAWiiigAooopgFFFJSAWikzS0AFFFFABRRRQAUUUUAFFFFAC0UlGaAFopKKAFpKKKACiiigAooooAM0ZoooAKKKKACiiigAooopgFFFFIAooooAKKKKACiiigAooooAKM0UUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUALRSUZoAWkoooAKKKKACiiigAopKKAFooooAKKKKACiiigAzS0lFAC0UlFAC0UlFAC0UlFAC5ozSUUALRSZpaACiiigApKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApKDRQAtFJS0AFGaKKYBRRRSAKKKKAClpKKAFopM0UAGaKKKACiiigAooooAWlpKKAEooooAKKKKACiiigAooooAKKTNLQAUUUUAFFFFACUUUUAKKKKKACijNJmgBaKTNFAC5opKKAFopKKAFopKKAFopM0tABSGlpDQAUUUUAFFFFABS0lFAC0UlFABRRRQAUUUUAFGaKKAFzRmkooAKWkooAWikpaACiiigAooooAKKTNGaAFopKKACiiigBaKSlzQAUUUUAFFFFACUUtFABRRRQAUUUUwCiikpALRmkooAWikpaACiiigAoozSUAFFFFABRRRQAtFJS0AFFFFMAooopAFFFFABRRRQAUUhopjFooopCEopaSgAooooAKWkooAWiiigAooooAKKKKACiikzQAtFFFABRRRQAUUUUAFFFFABRRRQAlFFFABRmiigBaKSjNAC0UmaM0ALRSZooAU0UlFAC0UmaWgAopM0UALRSUUALRSZozQAUUUUAFFFFAC0UlFAC0UmaM0ALRRRQAUUUUAFFFJmgBaKSjNAC0lFFABSikoFAC0ZoooAKKKKACiiigAooooAKSlNJQAUUUUAFFFFABS0lAoAXFJS0UAFFFBoASiiigAooooAKKKKACiiigAooooAKKKKAFopKWgApKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAFzRSUUALSZoooAKKKKACiiigAooooAKKKKACiiigAFLSUtABRRRQAUUUlAC0UlLQAUlLSUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUwClFJRSAWikooAWikooAWikooAM0tJRQAUUUUAFGaKKAFopKWgBKKKKACiiimAUUUUgFooooAKSlpKACiiigApaSloAKKKM0AFFGaSgBaKSigBaSiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACjNFFABRRRQAUUUUAFFFFABRRRQAUCigUALRRRQAUUUUAFGaSigBaKSigAooooAKKKKACiiigAooooAAaWkpaACkNLSUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFLQAlFFFABRRRQAUZoooAWikpaAENFLRQAlFLSUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooooEFFFFAC0UlLQAUlLRQAlFGKKAClzSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRjiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKWkozQAtFJmigAoFFFAxaKKKBBRRRQAlFFFAwooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUALSUUUAFFFFABRRRQAUUUtACUUYooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAFFFJRQAUUUUAFFFFABRRRQAUopKWmAUUUUAFFGaSkAUUUUAFFFFABRRRQAUUUUWAKKKKBhRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKBhRRS0AJRRRQIKUUlKKACiiigApKWkNABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRQKBi0UUUCCiiigBKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigBaKM0maAFpKM0UAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUtFFABSUtJQAUUUUwCiiigYUUUUhBRRRQAUUUUwCiiigAooooAKKKKQBRRRQAUUUUAFFFFABRRRQAUUUUAFFFLQAUUUUDCkpaSgAooooELmikooAWiiigYlGKKWgBKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooooEFFFAoAKKWkoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACgUUUDFoopKAFooooEJRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooopAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUwCiiikAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUwClpKKQC0GkooAKKKKACiiigAooooAKKKKACiiigAooooAWkoooAKKKKACiiigAooooGFFFFAgooooAKKKKAClpKKAFpKM0UDCiiigQUUUUAFFFFABRRRQAUtIKWgBKKWkoAKKKKBhRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAWkoooGFFFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooGFFFLQAUUUUCCkpaSgAooooAKKKKACiiigAooooAKKKXFAxKKWkoAKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFIYUUUUxBRRRQAUUUUAFGKBS0AJRSmkoGFFFFAgooooAKKKKACiiigAooooAKKKKACiiimAUUUUgCiiigAooooAKKKKACiiigAooopgFFFFIAooooGGaKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUYopRQAUUUUAFFFFACUUUUAFFFFABRRRQAUUUUAFFFFACiikooAWkoooAKKKKACiiimAUUUUAFLQKKACkpaKAEopaSkAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAC0UUUAFFFFABSUtFACUUUUAFFFFABRRRQAUUUUAFLSUooAKSlopgJRS0lIAooooAKXNJRQMWkoooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUDCiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRS0UXGJS4ozSZoAKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUwCiiikMKKKKBBRRRQAUUUtACUUtFAxKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABS0lFABRRRQAUUUUAFKKSgUDFooooEFFFFACUUUUDCiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAxRRSUUCFopKKAFpKKKACiiigAooooAKKKKYBRRRQAUUUUgCiiigAooooAKKKWgBKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooABS0gpaACiiigAooooASiiigAooooAKKKKACiiigAooooAWikpc0AFJS0lABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQMKKKKBBRRRQAUUUUAFFFFABRRRQAZpaSigAooopgFFFFIAooooAKKKKACiiigAooooAKKKKBhRRRQAUUUUCCiiigApaSgUALRRSUwCiiikAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRTAKKKKQC0UZooAKKSigBTSUUUDCiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRTAKKKKQC0UUUAIaKWkxQAUUUUAFFFFABRRRQAUUUUAFLikFLQAUlLSUAFFFFMAooopAFFFFABRmiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApc0lFABRRRQAuaM0lFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooooAKKKKQBRRRQAtFIKWgAxSYpaKACkoNFAwooooEFFFFABRRRQAUUUUAFFFFAwooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRTAKKKKQBRRRQAUUUUAFFFFABRRRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooopAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABQKKKBhRQaKACiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAuKKKKACiiigAooooAKKKKAEopTSUAFFFFABRRRQAUUUUDClpKBQIWkpaSgAooooAKKWigBKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKYBRRRSGFFFFABRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAoooxQAUUUUAApaSjNAxaKM0ZoEIaKWkoAKKKKACiiigAooooGFFFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigYUUUUAFFFFMQUUUtIBKKDRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACikpaKAENFLRQAlFFFABRRRQAUUUUDCiiigQUUUUAFFFFABRRRQAUtJRQAtFFFACZooooGFFFFABRRRQAUUUUAFFFFAgooooAKBRRQAppKKKACiiigBaKKKACkpaSgYUUUUCCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKYBRRRSAKKKKACiiigAooooAUUUUmaACiiigAooooAKKKKACiiigAooooAKKKKACiiigYUUUUCCiiigAooooAKKKKACiiigAooooAKKKKYBRRilxSASijFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRTAKKKKACiiikAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUALRRRQAnelpKKBhRRRQIKKKKACiiigYUUUUCCiiigAooooAKKKKACiiigBaKSigYUUUUCCiiimAUUUUhhRRRQAUUUUCCiiigAooooAKKKKACilpKBgKWkpaBAaSlNJRcAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiimAUUUUgCiiigAooFLQMSiiigAooooAKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFLikoAKKKMUDCilxRQAUUUlABRRRRYQUUUUDCiiigQUUUUAFFFFABRRRTAKKKKQxaKKKBBRRRQAUUUUAJRS0lAwooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUtACUUGigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigYUUUUCCiiigAooooAKBRQKBi0UUUCENFLSUAFFFFAwooooAKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooooAKKKKQBRRRQMKKKKBBQKKKAFpKWkoGAoNFFABRRRQAUUUUCCiiii4BRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABS0lFAC0UlLQAUUUUAFFFJQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRRYBaKSloAKKKKYBSUUUhhRRRQIKKKKACiiigAooooAKKKKAClpKWgAooooAKSlpKACiiimAUUUUgCiiigAooopgFFFFIAopcUlAwooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUCiigYtFFFAgooooAKSlooASiiigBRSUtFAxKKKKACiiimIKKKKQC0lFFAwooooEFFFFABRRRQAUUUUAFFFFABRRRRcAooooAKKKKACiiigAooooGFFFFABRRRQAUUUUCCiiigApaSloAKKKKACiiigApKWigBKKWkoAKKKKAClpKM0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFLSUUDDFFGaM0ALSUUUAFFFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiloGJRS0UAJRS0lABRRRQIKKKKACiiigAooooAKKKKYBS0lApDFoopKBBRRRQAUUUUAFFFFABRRRQAUUUUwClpKKQC0UlFABRRRQAUUUUAFFFFABRRRQAUUUUDCilooASig0UCCiiigAooooAKKKKBi0UUUCEpaKKACiiigApDS0lABRRRQAUUUUAFFFFABRRRQAUUU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jpn/AGG9VP6V8pX1jc6ZfT2V5C0NzA5SSNhypFdMJ8xlJWK9FFFUSFFFJQAtXdI0i+13VINN023ae6mbCovb3J7AetRafYXWqahBYWULTXM7iOONepJr6u+HXw/s/BGkAMFm1WdQbq4x/wCOL6KP1qZz5RxVyP4efDbTvBFiJWC3OrSr+/uiPu/7Keg/U/pXc4opK5m29WbJWFrlfF/j/Q/BlsTqE/mXTDMdpCcyP+HYe5rkviT8X7fw75uk6E0dzqo+WSb70duf/Zm9ug71853l7c6heS3d5PJPcSsWklkbLMfrVwpt6slysdl4y+KniDxa0kHmmw04ni1t2xuH+23Vj+ntXC0ppK3SS2M27hRmiimIKKMUYoAKKKKACiiigBaKKKAEooooA6b4f6IfEPjrSdPK7ozOJZf9xPmb+WPxr7Erw/8AZ+8MtHDfeJZ0x5v+jWxI6qDl2H44H4V7jXPVetjWC0PL/jxqgsfh+LMNh765SMAd1X5m/l+tfMlet/H7XFvvFVnpMTZSwhLSYP8Ay0fnH4AD868krWmrRIk9QooorQkKKKKQBSikpaACiiigApKWkoAKKKKACiiigYUUUUCCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApaSloGFFFJQIKKKKACiiigApcUUUAFFFGaACkpaSgAooooAKKKKACiiloGJRS0mKBBRRijFABRRRQAUYpaKACiiigAooooAKKKKACiiigAooooATFKKKKACiijNACUUUUAFFFFABS0lFAxaKSigQtFJS0AJRRRQAUUUUAFFFFABRQKWgBKWiigAooooAKKKKACiiigAq7pGqXGiaxZ6panE9rKsq++DyPxGR+NUqKLXA+3dH1S31rR7TU7Rg0FzEsiEehHSo9d0e11/RbvSr1d1vcxmNvVfQj3Bwfwrxr4EeNEVX8KX0uDky2JY/i0f9R9TXuo4Fcsk4s2WqPijxBod34b1680m9Uia2crnHDL2YexHP/6qzK+nvi58PG8WaUNT02IHV7NTtVes8fUp9R1H5d6+YmVkYqylWBIIIwQfSuiEuZGclZiUUUVRIUUUUAFFFGKAClooxQAUUUUAFFFFABQCQQQSCDkEHGKKDQB9BfCP4qNqQi8O6/cZvANt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7Ksn6kZrjaKTimO7PQ1+NvjgKB/aFsfc2qUyT41eOXGBqcKf7trH/UV5/RRyRHdnV33xK8Zaku248Q3YU9oSIh/46BXM3F1PdyGS4nkmc/xSOWP61FRTSS2FdhSUtIaBBRRRQAUtJRQAuaSiigAooooAKKKKACiiigAooooAKKKKAFpKWkNABRRRQAUUUUAFFFFABRRRQAUUUUDClpKWgQUUUGgBKKKKACiiigAooooAKWkooGLSYoozQAUYoozQAtJS5pKACiiigAooooAKKKKBBRRRQAUUUUAFFFFABRRRQAUUUooAKKKKACiiihgJRRRQhhRRRQIKKKKACiiigAooooAKKKKLgFFFFABRRRQMKKKKYgooopAFFFFABS0lKKBhRRRmgQUlLSUAFFFFABRRRQMKKKKACiiigQUUUUDCiiigAxRilooEJRilooAKKKKACjNFJQAUUUUALRSUUALSUZooAKKKKAFzRSUUAFFFFABRRRQAUCiigBaKKKACiiigAooooAKKKKACiiigBKKXFJQAUtAooAKKKKALFhez6bqFtfWz7J7eRZY2HYqcivszw1rlv4l8O2Or2xGy5iDMoOdjdGX8DkV8VV7V8A/Ff2bULnwzcyYiuMz2uezj7yj6jn8KzqRurlRdtD2nxPr0Hhrw3favcYK20RZVJxvfoq/icCvjXUL2fUtQuL66ffcXEjSSN6knJ/CvYvj54q+0X1t4ZtpMxwYnusHq5+6p+g5/GvFaKUbK45u4lFLRWhAlFBooAKKWkoAKKKKAFFFFFABRRRQAUUUUAFFFFABRRRQAUlLSUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAC0UUUAFIaWkoAKKKKACiiigAooooAKKWkoGFFFFABRRRQIKKKUUDEopTSUAFFFFAgooooAKKKKACiiimAUUUUgCiiigYUCigUALRRRQIQ0UGigAooooGFFFFAgooooAKKKKACiiigAooooYBRRRQAUUUUDCiiigQUUUUAFFFFABRRRQAUUUUDClpKKAFoozRQAUlLSUAFFFFAgooooAKKKKACiiigYtFJRmgQtFJRQAUUYooGApaSloEJRS0lABRRRQAUUUUAFFFFABRRS0AJRS0UAJRRS4oASloooAKKKKACiiigAooooAKKKKACiiigAooooAKKKSgBc0lFFABVvTdQudJ1K21CzkMdxbyCSNh2I/p2qpS0wLep6jc6vqlzqN4/mXNzI0kje5Pb27VUoopeQBRRRQAUUUUAFFFFABRRSGgBc0ZpKKAFzSUUUALRSCloAKKKKACiiigApDS0hoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiigUDCilooEJQKKUUAFFFFABSUUUAFFFFMAooopAFFFFAC0hoooGFFFFAgooooAKKKKACiiigAooopgFFFFIAooooAKKMUUAFFFLQAUUUUAJQKWigAooooASiiigAooooGFFFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooGLSUtFACUUUUCCiiigAooooAKKKKAClzSUUDFopKKACiiigQUUUUAFFFFABRRRQMKKKKYBRRRSELSUUUAKKKQUtMAoNFFIBKKKKACiiigAooooAKWkpaACiiigAooopgFFFFABRRRSAKKKKACiikoAKKKKYBS0lLmkAUUZooAKKKKAEopcUmKAAUtFFABRSUUALRRRQAUUUUAFFFFABSUUUAFFFFABRRRQACloooAKKKKACiiigApKWkoAKKKKACiiimAUUUUAFFFFIAooooAKKKKACiiigAooooAKKKKACiiigAooooAXNGaSigYUtJS0CCiiigBKKDRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUwCiiikAuaSiigApaQUtABRRRTAKKKKQBRRSUALSUtFACUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAClpKWgApKWkoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApRSUUDCiiigQUUUUAFFFFAAKXNJRQAtFJRQAtGKSloAMUYoooA6Lw34F8QeLbeefRrNZ44HCSEyqmCRnvUniL4f+JPCunpfavZJBbvIIwyyq3zEE4wPoa9d/Z1H/ABINb/6/E/8AQK0fj/8A8iDbf9f0f/oLVm6j5rFqK5bnzVRRRWhAUuaSjNAHZ6V8LPFutaXb6jY6dHJa3C743M6jIz6Vj+JPCur+E7yG11i3WGaaPzECyB8rnHb3r6m+GoA+G3h8f9OaGvIf2h8DxPo/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r57ml1ynltLSUtbGYUHoaKMZ4oA+0PCH/Il6F/2D4P8A0WK+f/jz/wAlCX/rzj/m1d54f+NHhTTfDWl2Vw1559vaRRSBYMjcqgHv7V5R8UfFGn+LfFw1LTDKbYW6R/vU2nIznj8axgnz3NG1Y4qiiitjMvaPrF/oOrQanptw0F1A25WHQ+oYdwe4r6t8BePLDxxpHnxbYb+EAXNqTyh/vD1U+tfIlaega9qHhvWINU0ycxXEJ/Bx3Vh3BqJw5kVGVj7XxXy98c/+Skzf9esX8jXpdh8evDMunwyX0V5BdlB5sUcW5Q3fBz0rxr4leJbHxZ4xl1XT/N+ztCiDzV2tkDniopxalqVJqxx9FBorYzCiiigApetJRQB71+zof9F18f8ATWI/+Omuk+O//JN2/wCvyH+teZ/CHx5o3guPVV1Yzg3TRmPyo93QHOfTrWx8Uvif4e8WeEP7M0tro3H2mOQ+bFtG1c55zWEovnNE1Y8VoooroMwooopAFFFFABRRRQAUUUUDCiiigQUUUUAFFFFAwooooAKKKKBBRRRQAUUUUwCiigUhhRS0UCCiiigBKKKKACiiigAooooAKKKKACiiimAUUUUAFFFFIAooooAKKKKACiiigAooooGFFFFAgooooAKWkpaACiiigApKWkoAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooGLRSUUAFFFFAgooooAKBRRQMWjFFFAhKKKKBhRRRQIKKKKACiiigAooooGFFGKKLgFAoooELRRRQAUUUUAFBopKYBS0lFIYtJRRQAUUUUCFooooAKKKKAEpaKKADNFFFABSUUUAFLSUtABRRRQAUYooosAUUUUAFFFFABRSUUALRSUUAFFFFABRRRQAUopKUUAFBoooASloooAKKKTNAC5ooooAKKKSgBaKKKACiikoAKKKKACiiigApaSigBaKKSkAUUUUwCiiigAooooAKKKWgYlFLRQISiiigAooopgFLQKKQBSUtJQAUUUUAFFFFABRRRQAUUUUwClpKWkAUUUUAFJS0lABRRRQMKKKKACiiigQUUUUAFFFFAwooooEFFFFABRRRQMKKKKBBRRRQAUUClxQMSiiigAoFFFAC0UUUCENFFFMYUUUUCCiiikAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQMKKKKBBRRRQAUUUUAFLRRQAUUUUAFJS0lABRRRQMKKKKAClpKWgQUlFFAwooooEFFFFABRRRTAKKKKQBS0lFAC0UlGaAFpKKKACiiigAooooAKXNJRQAuaSiigAooooAWkNFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUDClpKM0CFpDRmigAooooAKKKKYBRRRSGFFFFAgooooAKKKKACiiigAooopgFFFFIYtFJS0CEooNFAwpaSjNABRRRQIKKKKACiiigAooooAKKKKYBRRRQAUUUUhhRRRQIKKKKAClpKKAFpKKKBhRRRQIWiiigBKKKWgYlFLSUCCiiigAooooAKKKKACiiigAooooAKKKKACiiimAUUUUgCiiimAUUUUAFFFFIAooooAKKKKACiiimAUUUUgCiiloAKKKKACiiigANJSmkoAKKKKBhS0lLQAUUUUCCkpaQ0AFFFFABRRRQAUUtFACUUtJQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwxS0UUCCkpaSgAooooGFFLRQAlFFFAgooooGFFFFAgooooGFFFFAgooooAKKKKACiiloASiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigYUUUUAFFFFAgooooAKKKKACiiigAooooAKKKKACilooASilooAKSlpDQAUUUUAFFFFABRRRTAKKKKQwooooAWkopaAENLSUUAGaKKKACiiigQUUUUAFFFFABRRRQAUUUUwCiiikAUUUUDCiiigQUUUUDCiiigAooopiCiiikAUUUUAFFFFABRRRQAUopKKBi0UlFAgooooAKKKKACiiimAUUUUAFLSClpAFBopKYBRRRSAKKKKBi0UgpaBBRRRQAlFLSUDCiiigQUUUUDCiiigQUUUUAFFFAoGGKKWkosAUUUUAFFFFABRRRQAUUUUCClpKWgBKKKKBhRS0mKACiiimIKKKKQBS9qSikMKKKKYgoopRQAUUUUAJRQaKBhRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKBhRRRQIKKKKACiiigAooooGFFFFAgoooxQAUUUUAFFFFABRRRQAUUUUAFFFFMBaKSikAtFFIaAFpM0UUDCilooASilpKACiiigQUUUUAFFFFAwpaKKBCUUGigYUUUUCCiiigAooooAKKKKACiiigAoopc0DEooooEFFFFABRRRQAUUUUAFFFFAwooooEFFFFABRRRQAUUUUDCiiigQUUtFAxKKKKACiiimIKKKKQBRRRQAUUUUDFooooAQ0UUUCCiiimAUUUUgClpKKAFooooAKSlooASiiigYUUUUCCiiigAooooAKBRQKAFooopgJRSmkpDCiiihgFFFFABRRRQIKKKKBhRRRQAtFFFAhKKWkoGFFFFAgooooGFFFFABRRRQIWiiigBKKKKBhRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKBhS0UUAFJSmkoAKKKKBBRRRQMKKKKBCiikpc0DCkpc0lABRRRQIKKKKACiiigAooooAKKKKACiiigYUUUUxAKWkFLSGJRRRQIKKKKACiiigAooooAKWkoxQAGig0UAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooopDCiiimIKKKKQBRRRQwCiiigAooooAWikpaAEopaSgYUUUUAFFFFAgooxS4oGJRS0UAJRRRQAUYoozQAUUUUCCiiigAooooAKXNJRQMWikooAKKKKBBRRRTAKKKKQBRRRQAUopKBQAtFFFABRRRQAUlLQaAEooooGFGKWikISiiimMKBRQKAFooopiCiiikAlFFFAwooooAKKKKACiiimIKKKKQBRRRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwpaSloAKKKKBCUUtJQMKKKKYgooopAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooooAKKKKQwooooEFFFFABRRRQAUUUUAFFFFABRRRQAUtFJQMDRQaKBBRRRQAUUUUAFFFFAwooooEFFFFABRRRQAUUUUDCiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUDCiiigQUUUUAFFFFAwooooAKKKKAFopKM0CFopKXNACUUUUAFFFFABRRRQAUUUUAFFFFABRRRQMKKKKACiiigQUUUUAFFFFABRRRQAUUUUDClpKKAFopKKBBRRRQMKKKKACiiigQUUUUwCiiikMXNJmiigAooooEFFFFABQKKKAFpKM0UDCiiimIKKKKQwooooAKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFFgCiiigYtFJRQAtFJRmgAooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUDCiiigQUUUUDCiiigQUUUUAFFFFABRRRQAUUUUDCiigUALSUtJQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKBhRRRTEFFFFIAooopgFFFFIAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigYUUUUCCiiigAooooAKKKKACiiigAooooAKKKXFAxKKKKACiiigAooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooooEFFFFABRRRQAUUUUAFFFFABRRRQAUtJS0AGKMUUUDEooooEFFFFMAooopDCiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooopAFFFFABRRRQAUUUUAFFFFAwoooFAC0UUUCAikpaSgAooooAKKKKACiiigAooooAKKKKACilooAKTFLRQMSilooEJRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUtJRQAUUUUDCiiigQUYopaBiUUUUCCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooGGKKWkoAKKKKBBRRRTAKKKKQwooooAKKKKBBRRRQAUUUUDCiiimIKKKKQBRRRQAUUtFAxKKKKACiiigQUUUUAFFFFAwoooouIKKKKBhRRRQIKKKKBhRRRTEFFFFABRRRSAKKKKACiiigAooooAKKKKBhRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigBc0ZpKKAFzSUUUAFFFFABRRRQAUUUUAFFFFMAooopALRRRQAUUUUAFFFFABSUtJQAUUUUwCiiikAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooopDCiiigAooooEFFFFABRRRQMKKKKACiiigQUUUUAFFFFABRRRTAKKKKQBRRRQAUUUUAFFFFMAooopAFFFFAwooopiCiiikMKKKKACiiigAooooAKKKKACiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUALSUUUDCiiigQUUUUAFFFFMAooopAFFFFABRRRQAUUUUAFAopRQMKKKSgQtFFFABRSUUALSUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRTAKKKKQBRRRQAUUUUAFFFFABmlNJRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUwCiiikMKKKKACiiigQUUUUwCiiikAUUYoxQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooopiCiiikAUUUUDCiiigQUUUUDCiiigAooooEFFFFABRRRQAUUUUAFFFFAwoooFAC0lLSUAFFFFAgooooGFFFFABRRRTEFFFFABRRRQAUUUUgCiiigAooooAKKKKACiiigAooooAKKKKACiiigYUUUUABopaSgQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUDCiiigQUUUUAFFFFABRRRQAUUUUwCiiigAooopAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooooAKKKKACiiigQUUUUAFFFFAxaKSigAooooAKKKKYgooopAFFFFABRRRQAUUUUAFFFFMAooopDCiiigQUUUUAFFFFABRRRTAKKKKACiiikAUUUUAFFFFABRRRTAKKKKQBRRRQMKKKKACiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRS0UAJRS0lAwooooAWkpaSgAooooEFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooopAFFFFMQUUUUAFFFLigBKKKKBhRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACilpKBhRRRQIKKKKACiiigAooooAKKKKACiiimAUUUUgCiiigAoopaBiUUtJQAUUUUAFFFFABRRRQAUUUUAFFFFIAoooqhBRRRQAUUUUgCilooGJRRRQIKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKYBRRRSAKKKKACiiimAUUUUAFFFFIAooooAKKKKYBRRRSAKKKKACilooASiiigAooooAKKKKACiiigAooooAKKKKAFopKWgAooooASgUtJ3oGLSUppKACiiigQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUYooAKKKKACiiigAooooAKKKKBhRRRQIKKKKACiiigAooooGFFFFABRRRQAUUUUCCiiigAooooAKKKKBhRRRQIKKKKACiiigAooooAKKKKACiiigAooooGFFFFAC0GkooAKKKWgBKKDRQIKKKKACiiigBaKKKAEopaSgYUUUUAFFFFABRRRQAtIaKKBBRRRQAUUUUwCiiikMKKKKACiiigAooooAKKKKACiiigQUppKKQwooopiCiiigAooooAKKKKACiiloGJRS0lAgooooAKKWkoAKKKKACiiigAooooGFFFFAgooooGFFFFAgooooGFGKWigBKKWkoAKKKKBBRRRQAUUUUAFFFFAwooooEFFFFAC0UlLQAUlLSUDCiiigQUUUtAxKKKKACiiigQUUUUwCgUUtIAooooAKKKKACiiigBKKU0lABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAwooooAKKKKBBRRRQAUUUUAFFFFIYUUUU7iCiiigAooooAKKKKACiiimAUUUUgCiiigAooooAKKKKACloooGIaKWkoEFFFFABRRRQAUUUopDEopaSncAooooEFFFFABRRRTAKKKKAFFFFFIApKWkoGFFFFMQUUUUAFGaKKVgCiiigYUUUUCCiiigYUUUUAFFFFFhBRRRQAUUUUAFFFFABRRRQAUUUUDCiiigAooooEFFFFABRRRQAUUUUAFFFFAwooooEFFFFAwooooAXNJRRQAUUUUAFFFFAgooooAKWkopDCiiimIKKKKYBRRRSGFFFFAgoFFAoAWiiigApKWkoAKKKKACiiii4BRRRTAKKKKQBRRRQAUUUUAFFFFABRRRQAUUUUXGFLSUUALSUUUAFFFFAgooooAWiiigAooooAKKKKAEpaKKACkpaKAEooooAKKKKACiiigAooooAKKKKACiiigYUUUUAFFFFAgooooAKKKKACiiiiwBRRRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMAooopMBaKTNLQAUUUUAFJS0lABRRRQMKKKKAFpKUUUAJRRRQAUUUUCCiiloGJRS0UCCiikoAWkozS0AJRSmkoAKKKKLgFFFFFwCiiigBaKKKACkoooAKKKKACiiigAooooAKKKKACiiigBaKSigYUUUUAFFFFABRRRRYAooooEFFFFMAooopAFFFFIYUUUUAFFFApgLSUtGKAEooooAKKKKBBRRRQAUUUUAFFFFABRRRTAKKKKQBRRS0AFGKKKBiUCg0UALRSZozQIWikzRmgAopaKLgJRRRQMKKKKLiCiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAFpDRRQMKKKKBBS0lLQMKKKKBBRRRQAUUGkoGFFFFAgooooAKKKKACiiigAooooAKKKKACiiigYUUUUCCiiigYUUUUCCiiimAUUUUgCiiigAooooGFFFFABRRRQIKKKKACiiigAooooGFFFFAgooooGFFFFABRRRQAUUUUAFFFFAgpaSigYUUUUCCiiigApaSlFABRRSUAFFFFAwooooAKKKKAFooooEFFFFACUCiigYtFJS0CEooopDCiiimIKKKKYBRRRSAKKKKACiiigAooooAKKKKACiiigYUUUUAFFFFAgooooGFFFFABRRRQIKKKKACiiigBaKSigBaKSloGJRRRQAUUUUCCiiigAooooAKKKKACiiigAooooGLmikooAWkoooAKKKKACilooAKKKKBCUUppKBi0lFFAgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKYBQKKBSGLRRRQIKTNBooAKKKKBhRRRQIKKKKYBRRRSAKKKKACiiigAooooAKKKKACiiigYUUUUAFFGKKACiiigQUUUUAFFFFABRRRTAKKKKACiiikAUUUtABiiikoGFFFFAgooooAKKKKBhRRRQAUUUUAFFFFAgooopgFFFFABRRRSAKKKKYBRQKWkAUhpaKYCUUYpcUhiUUuKKBBRRRQAUUUUAFJRRQAUUUUAFFFFMAooooAKKKKQwooooAKKKKACiiigQUUUUDCiiigQUUUUAFFFFAxaKKKBBRiiigApKWigBKKKKACiiigAooxRigAooxRigAooooGFFFFABRRRQAUUUUAFFLikoAKKKKBBRRRigAoxS0UAJRS0UgEooopjCiiimIKKKKQC0UUUAFFFFACUUUUAFFFFABRRRQAUUUUAFFFFABRRRSGFFFFMQUUUUAFFFFABRRRQAUUuKMUAJRS4oxQAlFLikoGFKKKKBBRRRQAhopaSgYUUUUCCiiigAooooAKKKKACiiigAooooGFFFFIAooopgFFFLQISlxRRQAUlLSUDCiiigQUUUUwCiiikAUUUUAFFFFABRRRQAUtFJQMKKKKBBRRRQAUUUUAFFFFAwooooAKKKKACiiigAooooEFLikpaACjFFFACUuKKKACiiigAooooAKKKKACiiigAooooAKKTNKKADFJS0lABRRRQAUUUUAFFFFABRRRQAUUUUwCiiikAUUUUhhRRRQAUUUUxBRRRTAKKKKQC0UUUAFFFFABRRRQAlFFFABQKKKAFooooAKKKKACkpaSgAooxRigYUUtIaBBS0lLQAUlBooGFFFFABS0lFAC0UZooEFFFFABSUtJQAUUUUDCiijFAC0UUUCCkNLRQAlFFFABRRRQAUUUUAFFFFAwooxS0CEopTSUDCiiigQUUUUAFFFFMApRSUtIAooooAKKKSgAooooGLRRRQIKBRRQAUUUUAJRS0UDEopcUUCEopaKAEoxS0UAJiilpKACiiimAUUUUgClpKWgAooooAKKKKYBSUtJikAUUUUDCiiigApaKKLCExS0UUWAKSlooASloooAKSlpKBhRRRQAUYopaAExRS0UCEopaKAEpaKKACiiigAooooASig0UDClpKWgQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACUUUUDCiiigAoopcUAJRS4ooEJRS0lIYUUUuKYCUUtBoEJRRRQMKKKKACjFLRQISilooASiiigYtFFFAgooooAKKKKYBSUtGKQCUUtFAwooooEFFFFABSUtJQAtFFFABRRRQAUUUUAFJilooATFFLRQMSilpKACloooEFFFFABSUtJQAUUUUDAUtFFAgooooAKKM0ZoAKSlooASilooASilooAQUtFFABRRRQAUUUUwEopaSkAUUUYoGFGKWiiwhKWiigAooooASiiigAoxS0UAFFFFABRRRQAYopc0UAJRRRQAGiiigAooooAKKKKYBRRRSASjFLSUDCiiigAooooAKWkpaBBRRRQAUUUUAFFFFAwoozRQIKKKKACiiimAUUUUgCiiimAUUUUgCiiigAooooAKKKKACiiigAooooAKKM0UAFFFFACGilpKBhRRRQAtFFJQAZooooAWigUUCCiiigAooooAKKKKACiiigAooooAKKKKAEpaSloAKKKQ0ALRSUtABRRRQAUUUUAFFFFMBKKKKQwooooAWiiimIKKKKQAaSlpKBi0UUUCCiiigAooooAKKKKACiiimAUUUUgCiiigApKWigBKWkpRQMKKKKBBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAlFLRQAUUUGgBKWkpaBhRRRTEFFFJQAtFJS0hhRRRQIKKKKAExS0UUAFFFFMAooooAKKKKQBRRRQAUUUUAFFFFABRS0UAf//Z" alt="HRMNY" style="height:36px;width:auto;display:block">
+    <div style="display:flex;align-items:center;gap:0.5rem">
+      <span class="date-label" id="datum-label"></span>
+      <button class="icoon-btn" onclick="toonKalender()">Agenda</button>
+      <button class="icoon-btn" onclick="toonProfiel()">Profiel</button>
+    </div>
+  </div>
+
+  <div class="banner" id="banner-test" style="background:rgba(201,168,76,0.12);border-color:var(--gold-border);color:var(--navy)">Testmodus: er wordt niets verstuurd</div>
+  <div class="banner" id="banner-ingevoerd">Jouw gevoel van vandaag is bewaard</div>
+
+  <!-- DASHBOARD -->
+  <div id="s-dashboard" class="scherm">
+
+    <!-- LAAG 1: RICHTING -->
+    <div id="laag1" style="display:flex;flex-direction:column;gap:0.75rem">
+      <div class="kompas-kaart">
+        <div class="kompas-wrap">
+          <svg viewBox="0 0 220 118" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M 18 108 A 92 92 0 0 1 202 108" stroke="rgba(26,45,90,0.07)" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <!-- Vier segmenten van links naar rechts: Cautela, Recovery, Build, Flow -->
+            <path d="M 18 108 A 92 92 0 0 1 44.9 42.9" stroke="#E24B4A" stroke-opacity="0.55" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <path d="M 47.9 40.1 A 92 92 0 0 1 107.1 16" stroke="#378ADD" stroke-opacity="0.75" stroke-width="10" fill="none"/>
+            <path d="M 112.9 16 A 92 92 0 0 1 172.1 40.1" stroke="#1D9E75" stroke-opacity="0.8" stroke-width="10" fill="none"/>
+            <path d="M 175.1 42.9 A 92 92 0 0 1 202 108" stroke="#C9A84C" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <line id="wijzer" x1="110" y1="108" x2="110" y2="34" stroke="#1A2D5A" stroke-width="3" stroke-linecap="round" style="transition:all 0.8s cubic-bezier(0.32,0.72,0,1)"/>
+            <circle cx="110" cy="108" r="7" fill="#1A2D5A"/>
+            <circle cx="110" cy="108" r="3" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="richting-naam" id="richting-naam">HRMNY</div>
+        <div class="richting-sub" id="richting-sub">leest jouw nacht</div>
+        <div class="undercurrent" id="undercurrent" tabindex="0">The Undercurrent</div>
+        <div class="fase-label" id="fase-label"></div>
+        <div class="dagzin" id="dagzin"></div>
+        <button class="waarom-btn" id="waarom-btn" onclick="toggleWaarom()" style="display:none">Het verhaal erachter</button>
+        <div class="waarom-blok" id="waarom-blok">
+          <div class="reden" id="reden"></div>
+          <div id="tips"></div>
+        </div>
+      </div>
+
+      <div class="event-kaart" id="event-kaart" onclick="toonKalender()" style="cursor:pointer">
+        <div class="label-mono">Jouw agenda</div>
+        <div class="event-tekst" id="event-tekst"></div>
+      </div>
+
+      <button class="gevoel-kaart" id="rapport-knop" onclick="toonFormulier()"></button>
+
+      <div class="kaart quarter-kaart" id="quarter-kaart" style="display:none"></div>
+      <div class="kaart" id="training-fb" style="display:none"></div>
+
+      <div class="nav-btns">
+        <button class="nav-btn" onclick="toonLaag(2)">Jouw nacht <span class="pijl">&rsaquo;</span></button>
+        <button class="nav-btn" onclick="toonLaag(3)">Jouw ritme <span class="pijl">&rsaquo;</span></button>
+      </div>
+    </div>
+
+    <!-- LAAG 2: JOUW NACHT -->
+    <div id="laag2" style="display:none;flex-direction:column;gap:0.6rem">
+      <div class="kaart" style="padding:1.1rem">
+        <div class="nacht-kop"><div class="nacht-titel">Jouw nacht</div><div class="label-mono" id="nacht-datum"></div></div>
+        <div class="nacht-intro" id="nacht-intro"></div>
+        <div id="nacht-groepen"></div>
+        <div class="voor-vandaag" id="voor-vandaag" style="display:none">
+          <div class="label-mono" style="margin-bottom:0.4rem">Wat je ermee kan vandaag</div>
+          <div id="nacht-tips"></div>
+        </div>
+        <div class="nacht-bron">Tik op een waarde om het verloop te zien.</div>
+      </div>
+      <div class="nav-btns">
+        <button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button>
+      </div>
+    </div>
+
+    <!-- LAAG 3: RITME (richting per dag) -->
+    <div id="laag3" style="display:none;flex-direction:column;gap:0.6rem">
+      <div class="kaart" style="padding:1.1rem">
+        <div class="label-mono">Jouw richting, laatste 14 dagen</div>
+        <div class="strook" id="strook"></div>
+        <div class="strook-as"><span>14 dagen geleden</span><span>vandaag</span></div>
+        <div class="legende">
+          <span><i style="background:#C9A84C"></i>Flow</span>
+          <span><i style="background:#1D9E75"></i>Build</span>
+          <span><i style="background:#378ADD"></i>Recovery</span>
+          <span><i style="background:#E24B4A;opacity:0.7"></i>Cautela</span>
+        </div>
+        <div class="stil" id="strook-tekst" style="margin-top:0.8rem;text-align:left"></div>
+      </div>
+      <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button></div>
+    </div>
+
+    <!-- AVONDREFLECTIE (vanaf 20u) -->
+    <div class="kaart" id="avond-kaart" style="display:none;border:1.5px solid var(--navy)">
+      <div class="label-mono" style="color:var(--navy);margin-bottom:0.4rem">Avondreflectie</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.12rem;font-weight:300;color:var(--navy);line-height:1.5;margin-bottom:0.8rem">Klopte de richting van vandaag voor jou?</div>
+      <div class="fb-btns">
+        <button class="fb-btn" onclick="geefFeedback(this,'ja')">Ja</button>
+        <button class="fb-btn" onclick="geefFeedback(this,'deels')">Deels</button>
+        <button class="fb-btn" onclick="geefFeedback(this,'nee')">Nee</button>
+      </div>
+      <div class="fb-dank" id="fb-dank"></div>
+    </div>
+  </div>
+
+  <!-- FORMULIER -->
+  <div id="s-formulier" class="scherm">
+    <div class="kaart">
+      <button class="terug-knop" onclick="terugVanFormulier()">&lsaquo; Terug</button>
+      <div class="form-titel" style="font-size:1.1rem">Hoe gaat het met jou?</div>
+      <div class="form-sub">Tik aan wat klopt. Alles is vrijblijvend, één tik is al genoeg. Wat jij voelt, telt voor HRMNY even zwaar als wat er gemeten wordt.</div>
+      <div class="vraag"><div class="vraag-titel">Hoe voel je je?</div>
+        <div class="chip-rij" data-vraag="gevoel">
+          <button class="chip" type="button" data-w="leeg">Leeg</button><button class="chip" type="button" data-w="moe">Moe</button><button class="chip" type="button" data-w="oke">Oké</button><button class="chip" type="button" data-w="goed">Goed</button><button class="chip" type="button" data-w="fris">Fris</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Hoe sliep je, volgens jou?</div>
+        <div class="chip-rij" data-vraag="slaap_gevoel">
+          <button class="chip" type="button" data-w="slecht">Slecht</button><button class="chip" type="button" data-w="onrustig">Onrustig</button><button class="chip" type="button" data-w="oke">Oké</button><button class="chip" type="button" data-w="goed">Goed</button><button class="chip" type="button" data-w="diep">Diep</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Je hoofd</div>
+        <div class="chip-rij" data-vraag="hoofd">
+          <button class="chip" type="button" data-w="wazig">Wazig</button><button class="chip" type="button" data-w="druk">Druk</button><button class="chip" type="button" data-w="rustig">Rustig</button><button class="chip" type="button" data-w="helder">Helder</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Je lichaam</div><div class="vraag-sub">Meerdere mag.</div>
+        <div class="chip-rij" data-vraag="lichaam" data-meer="1">
+          <button class="chip" type="button" data-w="zwaar">Zwaar</button><button class="chip" type="button" data-w="stijf">Stijf</button><button class="chip" type="button" data-w="spierpijn">Spierpijn</button><button class="chip" type="button" data-w="pijn">Pijn of blessure</button><button class="chip" type="button" data-w="licht">Licht</button><button class="chip" type="button" data-w="sterk">Sterk</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Zin om te bewegen</div>
+        <div class="chip-rij" data-vraag="beweegzin">
+          <button class="chip" type="button" data-w="geen">Geen</button><button class="chip" type="button" data-w="weinig">Weinig</button><button class="chip" type="button" data-w="gewoon">Gewoon</button><button class="chip" type="button" data-w="veel">Veel</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Wat speelde er gisteren?</div><div class="vraag-sub">Meerdere mag.</div>
+        <div class="chip-rij" data-vraag="gisteren" data-meer="1">
+          <button class="chip" type="button" data-w="zware_training">Zware training</button><button class="chip" type="button" data-w="zwaar">Zware dag</button><button class="chip" type="button" data-w="rustig">Rustige dag</button><button class="chip" type="button" data-w="topdag">Topdag</button><button class="chip" type="button" data-w="stress">Veel stress</button><button class="chip" type="button" data-w="alcohol">Alcohol</button><button class="chip" type="button" data-w="laat_eten">Laat gegeten</button><button class="chip" type="button" data-w="cafeine">Koffie na 14u</button><button class="chip" type="button" data-w="scherm">Lang op een scherm 's avonds</button><button class="chip" type="button" data-w="laat">Laat opgebleven</button><button class="chip" type="button" data-w="buiten">Veel buiten</button><button class="chip" type="button" data-w="ziek">Niet lekker</button><button class="chip" type="button" data-w="reizen">Reizen</button>
+        </div>
+        <div class="hint" id="ctx-hint"></div></div>
+      <div class="vraag"><div class="vraag-titel">Nog iets kwijt?</div><div class="vraag-sub">Eén zin is genoeg. Mag leeg.</div>
+        <textarea class="notitie" id="inp-notitie" maxlength="280" placeholder="bv. drukke week, slecht geslapen door de kinderen"></textarea></div>
+      <details class="horloge"><summary>Waarden zelf aanvullen (komt normaal vanzelf binnen)</summary>
+      <div class="fields-2">
+        <div class="field"><label>HRV <small>ms</small></label><input id="inp-hrv" type="number" inputmode="numeric" placeholder="overslaan" min="10" max="200"></div>
+        <div class="field"><label>Rusthartslag <small>bpm</small></label><input id="inp-rhr" type="number" inputmode="numeric" placeholder="overslaan" min="30" max="120"></div>
+        <div class="field"><label>Ademhaling <small>per min</small></label><input id="inp-adem" type="number" inputmode="decimal" step="0.1" placeholder="overslaan" min="5" max="40"></div>
+        <div class="field"><label>Slaapscore <small>0-100</small></label><input id="inp-slaap" type="number" inputmode="numeric" placeholder="overslaan" min="0" max="100"></div>
+        <div class="field"><label>Body Battery <small>0-100</small></label><input id="inp-bb" type="number" inputmode="numeric" placeholder="overslaan" min="0" max="100"></div>
+        <div class="field"><label>Stress <small>0-100</small></label><input id="inp-stress" type="number" inputmode="numeric" placeholder="overslaan" min="0" max="100"></div>
+      </div>
+      </details>
+
+      <button class="btn-hoofd" id="verstuur-knop" style="margin-top:1.1rem" onclick="versturen()">Bewaren</button>
+      <button class="btn-zacht" style="margin-top:0.5rem" onclick="terugVanFormulier()">Annuleren</button>
+      <div class="form-melding" id="form-melding"></div>
+    </div>
+  </div>
+
+  <!-- AGENDA -->
+  <div id="s-kalender" class="scherm">
+    <div class="kaart" id="kal-lijst-kaart">
+      <button class="terug-knop" onclick="toonDashboard()">&lsaquo; Terug</button>
+      <div class="form-titel" style="font-size:1.1rem">Jouw agenda</div>
+      <div class="form-uitleg">Wat jij plant: trainingen, voorbereidingen en momenten waar je naartoe leeft. HRMNY legt niets op, maar laat zien of je plan past bij je richting van de dag.</div>
+      <div class="week-strook" id="week-strook"></div>
+      <div class="dag-paneel" id="dag-paneel"></div>
+      <div class="sectie-kop">Momenten</div>
+      <div class="moment-lijst" id="moment-lijst"></div>
+      <div class="sectie-kop">Vaste trainingen</div>
+      <div class="moment-lijst" id="reeks-lijst"></div>
+    </div>
+
+    <!-- editor moment -->
+    <div class="kaart" id="kal-edit-kaart" style="display:none">
+      <button class="terug-knop" onclick="toonMomentenLijst()">&lsaquo; Terug naar je agenda</button>
+      <div class="form-titel" id="kal-edit-titel" style="font-size:1.1rem">Nieuw moment</div>
+      <div class="field" style="margin-top:0.8rem"><label>Soort moment</label>
+        <select id="kal-type" onchange="toggleKalVelden()">
+          <option value="">Kies</option>
+          <option value="race">Wedstrijd of grote tocht</option>
+          <option value="activiteit">Activiteit (wandeling, fietstocht, uitstap)</option>
+          <option value="examen">Examen of belangrijke presentatie</option>
+          <option value="meeting">Grote meeting of pitch</option>
+          <option value="sociaal">Feest, trouw of familiedag</option>
+          <option value="reis">Reis met tijdsverschil</option>
+        </select></div>
+      <div class="field"><label>Naam <small>mag leeg</small></label><input id="kal-naam" type="text" placeholder="bv. Gravel Fondo Hageland"></div>
+      <div class="field"><label>Datum</label><div class="datum-veld"><input id="kal-datum__t" type="text" inputmode="numeric" placeholder="dd/mm/jjjj" maxlength="10" autocomplete="off" oninput="datumTyp(this,'kal-datum')"><button type="button" class="datum-knop" onclick="openKalender('kal-datum')">Kalender</button><input id="kal-datum" type="date" class="datum-native" tabindex="-1" aria-hidden="true" onchange="datumGekozen('kal-datum')"></div></div>
+      <div class="vraag" style="margin-top:0.6rem"><div class="vraag-titel">Hoe belangrijk is dit moment voor jou?</div>
+        <div class="schuif-wrap"><input type="range" id="kal-inzet" min="1" max="5" step="1" value="3" oninput="toonSchuifLabels()">
+          <div class="schuif-as"><span>ontspannen</span><span>alles geven</span></div>
+          <div class="schuif-label" id="kal-inzet-label"></div></div></div>
+      <div class="vraag" id="kal-opbouw-vraag"><div class="vraag-titel">Wil je er nog extra voor opbouwen?</div>
+        <div class="schuif-wrap"><input type="range" id="kal-opbouw" min="1" max="3" step="1" value="1" oninput="toonSchuifLabels()">
+          <div class="schuif-as"><span>niets extra</span><span>gericht opbouwen</span></div>
+          <div class="schuif-label" id="kal-opbouw-label"></div></div></div>
+      <div class="vraag" id="kal-duur-vraag"><div class="vraag-titel">Hoe lang duurt het?</div>
+        <div class="chip-rij" id="kal-duur">
+          <button class="chip" type="button" data-w="uren">Enkele uren</button><button class="chip" type="button" data-w="halve_dag">Halve dag</button><button class="chip" type="button" data-w="dag">Hele dag</button><button class="chip" type="button" data-w="meerdaags">Meerdere dagen</button>
+        </div></div>
+      <div class="field" id="kal-tijdzone-veld" style="display:none"><label>Tijdsverschil <small>uren, mag leeg</small></label><input id="kal-tijdzone" type="number" inputmode="numeric" min="0" max="14" placeholder="overslaan"></div>
+      <button class="btn-hoofd" style="margin-top:0.6rem" onclick="slaEventOp()">Bewaren</button>
+      <button class="btn-zacht" style="margin-top:0.5rem" onclick="toonMomentenLijst()">Annuleren</button>
+      <div class="form-melding" id="kal-melding"></div>
+      <button class="wis-link" id="kal-verwijder-btn" style="display:none" onclick="document.getElementById('kal-bevestig').classList.add('open')">Dit moment verwijderen</button>
+      <div class="bevestig" id="kal-bevestig">Dit moment verwijderen?
+        <div class="fb-btns">
+          <button class="fb-btn" onclick="verwijderEvent()">Verwijderen</button>
+          <button class="fb-btn" onclick="document.getElementById('kal-bevestig').classList.remove('open')">Annuleren</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- editor training -->
+    <div class="kaart" id="kal-train-kaart" style="display:none">
+      <button class="terug-knop" onclick="toonMomentenLijst()">&lsaquo; Terug naar je agenda</button>
+      <div class="form-titel" id="tr-titel" style="font-size:1.1rem">Nieuwe training</div>
+      <div class="vraag" style="margin-top:0.8rem"><div class="vraag-titel">Wat ga je doen?</div>
+        <div class="chip-rij" id="tr-sport">
+          <button class="chip" type="button" data-w="fietsen">Fietsen</button><button class="chip" type="button" data-w="lopen">Lopen</button><button class="chip" type="button" data-w="wandelen">Wandelen</button><button class="chip" type="button" data-w="kracht">Kracht</button><button class="chip" type="button" data-w="zwemmen">Zwemmen</button><button class="chip" type="button" data-w="yoga">Yoga of mobiliteit</button><button class="chip" type="button" data-w="andere">Iets anders</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Hoe zwaar?</div>
+        <div class="schuif-wrap"><input type="range" id="tr-int" min="1" max="5" step="1" value="2" oninput="toonTrLabels()">
+          <div class="schuif-as"><span>heel rustig</span><span>zwaar</span></div>
+          <div class="schuif-label" id="tr-int-label"></div></div></div>
+      <div class="vraag"><div class="vraag-titel">Hoe lang?</div>
+        <div class="chip-rij" id="tr-duur">
+          <button class="chip" type="button" data-w="kort">Tot 45 min</button><button class="chip" type="button" data-w="middel">45 tot 90 min</button><button class="chip" type="button" data-w="lang">1,5 tot 3 uur</button><button class="chip" type="button" data-w="heel_lang">Meer dan 3 uur</button>
+        </div></div>
+      <div class="vraag"><div class="vraag-titel">Waarom deze training?</div>
+        <div class="chip-rij" id="tr-doel">
+          <button class="chip" type="button" data-w="conditie">Conditie opbouwen</button><button class="chip" type="button" data-w="voorbereiding">Voorbereiding op een moment</button><button class="chip" type="button" data-w="herstel">Actief herstel</button><button class="chip" type="button" data-w="plezier">Gewoon plezier</button>
+        </div>
+        <div class="field" id="tr-moment-veld" style="display:none;margin-top:0.5rem"><label>Voor welk moment?</label><select id="tr-moment" onchange="momentGekozen()"></select></div></div>
+      <div class="vraag"><div class="vraag-titel">Wanneer?</div>
+        <div class="field"><label>Eerste keer</label><div class="datum-veld"><input id="tr-datum__t" type="text" inputmode="numeric" placeholder="dd/mm/jjjj" maxlength="10" autocomplete="off" oninput="datumTyp(this,'tr-datum')"><button type="button" class="datum-knop" onclick="openKalender('tr-datum')">Kalender</button><input id="tr-datum" type="date" class="datum-native" tabindex="-1" aria-hidden="true" onchange="datumGekozen('tr-datum');standaardDag()"></div></div>
+        <div class="chip-rij" id="tr-herhaal">
+          <button class="chip" type="button" data-w="nee">Eenmalig</button><button class="chip" type="button" data-w="week">Elke week</button><button class="chip" type="button" data-w="2week">Om de week</button>
+        </div>
+        <div id="tr-herhaal-blok" style="display:none;margin-top:0.5rem">
+          <div class="vraag-sub">Op welke dagen?</div>
+          <div class="chip-rij" id="tr-dagen">
+            <button class="chip" type="button" data-w="1">Ma</button><button class="chip" type="button" data-w="2">Di</button><button class="chip" type="button" data-w="3">Wo</button><button class="chip" type="button" data-w="4">Do</button><button class="chip" type="button" data-w="5">Vr</button><button class="chip" type="button" data-w="6">Za</button><button class="chip" type="button" data-w="0">Zo</button>
+          </div>
+          <div class="field" style="margin-top:0.4rem"><label>Tot <small>mag leeg</small></label><div class="datum-veld"><input id="tr-tot__t" type="text" inputmode="numeric" placeholder="dd/mm/jjjj" maxlength="10" autocomplete="off" oninput="datumTyp(this,'tr-tot')"><button type="button" class="datum-knop" onclick="openKalender('tr-tot')">Kalender</button><input id="tr-tot" type="date" class="datum-native" tabindex="-1" aria-hidden="true" onchange="datumGekozen('tr-tot')"></div></div>
+        </div></div>
+      <button class="btn-hoofd" style="margin-top:0.6rem" onclick="slaTrainingOp()">Bewaren</button>
+      <button class="btn-zacht" style="margin-top:0.5rem" onclick="toonMomentenLijst()">Annuleren</button>
+      <div class="form-melding" id="tr-melding"></div>
+      <button class="wis-link" id="tr-skip-btn" style="display:none" onclick="slaKeerOver()">Alleen deze keer overslaan</button>
+      <button class="wis-link" id="tr-verwijder-btn" style="display:none" onclick="document.getElementById('tr-bevestig').classList.add('open')">Deze training verwijderen</button>
+      <div class="bevestig" id="tr-bevestig">Deze training verwijderen? Bij een vaste training verdwijnen alle keren.
+        <div class="fb-btns">
+          <button class="fb-btn" onclick="verwijderTraining()">Verwijderen</button>
+          <button class="fb-btn" onclick="document.getElementById('tr-bevestig').classList.remove('open')">Annuleren</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFIEL -->
+  <div id="s-profiel" class="scherm">
+    <div class="kaart">
+      <button class="terug-knop" onclick="toonDashboard()">&lsaquo; Terug</button>
+      <div class="profiel-rij"><div><div class="profiel-rij-label">Voornaam</div><div class="profiel-rij-waarde" id="pv-naam">·</div></div></div>
+      <div class="profiel-rij"><div><div class="profiel-rij-label">Wearable</div><div class="profiel-rij-waarde" id="pv-wearable">·</div></div></div>
+      <div class="profiel-rij"><div><div class="profiel-rij-label">Bij HRMNY sinds</div><div class="profiel-rij-waarde" id="pv-start">·</div></div></div>
+      <div class="profiel-rij" style="flex-direction:column;align-items:stretch">
+        <div class="profiel-rij-label" style="margin-bottom:0.5rem">Modus</div>
+        <div class="chip-rij" id="profiel-modus-rij"></div>
+        <div class="hint zichtbaar" id="profiel-modus-hint" style="font-style:normal;color:var(--text-muted)"></div>
+      </div>
+      <div class="profiel-rij"><label for="pv-avondzin" style="display:flex;gap:0.7rem;align-items:flex-start;cursor:pointer"><input type="checkbox" id="pv-avondzin" onchange="zetAvondzin(this.checked)" style="margin-top:0.25rem;accent-color:#1A2D5A"><span><span class="profiel-rij-label">The Vesper</span><br><span style="font-size:0.84rem;color:var(--text-muted);line-height:1.5">Je avondzin rond je slaapuur. Eén zin over The Quarter, het kwartier voor je gewone bedtijd, als je de app &#39;s avonds opent.</span></span></label></div>
+      <button class="btn-zacht" style="margin-top:0.8rem" onclick="vernieuwRichting()">Richting opnieuw ophalen</button>
+      <details class="klein"><summary>Meer opties</summary>
+        <button class="wis-link" onclick="document.getElementById('bevestig').classList.add('open')">Gegevens op dit toestel wissen</button>
+        <div class="bevestig" id="bevestig">
+          Alles wat op dit toestel bewaard is, wordt gewist. Je gegevens bij HRMNY blijven bestaan.
+          <div class="fb-btns">
+            <button class="fb-btn" onclick="wisAlles()">Wissen</button>
+            <button class="fb-btn" onclick="document.getElementById('bevestig').classList.remove('open')">Annuleren</button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <div class="page-footer">HRMNY · Sequere Rhythmum · Beta</div>
+</div>
+
+<!-- HISTORIEK -->
+<div class="historiek-overlay" id="historiek-overlay" onclick="if(event.target===this)sluitHistoriek()">
+  <div class="historiek-paneel">
+    <div class="historiek-handel"></div>
+    <div class="label-mono" id="hist-label"></div>
+    <div class="historiek-term" id="hist-term"></div>
+    <div class="hist-tabs">
+      <div class="hist-tab actief" data-dagen="7" onclick="kiesHistTab(this)">7 d</div>
+      <div class="hist-tab" data-dagen="14" onclick="kiesHistTab(this)">14 d</div>
+      <div class="hist-tab" data-dagen="30" onclick="kiesHistTab(this)">30 d</div>
+    </div>
+    <div class="hist-grafiek-wrap">
+      <svg class="hist-svg" id="hist-svg" viewBox="0 0 320 80" preserveAspectRatio="none"></svg>
+      <div class="hist-as"><span id="hist-as-links"></span><span>vandaag</span></div>
+    </div>
+    <div class="stil" id="hist-stat" style="text-align:left;margin-bottom:0.5rem"></div>
+    <button class="btn-zacht sluit-btn" onclick="sluitHistoriek()">Sluiten</button>
+  </div>
+</div>
+
+<script>
+/* HRMNY app voor Dimitri, versie 2.
+   Deze app berekent zelf geen richting. De richting, dagzin, reden en tip komen
+   uit de HRMNY-pipeline. De app toont ze en verzamelt jouw invoer. */
+
+var INVOER_WEBHOOK = 'https://hook.eu1.make.com/jn5tjwi53v5i6acl9dv87ckuejvqgbt4';
+var RICHTING_WEBHOOK = 'https://hook.eu1.make.com/8ifynn4qdm7pxokjn4v17xnmms4i53bg';
+var RICHTING_PROXY = 'valo-proxy.php';
+/* Testmodus: voeg ?test toe aan het adres. Leest gewoon mee, verstuurt niets. */
+var TESTMODUS = /[?&]test\b/.test(location.search);
+
+/* ── OPSLAG (veilig, faalt stil) ── */
+var P='db.';
+function lees(k){try{return localStorage.getItem(P+k);}catch(e){return null;}}
+function schrijf(k,v){try{localStorage.setItem(P+k,v);}catch(e){}}
+function wis(k){try{localStorage.removeItem(P+k);}catch(e){}}
+
+/* ── DATUM (lokale tijd, niet UTC) ── */
+function datumStr(d){var m=d.getMonth()+1,dg=d.getDate();return d.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(dg<10?'0':'')+dg;}
+function vandaagStr(){return datumStr(new Date());}
+function dagenTerug(n){var d=new Date();d.setDate(d.getDate()-n);return datumStr(d);}
+function heeftRapportVandaag(){return lees('hrmny_rapport_datum')===vandaagStr();}
+
+/* Dag van het traject, op basis van de startdatum */
+function dagNummer(){
+  var s=lees('hrmny_startdatum');if(!s)return 1;
+  var p=s.split('-');var start=new Date(+p[0],+p[1]-1,+p[2]);
+  var nu=new Date();nu.setHours(0,0,0,0);
+  return Math.max(1,Math.floor((nu-start)/86400000)+1);
+}
+function fase(){var d=dagNummer();return d<=10?'observatie':(d<=44?'kalibratie':'stabiel');}
+
+/* ── RICHTINGEN ── */
+var RICHTINGEN={
+  flow:    {naam:'Flow',    sub:'The Stream',    kleur:'#C9A84C', hoek:22},
+  build:   {naam:'Build',   sub:'opbouwen',      kleur:'#1D9E75', hoek:67},
+  recovery:{naam:'Recovery',sub:'The Silence',   kleur:'#378ADD', hoek:113},
+  cautela: {naam:'Cautela', sub:'met zorg',      kleur:'#E24B4A', hoek:158}
+};
+/* Vertaalt wat de pipeline teruggeeft naar een van de vier richtingen */
+function normaliseerRichting(r){
+  if(!r)return null;
+  r=String(r).toLowerCase().trim();
+  var map={flow:'flow',inconnue:'flow',stream:'flow',piek:'flow',
+    build:'build',opbouw:'build',
+    recovery:'recovery',herstel:'recovery',silence:'recovery',
+    cautela:'cautela',prudentia:'cautela',voorzichtig:'cautela',voorzichtigheid:'cautela'};
+  return map[r]||null;
+}
+function normaliseerUndercurrent(u){
+  if(!u)return null;u=String(u).toLowerCase().trim();
+  if(u==='op'||u==='opwaarts'||u==='up')return 'op';
+  if(u==='neer'||u==='neerwaarts'||u==='down')return 'neer';
+  return null;
+}
+
+/* ── MODI ── */
+var MODI=[
+  {id:'Peak',      uitleg:'Kort, direct, zonder omwegen. Voor wie zijn lichaam goed kent en feiten wil.'},
+  {id:'Sportief',  uitleg:'Ritmisch en warm, met oog voor beweging en training.'},
+  {id:'Focus',     uitleg:'Helder en rustig. Vertaalt je herstel naar ruimte in je hoofd en je werk.'},
+  {id:'Grounded',  uitleg:'Nuchter en menselijk. Voor wie gewoon goed wil leven. Een goed vertrekpunt.'},
+  {id:'Relaxatie', uitleg:'Zacht en ademend. Geeft je toestemming om te vertragen.'},
+  {id:'Shift',     uitleg:'Los van de klok. Voor wie in wisselende diensten of een eigen ritme leeft.'}
+];
+function huidigeModus(){return lees('hrmny_modus')||'Sportief';}
+function tekenModi(rijId,hintId){
+  var rij=document.getElementById(rijId);if(!rij)return;
+  rij.innerHTML='';
+  MODI.forEach(function(m){
+    var b=document.createElement('button');b.type='button';
+    b.className='chip modus-chip'+(m.id===huidigeModus()?' actief':'');
+    b.textContent=m.id;
+    var tip=document.createElement('span');tip.className='modus-tip';tip.textContent=m.uitleg;b.appendChild(tip);
+    b.onclick=function(){
+      schrijf('hrmny_modus',m.id);
+      tekenModi('modus-rij','modus-hint');tekenModi('profiel-modus-rij','profiel-modus-hint');
+    };
+    rij.appendChild(b);
+  });
+  var h=document.getElementById(hintId);
+  if(h){var mm=MODI.filter(function(x){return x.id===huidigeModus();})[0];h.textContent=mm?mm.uitleg:'';}
+}
+
+/* ── SCHERMEN ── */
+function toonScherm(id){
+  ['s-dashboard','s-formulier','s-profiel','s-kalender'].forEach(function(s){document.getElementById(s).classList.toggle('actief',s===id);});
+  document.getElementById('banner-ingevoerd').style.display=(id==='s-dashboard'&&heeftRapportVandaag())?'block':'none';
+  window.scrollTo(0,0);
+}
+function toonLaag(n){
+  document.getElementById('laag1').style.display=n===1?'flex':'none';
+  document.getElementById('laag2').style.display=n===2?'flex':'none';
+  document.getElementById('laag3').style.display=n===3?'flex':'none';
+  if(n===2)tekenSignalen();
+  if(n===3)tekenStrook();
+}
+function toonDashboard(){
+  toonScherm('s-dashboard');toonLaag(1);
+  tekenGevoelKaart();
+  document.getElementById('avond-kaart').style.display=new Date().getHours()>=20?'block':'none';
+  toonRichting(laatsteRichtingVandaag());
+  renderEventStatus();
+  renderQuarter();
+  renderTrainingFb();
+}
+
+/* ── RICHTING TONEN (enige bron: de pipeline) ── */
+function laatsteRichtingVandaag(){
+  var raw=lees('hrmny_richting_data');
+  if(!raw)return null;
+  try{var d=JSON.parse(raw);return d&&d.opgehaald===vandaagStr()?d:null;}catch(e){return null;}
+}
+function zetAccent(kleur){document.documentElement.style.setProperty('--accent',kleur);}
+function zetWijzer(hoekDeg){
+  var rad=hoekDeg*Math.PI/180,len=74;
+  var w=document.getElementById('wijzer');
+  w.setAttribute('x2',(110-Math.cos(rad)*len).toFixed(1));
+  w.setAttribute('y2',(108-Math.sin(rad)*len).toFixed(1));
+}
+function toonRichting(data){
+  var naamEl=document.getElementById('richting-naam'),subEl=document.getElementById('richting-sub');
+  var dzEl=document.getElementById('dagzin'),wBtn=document.getElementById('waarom-btn');
+  var faseEl=document.getElementById('fase-label'),ucEl=document.getElementById('undercurrent');
+  var f=fase();
+  faseEl.style.display=f==='stabiel'?'none':'block';
+  faseEl.textContent=f==='observatie'?'HRMNY kijkt nog vooral mee.':'HRMNY leert jouw ritme nog kennen.';
+
+  var r=data?RICHTINGEN[data.richting]:null;
+  if(!r){
+    zetAccent('#6B7A9E');zetWijzer(90);
+    naamEl.textContent='HRMNY';subEl.textContent='leest jouw nacht';
+    dzEl.textContent='Je richting voor vandaag komt eraan. Kom straks even terug.';
+    wBtn.style.display='none';ucEl.style.display='none';
+    document.getElementById('waarom-blok').classList.remove('open');
+    return;
+  }
+  zetAccent(r.kleur);zetWijzer(r.hoek);
+  naamEl.innerHTML='<span class="hrmny-term richting-term" tabindex="0" onclick="this.classList.toggle(\'open\')">'+r.naam+'<span class="hrmny-tooltip">'+RICHTING_UITLEG[data.richting]+'</span></span>';
+  subEl.innerHTML='';subEl.textContent=r.sub;voegTooltipsToe(subEl);
+  dzEl.textContent=data.dagzin||'';voegTooltipsToe(dzEl);
+
+  /* The Undercurrent: enkel weergave, enkel in de stabiele fase.
+     Of het speelt, beslist de pipeline. */
+  ucEl.style.display=(f==='stabiel'&&data.undercurrent)?'inline-block':'none';
+  ucEl.textContent='The Undercurrent';voegTooltipsToe(ucEl);
+
+  var reden=data.reden||'',tip=data.tip||'';
+  document.getElementById('reden').textContent=reden;voegTooltipsToe(document.getElementById('reden'));
+  var tEl=document.getElementById('tips');tEl.innerHTML='';
+  tip.split('|').map(function(t){return t.trim();}).filter(Boolean).forEach(function(t){
+    var div=document.createElement('div');div.className='tip-item';
+    var sp=document.createElement('span');sp.textContent=t;div.appendChild(sp);tEl.appendChild(div);voegTooltipsToe(sp);
+  });
+  wBtn.style.display=(reden||tip)?'inline-block':'none';
+}
+function toggleWaarom(){
+  var b=document.getElementById('waarom-blok');b.classList.toggle('open');
+  document.getElementById('waarom-btn').textContent=b.classList.contains('open')?'Sluiten':'Het verhaal erachter';
+}
+
+/* ── RICHTING OPHALEN ── */
+function gebruiker(){return 'dimitri-db01';}
+function verwerkAntwoord(json){
+  if(Array.isArray(json)){var ok=false;json.slice().reverse().forEach(function(x){if(verwerkEen(x))ok=true;});return ok;}
+  return verwerkEen(json);
+}
+function verwerkEen(json){
+  if(!json||typeof json!=='object')return false;
+  var richting=normaliseerRichting(json.richting||json.direction);
+  var dagzin=json.dagzin||json.daily_sentence||'';
+  /* Datum van het record: hoort het bij vandaag? */
+  var bron=json.datum||json.date||'',bronDag=vandaagStr();
+  if(bron){var bd=new Date(bron);if(!isNaN(bd))bronDag=datumStr(bd);}
+  bewaarNacht(json.nacht,bronDag);
+  bewaarExtras(json,bronDag);
+  if(!richting||!dagzin)return false;
+  schrijf('hrmny_richting_'+bronDag,richting);
+  if(bronDag!==vandaagStr())return false;
+  var data={
+    richting:richting,dagzin:dagzin,
+    reden:json.reden||json.daily_reason||'',
+    tip:json.tip||json.daily_tip||'',
+    undercurrent:normaliseerUndercurrent(json.undercurrent),
+    bron_datum:bron,opgehaald:vandaagStr()
+  };
+  schrijf('hrmny_richting_data',JSON.stringify(data));
+  toonRichting(data);
+  renderEventStatus();
+  if(document.getElementById('laag2').style.display==='flex')tekenSignalen();
+  return true;
+}
+function haalRichtingOp(){
+  var uid=encodeURIComponent(gebruiker());
+  fetch(RICHTING_WEBHOOK+'?user_id='+uid)
+    .then(function(r){if(!r.ok)throw 0;return r.json();})
+    .then(function(j){if(!verwerkAntwoord(j))throw 0;})
+    .catch(function(){
+      /* Tweede weg, enkel beschikbaar op hrmny.be */
+      fetch(RICHTING_PROXY+'?user_id='+uid)
+        .then(function(r){if(!r.ok)throw 0;return r.json();})
+        .then(function(j){if(j&&j.found===false)return;verwerkAntwoord(j);})
+        .catch(function(){/* stil: mislukken bestaat niet */});
+    });
+}
+function vernieuwRichting(){wis('hrmny_richting_data');toonDashboard();haalRichtingOp();}
+
+/* ── HOE GAAT HET MET JOU (subjectieve invoer, telt even zwaar als het horloge) ── */
+var CTX_HINTS={
+  alcohol:'Alcohol kan Night Work onrustiger maken. HRMNY neemt het mee.',
+  laat:'Een late avond verschuift The Anchor. HRMNY neemt het mee.',
+  stress:'Stress laat sporen na in je nacht. HRMNY neemt het mee.',
+  ziek:'Je lichaam is druk bezig met herstellen. HRMNY leest dat mee.',
+  reizen:'Reizen verstoort The Rhythm soms even. HRMNY neemt het mee.',
+  topdag:'Fijn om te horen. HRMNY noteert het.',
+  zwaar:'Een zware dag vraagt herstel. HRMNY noteert het.',
+  zware_training:'Na een zware training doet je lichaam vannacht extra werk. HRMNY noteert het.',
+  rustig:'Een rustige dag geeft The Charge ruimte. HRMNY noteert het.',
+  laat_eten:'Laat eten houdt je lichaam ook in de nacht bezig. HRMNY neemt het mee.',
+  cafeine:'Koffie in de namiddag kan Night Work lichter maken. HRMNY neemt het mee.',
+  scherm:'Licht van een scherm stelt je slaap soms uit. HRMNY neemt het mee.',
+  buiten:'Daglicht helpt The Rhythm. HRMNY noteert het.'
+};
+var LABELS={};
+var ANTW={};
+function initVragen(){
+  document.querySelectorAll('#s-formulier .chip-rij[data-vraag]').forEach(function(rij){
+    var vraag=rij.getAttribute('data-vraag'),meer=rij.hasAttribute('data-meer');
+    rij.querySelectorAll('.chip').forEach(function(b){
+      LABELS[vraag+':'+b.getAttribute('data-w')]=b.textContent;
+      b.onclick=function(){
+        var w=b.getAttribute('data-w'),aan=!b.classList.contains('actief');
+        if(meer){
+          b.classList.toggle('actief',aan);
+          var l=ANTW[vraag]||[];l=l.filter(function(x){return x!==w;});if(aan)l.push(w);ANTW[vraag]=l;
+        } else {
+          rij.querySelectorAll('.chip').forEach(function(x){x.classList.remove('actief');});
+          if(aan){b.classList.add('actief');ANTW[vraag]=w;}else delete ANTW[vraag];
+        }
+        if(vraag==='gisteren'){var h=document.getElementById('ctx-hint');if(aan&&CTX_HINTS[w]){h.innerHTML='';h.textContent=CTX_HINTS[w];voegTooltipsToe(h);h.classList.add('zichtbaar');}else h.classList.remove('zichtbaar');}
+      };
+    });
+  });
+}
+function gevoelVandaag(){try{return JSON.parse(lees('hrmny_subj_'+vandaagStr())||'null');}catch(e){return null;}}
+var TERUG_LAAG=1;
+function huidigeLaag(){return document.getElementById('s-dashboard').classList.contains('actief')?(document.getElementById('laag2').style.display==='flex'?2:document.getElementById('laag3').style.display==='flex'?3:1):1;}
+function terugVanFormulier(){toonDashboard();toonLaag(TERUG_LAAG);}
+function toonFormulier(){
+  TERUG_LAAG=huidigeLaag();
+  ANTW={};var opgeslagen=gevoelVandaag()||{};
+  Object.keys(opgeslagen).forEach(function(k){if(k!=='notitie')ANTW[k]=opgeslagen[k];});
+  document.querySelectorAll('#s-formulier .chip-rij[data-vraag]').forEach(function(rij){
+    var v=ANTW[rij.getAttribute('data-vraag')];
+    rij.querySelectorAll('.chip').forEach(function(b){var w=b.getAttribute('data-w');b.classList.toggle('actief',Array.isArray(v)?v.indexOf(w)>=0:v===w);});
+  });
+  document.getElementById('inp-notitie').value=opgeslagen.notitie||'';
+  document.querySelectorAll('#s-formulier input[type=number]').forEach(function(i){var k=i.id.replace('inp-','');var x=lees('hrmny_'+k+'_'+vandaagStr());i.value=x!==null?x:'';});
+  document.getElementById('ctx-hint').classList.remove('zichtbaar');
+  document.getElementById('form-melding').style.display='none';
+  var k=document.getElementById('verstuur-knop');k.disabled=false;k.textContent='Bewaren';
+  toonScherm('s-formulier');
+}
+function getal(id,min,max){
+  var el=document.getElementById(id);if(!el)return null;
+  var v=parseFloat(String(el.value).replace(',','.'));
+  if(isNaN(v)||v<min||v>max)return null;return v;
+}
+function stuur(payload){
+  if(TESTMODUS){try{console.log('TESTMODUS, niet verstuurd:',payload);}catch(e){}return;}
+  try{fetch(INVOER_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){}
+}
+function versturen(){
+  var vandaag=vandaagStr();
+  var grenzen={hrv:[10,200],rhr:[30,120],adem:[5,40],slaap:[0,100],bb:[0,100],stress:[0,100]};
+  var w={};Object.keys(grenzen).forEach(function(k){w[k]=getal('inp-'+k,grenzen[k][0],grenzen[k][1]);if(w[k]!==null)schrijf('hrmny_'+k+'_'+vandaag,w[k]);});
+  /* Horlogewaarden van vandaag meesturen, zodat het nieuwe dagrecord volledig is */
+  Object.keys(w).forEach(function(k){if(w[k]===null){var x=waarde(k,vandaag);if(x!==null)w[k]=x;}});
+  var notitie=(document.getElementById('inp-notitie').value||'').trim();
+  var subj=JSON.parse(JSON.stringify(ANTW));if(notitie)subj.notitie=notitie;
+  var ietsIngevuld=Object.keys(subj).some(function(k){return Array.isArray(subj[k])?subj[k].length>0:!!subj[k];})||Object.keys(grenzen).some(function(k){return getal('inp-'+k,grenzen[k][0],grenzen[k][1])!==null;});
+  if(!ietsIngevuld){var mm=document.getElementById('form-melding');mm.style.display='block';mm.textContent='Je hebt nog niets aangeduid. Er is niets verstuurd.';return;}
+  schrijf('hrmny_subj_'+vandaag,JSON.stringify(subj));
+  schrijf('hrmny_rapport_datum',vandaag);
+  function leeg(x){return x===null||x===undefined?'':x;}
+  stuur({
+    user_id:gebruiker(),naam:lees('hrmny_naam')||'',wearable:'Garmin',
+    leeftijd:parseInt(lees('hrmny_leeftijd'))||'',
+    hrv_night:leeg(w.hrv),rhr_night:leeg(w.rhr),resting_hr:leeg(w.rhr),breath_rate:leeg(w.adem),
+    sleep_score:leeg(w.slaap),body_battery:leeg(w.bb),stress_score:leeg(w.stress),
+    gevoel:subj.gevoel||'',subjectief:JSON.stringify(subj),notitie:notitie,agenda:JSON.stringify(agendaVoorPipeline()),
+    modus:huidigeModus(),datum:vandaag,trigger:'dimitri_v2'
+  });
+  var k=document.getElementById('verstuur-knop');k.disabled=true;k.textContent='Bewaard';
+  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat er gemeten wordt.';
+  setTimeout(function(){terugVanFormulier();setTimeout(haalRichtingOp,8000);},1100);
+}
+function samenvattingGevoel(subj){
+  var delen=[];
+  ['gevoel','slaap_gevoel','hoofd','beweegzin'].forEach(function(v){if(subj[v])delen.push(LABELS[v+':'+subj[v]]);});
+  (subj.lichaam||[]).forEach(function(x){delen.push(LABELS['lichaam:'+x]);});
+  return delen.filter(Boolean);
+}
+function tekenGevoelKaart(){
+  var k=document.getElementById('rapport-knop');if(!k)return;
+  var s=gevoelVandaag();
+  if(s&&Object.keys(s).length){
+    k.className='gevoel-kaart ingevuld';
+    var tags=samenvattingGevoel(s).map(function(t){return '<span class="gevoel-tag">'+t+'</span>';}).join('');
+    k.innerHTML='<div><div class="gk-titel" style="font-size:0.9rem">Jouw gevoel vandaag</div>'+(tags?'<div class="gevoel-samenvatting">'+tags+'</div>':'<div class="gk-sub">Bewaard.</div>')+'</div><div class="gk-pijl" style="font-size:0.78rem;font-weight:600;color:var(--navy)">Aanpassen</div>';
+  } else {
+    k.className='gevoel-kaart';
+    k.innerHTML='<div><div class="gk-titel">Hoe voel je je vandaag?</div><div class="gk-sub">Eén tik is al genoeg. Wat jij voelt, telt even zwaar als wat er gemeten wordt.</div></div><div class="gk-pijl">&rsaquo;</div>';
+  }
+  k.style.display='flex';
+}
+
+/* ── JOUW NACHT (waarden van het horloge, aangevuld met eigen invoer) ── */
+var METRIEK={
+  hrv:{lbl:'HRV',eenheid:'ms',term:'The Ground',kleur:'#1D9E75',drempel:function(m){return Math.max(2,m*0.08);}},
+  rhr:{lbl:'Rusthartslag',eenheid:'bpm',term:'',kleur:'#1A2D5A',drempel:function(){return 2;}},
+  adem:{lbl:'Ademhaling',eenheid:'/min',term:'The Breath',kleur:'#2A3F6F',drempel:function(){return 0.7;}},
+  slaap:{lbl:'Slaapscore',eenheid:'/100',term:'Night Work',kleur:'#378ADD',drempel:function(){return 5;}},
+  bb:{lbl:'Body Battery',eenheid:'/100',term:'The Charge',kleur:'#C9A84C',drempel:function(){return 7;}},
+  stress:{lbl:'Stress',eenheid:'/100',term:'gemiddeld gisteren',kleur:'#E24B4A',drempel:function(){return 5;}}
+};
+var NACHT_GROEPEN=[{titel:'Herstel',sub:'hoe je nacht was',keys:['hrv','slaap','rhr','adem']},{titel:'Energie voor vandaag',sub:'waarmee je de dag begint',keys:['bb','stress']}];
+function bewaarNacht(n,dag){
+  if(!n||typeof n!=='object')return;
+  Object.keys(METRIEK).forEach(function(k){var v=n[k];if(v!==undefined&&v!==null&&String(v)!=='')schrijf('hrmny_w_'+k+'_'+dag,v);});
+}
+function waarde(k,dag){
+  var v=lees('hrmny_w_'+k+'_'+dag);if(v===null||v==='')v=lees('hrmny_'+k+'_'+dag);
+  if(v===null||v==='')return null;var f=parseFloat(v);return isNaN(f)?null:f;
+}
+function opmaak(k,v){return (k==='adem'||k==='hrv')?(Math.round(v*10)/10).toString().replace('.',','):Math.round(v).toString();}
+function vergelijk(k,v){
+  var vals=[];for(var i=1;i<=14;i++){var x=waarde(k,dagenTerug(i));if(x!==null)vals.push(x);}
+  if(vals.length<5)return '';
+  var m=vals.reduce(function(a,b){return a+b;},0)/vals.length,d=METRIEK[k].drempel(m);
+  if(v>m+d)return 'hoger dan je gewoonte';if(v<m-d)return 'lager dan je gewoonte';return 'rond je gewoonte';
+}
+function spark(k){
+  var data=[];for(var i=6;i>=0;i--)data.push(waarde(k,dagenTerug(i)));
+  var aan=data.filter(function(v){return v!==null;});if(aan.length<2)return '';
+  var min=Math.min.apply(null,aan),max=Math.max.apply(null,aan),br=(max-min)||1,W=100,H=22;
+  var pts=[];data.forEach(function(v,i){if(v!==null)pts.push((i/6*(W-4)+2).toFixed(1)+','+(H-3-((v-min)/br)*(H-6)).toFixed(1));});
+  return '<svg class="nacht-spark" viewBox="0 0 100 22" preserveAspectRatio="none"><polyline points="'+pts.join(' ')+'" fill="none" stroke="'+METRIEK[k].kleur+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>';
+}
+function tekenSignalen(){
+  var v=vandaagStr(),aantal=0,html='';
+  document.getElementById('nacht-datum').textContent=new Date().toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
+  NACHT_GROEPEN.forEach(function(g){
+    html+='<div class="groep-titel">'+g.titel+'</div><div class="groep-sub">'+g.sub+'</div><div class="nacht-grid">';
+    g.keys.forEach(function(k){
+      var m=METRIEK[k],x=waarde(k,v);if(x!==null)aantal++;
+      html+='<div class="nacht-kaart" onclick="toonHistoriek(\''+k+'\')"><div class="nacht-lbl">'+m.lbl+'</div>';
+      if(x!==null){var c=vergelijk(k,x);html+='<div class="nacht-val">'+opmaak(k,x)+'<small>'+m.eenheid+'</small></div><div class="nacht-term">'+m.term+'</div>'+(c?'<div class="nacht-vgl">'+c+'</div>':'')+spark(k);}
+      else html+='<div class="nacht-leeg">nog niet binnen</div><div class="nacht-term">'+m.term+'</div>'+spark(k);
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  var sg=gevoelVandaag();
+  html+='<div class="groep-titel">Hoe jij je voelt</div><div class="groep-sub">telt even zwaar als wat er gemeten wordt</div>';
+  if(sg&&Object.keys(sg).length){var tg=samenvattingGevoel(sg).map(function(t){return '<span class="gevoel-tag">'+t+'</span>';}).join('');html+='<div class="gevoel-samenvatting">'+(tg||'<span class="gevoel-tag">bewaard</span>')+'</div>'+(sg.notitie?'<div class="nacht-vgl" style="margin-top:0.45rem;font-style:italic"></div>':'')+'<button class="wis-link" style="margin:0.5rem 0 0;color:var(--navy)" onclick="toonFormulier()">Aanpassen</button>';}
+  else html+='<button class="nav-btn" style="width:100%" onclick="toonFormulier()">Vertel hoe je je voelt <span class="pijl">&rsaquo;</span></button>';
+  document.getElementById('nacht-groepen').innerHTML=html;
+  if(sg&&sg.notitie){var nv=document.querySelector('#nacht-groepen .gevoel-samenvatting + .nacht-vgl');if(nv)nv.textContent='"'+sg.notitie+'"';}
+  var intro=document.getElementById('nacht-intro');
+  intro.textContent=aantal>0?'Zo verliep je nacht, en met deze energie begin je aan vandaag.':'Je nacht is nog niet binnen. Meestal komt die in de loop van de voormiddag of rond de middag.';
+  var r=laatsteRichtingVandaag(),vv=document.getElementById('voor-vandaag'),t=document.getElementById('nacht-tips');
+  if(r&&r.tip&&(typeof fase!=='function'||fase()!=='observatie'||!window.APPLE_ID)){
+    t.innerHTML='';r.tip.split('|').map(function(s){return s.trim();}).filter(Boolean).forEach(function(s){var d=document.createElement('div');d.className='tip-item';var sp=document.createElement('span');sp.textContent=s;d.appendChild(sp);t.appendChild(d);voegTooltipsToe(sp);});
+    vv.style.display='block';
+  } else vv.style.display='none';
+  voegTooltipsToe(intro);
+}
+
+/* ── RITME-STROOK (richting per dag) ── */
+function tekenStrook(){
+  var s=document.getElementById('strook');s.innerHTML='';var teller={};
+  for(var i=13;i>=0;i--){
+    var r=lees('hrmny_richting_'+dagenTerug(i));var div=document.createElement('div');div.className='strook-dag';
+    if(r&&RICHTINGEN[r]){div.style.background=RICHTINGEN[r].kleur;if(r==='cautela')div.style.opacity='0.7';div.title=RICHTINGEN[r].naam;teller[r]=(teller[r]||0)+1;}
+    s.appendChild(div);
+  }
+  var tot=Object.keys(teller).reduce(function(a,k){return a+teller[k];},0);
+  var t=document.getElementById('strook-tekst');
+  if(tot<3){t.textContent='Elke dag kleurt hier een vakje. Na een paar dagen zie je jouw eigen patroon verschijnen.';return;}
+  var meest=Object.keys(teller).sort(function(a,b){return teller[b]-teller[a];})[0];
+  var zinnen={flow:'De voorbije dagen stond je vaak in Flow.',build:'De voorbije dagen bouwde je vooral op.',recovery:'De voorbije dagen vroeg je lichaam vaak om herstel. Dat is ook bouwen.',cautela:'De voorbije dagen vroeg je lichaam vaak om zorg. Geef het die ruimte.'};
+  t.textContent=zinnen[meest];
+}
+
+/* ── HISTORIEK ── */
+var HIST_TYPE='slaap';
+function toonHistoriek(type){
+  HIST_TYPE=type;var m=METRIEK[type];
+  document.getElementById('hist-label').textContent=m.lbl;
+  var t=document.getElementById('hist-term');t.innerHTML='';t.textContent=m.term&&m.term.indexOf('The ')===0?m.term:m.lbl;voegTooltipsToe(t);
+  document.querySelectorAll('.hist-tab').forEach(function(x){x.classList.toggle('actief',x.getAttribute('data-dagen')==='7');});
+  tekenHist(7);
+  document.getElementById('historiek-overlay').classList.add('open');
+}
+function sluitHistoriek(){document.getElementById('historiek-overlay').classList.remove('open');}
+function kiesHistTab(el){
+  document.querySelectorAll('.hist-tab').forEach(function(x){x.classList.remove('actief');});el.classList.add('actief');
+  tekenHist(parseInt(el.getAttribute('data-dagen')));
+}
+function tekenHist(n){
+  var c=METRIEK[HIST_TYPE],data=[];
+  for(var i=n-1;i>=0;i--)data.push(waarde(HIST_TYPE,dagenTerug(i)));
+  var aan=data.filter(function(v){return v!==null;});
+  var W=320,H=80,P=14;
+  var min=aan.length?Math.min.apply(null,aan):0,max=aan.length?Math.max.apply(null,aan):1,br=(max-min)||10;
+  var lo=min-br*0.25,hi=max+br*0.25;
+  function px(i){return P+(i/Math.max(n-1,1))*(W-2*P);}
+  function py(v){return H-P-((v-lo)/(hi-lo))*(H-2*P);}
+  var pts=[];data.forEach(function(v,i){if(v!==null)pts.push([px(i),py(v),v]);});
+  var svg='<line x1="'+P+'" x2="'+(W-P)+'" y1="'+(H-P)+'" y2="'+(H-P)+'" stroke="rgba(26,45,90,0.1)"/>';
+  if(pts.length>1)svg+='<polyline points="'+pts.map(function(p){return p[0]+','+p[1];}).join(' ')+'" stroke="'+c.kleur+'" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+  pts.forEach(function(p,i){var last=i===pts.length-1;svg+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(last?4:2.5)+'" fill="'+(last?c.kleur:'#fff')+'" stroke="'+c.kleur+'" stroke-width="1.5"/>';if(last)svg+='<text x="'+p[0]+'" y="'+(p[1]-8)+'" text-anchor="end" font-size="10" font-family="DM Mono,monospace" fill="'+c.kleur+'">'+opmaak(HIST_TYPE,p[2])+'</text>';});
+  data.forEach(function(v,i){if(v===null)svg+='<circle cx="'+px(i)+'" cy="'+(H-P)+'" r="2" fill="rgba(26,45,90,0.12)"/>';});
+  if(!pts.length)svg+='<text x="160" y="44" text-anchor="middle" font-size="11" font-family="DM Sans,sans-serif" fill="rgba(26,45,90,0.35)">Nog geen gegevens in deze periode</text>';
+  document.getElementById('hist-svg').innerHTML=svg;
+  document.getElementById('hist-as-links').textContent=n+' dagen geleden';
+  var st=document.getElementById('hist-stat');
+  if(st){if(aan.length>=2){var gem=aan.reduce(function(a,b){return a+b;},0)/aan.length;st.textContent='Gemiddeld '+opmaak(HIST_TYPE,gem)+' '+c.eenheid+' over '+aan.length+' dagen. Laagst '+opmaak(HIST_TYPE,Math.min.apply(null,aan))+', hoogst '+opmaak(HIST_TYPE,Math.max.apply(null,aan))+'.';}else st.textContent='Hoe meer dagen binnenkomen, hoe duidelijker jouw eigen patroon wordt.';}
+}
+
+/* ── AVONDREFLECTIE ── */
+var FB={
+  ja:'Dank je. Wat je voelde en wat HRMNY zag, liepen samen.',
+  deels:'Dank je. Ook dat verschil is waardevol voor HRMNY.',
+  nee:'Dank je. Jouw gevoel telt even zwaar als de data. HRMNY leert ervan.'
+};
+function geefFeedback(btn,keuze){
+  btn.parentNode.querySelectorAll('.fb-btn').forEach(function(b){b.classList.remove('gekozen');});
+  btn.classList.add('gekozen');
+  var d=document.getElementById('fb-dank');d.textContent=FB[keuze];d.style.display='block';
+  var r=laatsteRichtingVandaag();
+  /* Enkel lokaal: elk bericht naar Make maakt een nieuw dagrecord aan. */
+  schrijf('hrmny_feedback_'+vandaagStr(),keuze+(r?'|'+r.richting:''));
+}
+
+/* ── PROFIEL ── */
+function toonProfiel(){
+  var az=document.getElementById('pv-avondzin');if(az)az.checked=avondzinAan();
+  document.getElementById('pv-naam').textContent=lees('hrmny_naam')||'·';
+  document.getElementById('pv-wearable').textContent=lees('hrmny_wearable')||'·';
+  var s=lees('hrmny_startdatum');
+  if(s){var p=s.split('-');document.getElementById('pv-start').textContent=new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString('nl-BE',{day:'numeric',month:'long',year:'numeric'});}
+  document.getElementById('bevestig').classList.remove('open');
+  tekenModi('profiel-modus-rij','profiel-modus-hint');
+  toonScherm('s-profiel');
+}
+function wisAlles(){try{Object.keys(localStorage).forEach(function(k){if(k.indexOf(P)===0)localStorage.removeItem(k);});}catch(e){}location.reload();}
+
+/* ── LEXICON ── */
+var LEXICON={
+  'The Ground':'Jouw herstelsignaal. HRMNY vergelijkt jou altijd met jezelf, nooit met een gemiddelde.',
+  'The Charge':'Jouw beschikbare energie voor vandaag.',
+  'Night Work':'Wat je lichaam doet terwijl jij slaapt. Actief herstel, geen stilstand.',
+  'The Breath':'Je ademhaling in rust. Vaak het eerste teken van wat komt.',
+  'The Anchor':'Een vast slaapmoment. Het anker van jouw ritme.',
+  'The Vesper':'Je avondzin. Eén zin rond je slaapuur, om de dag af te sluiten en je nacht te beschermen.',
+  'The Quarter':'Het kwartier voor je gewone bedtijd. Een kwartier vroeger slapen lijkt weinig, maar het telt elke nacht mee. Over weken gemeten maakt dat een groot verschil.',
+  'The Temple':'Je slaapkamer en je avondritueel.',
+  'The Rhythm':'Jouw eigen ritme van slaap, energie en herstel.',
+  'The Stream':'Flow. Lichaam en dag bewegen in dezelfde richting.',
+  'The Silence':'Een dag van bewuste zachtheid. Rust is vol, niet leeg.',
+  'The Fog':'Wanneer denken meer kost dan anders.',
+  'The Window':'Het moment van de dag waarop iets het best past.',
+  'The Undercurrent':'Een stroming onder het oppervlak. Je lichaam vertelt vandaag iets anders dan je nacht liet zien.',
+  'Recovery Power':'Hoe snel je lichaam tot rust komt na inspanning.'
+};
+function voegTooltipsToe(el){
+  if(!el)return;
+  var tekst=el.textContent;if(!tekst)return;
+  var termen=Object.keys(LEXICON).sort(function(a,b){return b.length-a.length;});
+  var html=tekst.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});
+  var re=new RegExp('('+termen.map(function(t){return t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')','g');
+  html=html.replace(re,function(m){return '<span class="hrmny-term" tabindex="0">'+m+'<span class="hrmny-tooltip">'+LEXICON[m]+'</span></span>';});
+  el.innerHTML=html;
+}
+
+
+/* ── DATUMVELDEN: altijd dd/mm/jjjj, los van de taal van de browser ── */
+function isoNaarNl(iso){if(!iso)return '';var p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function datumTyp(el,id){
+  var v=el.value.replace(/[^0-9]/g,'').slice(0,8),o=v.slice(0,2);
+  if(v.length>2)o+='/'+v.slice(2,4);if(v.length>4)o+='/'+v.slice(4);el.value=o;
+  var n=document.getElementById(id);
+  if(v.length===8){var d=+v.slice(0,2),m=+v.slice(2,4),y=+v.slice(4),dt=new Date(y,m-1,d);
+    if(dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d){n.value=y+'-'+v.slice(2,4)+'-'+v.slice(0,2);n.dispatchEvent(new Event('change'));}}
+  else if(!v.length)n.value='';
+}
+function datumGekozen(id){var t=document.getElementById(id+'__t');if(t)t.value=isoNaarNl(document.getElementById(id).value);}
+function openKalender(id){var n=document.getElementById(id);try{n.showPicker();}catch(e){try{n.focus();n.click();}catch(f){}}}
+function syncDatums(){['kal-datum','tr-datum','tr-tot'].forEach(function(id){if(document.getElementById(id))datumGekozen(id);});}
+
+/* ── AGENDA: MOMENTEN EN TRAININGEN (eigen plan, HRMNY spiegelt enkel) ── */
+var INZET_LABELS={1:'Ontspannen, puur genieten',2:'Rustig, zonder druk',3:'Goed voorbereid zijn',4:'Belangrijk, ik wil scherp staan',5:'Alles geven, 100%'};
+var OPBOUW_LABELS={1:'Niets extra, gewoon mijn ritme volgen',2:'Wat extra, als het past',3:'Gericht opbouwen naar dit moment'};
+var INT_LABELS={1:'Heel rustig, herstel',2:'Rustig, op duur',3:'Gemiddeld',4:'Stevig',5:'Zwaar, intervallen of wedstrijdtempo'};
+var SPORT_LABELS={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',yoga:'Yoga of mobiliteit',andere:'Training'};
+var TRDUUR_LABELS={kort:'tot 45 min',middel:'45 tot 90 min',lang:'1,5 tot 3 uur',heel_lang:'meer dan 3 uur'};
+var DOEL_LABELS={conditie:'conditie',voorbereiding:'voorbereiding',herstel:'actief herstel',plezier:'plezier'};
+var WD=['zo','ma','di','wo','do','vr','za'];
+var FYSIEK={race:1,activiteit:1};
+var EDIT_ID=null,EDIT_DUUR='',GEKOZEN_DAG=null,TR={},TR_DATUM_OPEN=null;
+function eventTypeLabel(t){return {race:'jouw wedstrijd',examen:'jouw examen',sociaal:'jouw feest',reis:'jouw reis',meeting:'jouw meeting',activiteit:'jouw activiteit'}[t]||'jouw moment';}
+function laadEvents(){
+  var l=[];try{l=JSON.parse(lees('hrmny_events')||'[]')||[];}catch(e){l=[];}
+  var ot=lees('hrmny_event_type'),od=lees('hrmny_event_datum');
+  if(ot&&od){l.push({id:'m'+Date.now(),type:ot,naam:lees('hrmny_event_naam_eigen')||lees('hrmny_event_naam')||'',datum:od,inzet:3,opbouw:1,duur:'',tz:lees('hrmny_event_tijdzone')||''});
+    ['hrmny_event_type','hrmny_event_datum','hrmny_event_naam_eigen','hrmny_event_naam','hrmny_event_tijdzone'].forEach(wis);bewaarEvents(l);}
+  return l;
+}
+function bewaarEvents(l){schrijf('hrmny_events',JSON.stringify(l));}
+function momenten(){return laadEvents().filter(function(e){return e.kind!=='training';});}
+function trainingen(){return laadEvents().filter(function(e){return e.kind==='training';});}
+function dagStrNaarDate(ds){var p=ds.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function dagenTot(ds){var e=dagStrNaarDate(ds);var n=new Date();n.setHours(0,0,0,0);return Math.round((e-n)/86400000);}
+function momentNaam(e){return e.naam||eventTypeLabel(e.type);}
+function herstelDagen(e){
+  if(e.type==='reis')return Math.max(1,parseInt(e.tz,10)||2);
+  var basis={race:2,activiteit:1,examen:1,meeting:1,sociaal:1}[e.type]||1;
+  var duurF={uren:1,halve_dag:1.5,dag:2,meerdaags:3}[e.duur]||1.5;
+  var inzetF=FYSIEK[e.type]?(0.6+(e.inzet||3)*0.2):1;
+  return Math.max(1,Math.min(7,Math.round(basis*duurF*inzetF)));
+}
+/* Valt een training op deze dag? (ook herhalingen) */
+function trainingOpDag(t,ds){
+  if((t.skip||[]).indexOf(ds)>=0)return false;
+  if(ds<t.datum)return false;
+  if(t.tot&&ds>t.tot)return false;
+  if(!t.herhaal||t.herhaal==='nee')return ds===t.datum;
+  var d=dagStrNaarDate(ds);if((t.dagen||[]).indexOf(d.getDay())<0)return false;
+  if(t.herhaal==='2week'){var w=Math.floor((d-dagStrNaarDate(t.datum))/(7*86400000));if(w%2!==0)return false;}
+  return true;
+}
+function plannenOpDag(ds){
+  var tr=trainingen().filter(function(t){return trainingOpDag(t,ds);});
+  var mo=momenten().filter(function(m){return m.datum===ds;});
+  return {trainingen:tr,momenten:mo};
+}
+function trainingTekst(t){return (SPORT_LABELS[t.sport]||'Training')+' · '+(INT_LABELS[t.int]||'').toLowerCase()+(t.duur?' · '+TRDUUR_LABELS[t.duur]:'');}
+function chipKeuze(rijId,waarde){document.querySelectorAll('#'+rijId+' .chip').forEach(function(c){c.classList.toggle('actief',Array.isArray(waarde)?waarde.indexOf(c.getAttribute('data-w'))>=0:c.getAttribute('data-w')===String(waarde));});}
+function toonKaart(id){['kal-lijst-kaart','kal-edit-kaart','kal-train-kaart'].forEach(function(k){document.getElementById(k).style.display=k===id?'block':'none';});window.scrollTo(0,0);}
+function toonMomentenLijst(){
+  toonKaart('kal-lijst-kaart');
+  if(!GEKOZEN_DAG)GEKOZEN_DAG=vandaagStr();
+  /* weekstrook */
+  var ws=document.getElementById('week-strook');ws.innerHTML='';
+  for(var i=0;i<7;i++){(function(i){
+    var d=new Date();d.setDate(d.getDate()+i);var ds=datumStr(d),p=plannenOpDag(ds);
+    var b=document.createElement('button');b.type='button';b.className='week-dag'+(ds===GEKOZEN_DAG?' gekozen':'');
+    var stip='';p.trainingen.forEach(function(){stip+='<i style="background:var(--navy)"></i>';});p.momenten.forEach(function(){stip+='<i style="background:var(--gold)"></i>';});
+    b.innerHTML='<div class="wd-naam">'+(i===0?'vand.':WD[d.getDay()])+'</div><div class="wd-nr">'+d.getDate()+'</div><div class="wd-stip">'+stip+'</div>';
+    b.onclick=function(){GEKOZEN_DAG=ds;toonMomentenLijst();};ws.appendChild(b);
+  })(i);}
+  /* paneel van de gekozen dag */
+  var pn=document.getElementById('dag-paneel'),p=plannenOpDag(GEKOZEN_DAG);
+  var titel=GEKOZEN_DAG===vandaagStr()?'Vandaag':dagStrNaarDate(GEKOZEN_DAG).toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
+  pn.innerHTML='<div class="dag-titel"></div>';pn.querySelector('.dag-titel').textContent=titel;
+  p.momenten.forEach(function(m){var b=document.createElement('button');b.className='dag-item';b.type='button';b.innerHTML='<div><div class="di-naam"></div><div class="di-meta"></div></div>';b.querySelector('.di-naam').textContent=momentNaam(m);b.querySelector('.di-meta').textContent=(INZET_LABELS[m.inzet]||'').toLowerCase();b.onclick=function(){bewerkMoment(m.id);};pn.appendChild(b);});
+  p.trainingen.forEach(function(t){var b=document.createElement('button');b.className='dag-item';b.type='button';b.innerHTML='<div><div class="di-naam"></div><div class="di-meta"></div></div>';b.querySelector('.di-naam').textContent=SPORT_LABELS[t.sport]||'Training';b.querySelector('.di-meta').textContent=(INT_LABELS[t.int]||'').toLowerCase()+(t.duur?' · '+TRDUUR_LABELS[t.duur]:'')+(t.herhaal&&t.herhaal!=='nee'?' · vast':'');b.onclick=function(){bewerkTraining(t.id,GEKOZEN_DAG);};pn.appendChild(b);});
+  if(!p.momenten.length&&!p.trainingen.length){var leeg=document.createElement('div');leeg.className='stil';leeg.style.textAlign='left';leeg.textContent='Niets gepland.';pn.appendChild(leeg);}
+  var kn=document.createElement('div');kn.className='dag-knoppen';kn.innerHTML='<button class="nav-btn" type="button">+ Training op deze dag</button><button class="nav-btn" type="button">+ Moment</button>';
+  kn.children[0].onclick=function(){nieuweTraining(GEKOZEN_DAG);};kn.children[1].onclick=function(){nieuwMoment(GEKOZEN_DAG);};pn.appendChild(kn);
+  /* momenten */
+  var l=momenten().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e);}).sort(function(a,b){return a.datum<b.datum?-1:1;});
+  var box=document.getElementById('moment-lijst');box.innerHTML='';
+  if(!l.length)box.innerHTML='<div class="stil" style="text-align:left">Nog geen momenten gepland.</div>';
+  l.forEach(function(e){
+    var d=dagenTot(e.datum),b=document.createElement('button');b.className='moment-item';b.type='button';
+    var wanneer=d>1?'over '+d+' dagen':d===1?'morgen':d===0?'vandaag':'herstel loopt nog';
+    b.innerHTML='<div class="moment-naam"></div><div class="moment-meta"></div>';
+    b.querySelector('.moment-naam').textContent=momentNaam(e);
+    b.querySelector('.moment-meta').textContent=dagStrNaarDate(e.datum).toLocaleDateString('nl-BE',{day:'numeric',month:'long'})+' · '+wanneer+' · '+(INZET_LABELS[e.inzet]||'').toLowerCase();
+    b.onclick=function(){bewerkMoment(e.id);};box.appendChild(b);
+  });
+  /* vaste trainingen */
+  var rl=trainingen().filter(function(t){return t.herhaal&&t.herhaal!=='nee'&&(!t.tot||t.tot>=vandaagStr());});
+  var rb=document.getElementById('reeks-lijst');rb.innerHTML='';
+  if(!rl.length)rb.innerHTML='<div class="stil" style="text-align:left">Nog geen vaste trainingen.</div>';
+  rl.forEach(function(t){var b=document.createElement('button');b.className='moment-item';b.type='button';b.innerHTML='<div class="moment-naam"></div><div class="moment-meta"></div>';
+    var dg=(t.dagen||[]).slice().sort(function(a,b){return ((a+6)%7)-((b+6)%7);}).map(function(x){return WD[x];}).join(', ');
+    b.querySelector('.moment-naam').textContent=(SPORT_LABELS[t.sport]||'Training')+(t.herhaal==='2week'?', om de week':', elke week');
+    b.querySelector('.moment-meta').textContent=dg+' · '+(INT_LABELS[t.int]||'').toLowerCase()+(t.tot?' · tot '+dagStrNaarDate(t.tot).toLocaleDateString('nl-BE',{day:'numeric',month:'short'}):'');
+    b.onclick=function(){bewerkTraining(t.id,null);};rb.appendChild(b);});
+  toonScherm('s-kalender');
+}
+function toonKalender(){GEKOZEN_DAG=vandaagStr();toonMomentenLijst();}
+/* ── momenten ── */
+function vulEditor(e){
+  document.getElementById('kal-type').value=e.type||'';
+  document.getElementById('kal-naam').value=e.naam||'';
+  document.getElementById('kal-datum').value=e.datum||'';
+  document.getElementById('kal-tijdzone').value=e.tz||'';
+  document.getElementById('kal-inzet').value=e.inzet||3;
+  document.getElementById('kal-opbouw').value=e.opbouw||1;
+  EDIT_DUUR=e.duur||'';chipKeuze('kal-duur',EDIT_DUUR);
+  document.getElementById('kal-melding').style.display='none';
+  document.getElementById('kal-bevestig').classList.remove('open');
+  toggleKalVelden();toonSchuifLabels();syncDatums();toonKaart('kal-edit-kaart');
+}
+function nieuwMoment(ds){EDIT_ID=null;document.getElementById('kal-edit-titel').textContent='Nieuw moment';document.getElementById('kal-verwijder-btn').style.display='none';vulEditor({datum:ds||''});}
+function bewerkMoment(id){var e=laadEvents().filter(function(x){return x.id===id;})[0];if(!e)return;EDIT_ID=id;document.getElementById('kal-edit-titel').textContent=momentNaam(e);document.getElementById('kal-verwijder-btn').style.display='block';vulEditor(e);}
+function toggleKalVelden(){
+  var t=document.getElementById('kal-type').value;
+  document.getElementById('kal-tijdzone-veld').style.display=t==='reis'?'block':'none';
+  document.getElementById('kal-opbouw-vraag').style.display=FYSIEK[t]?'block':'none';
+  document.getElementById('kal-duur-vraag').style.display=(FYSIEK[t]||t==='sociaal')?'block':'none';
+}
+function toonSchuifLabels(){
+  document.getElementById('kal-inzet-label').textContent=INZET_LABELS[document.getElementById('kal-inzet').value];
+  document.getElementById('kal-opbouw-label').textContent=OPBOUW_LABELS[document.getElementById('kal-opbouw').value];
+}
+function slaEventOp(){
+  var t=document.getElementById('kal-type').value,d=document.getElementById('kal-datum').value,m=document.getElementById('kal-melding');
+  if(!t||!d){m.textContent='Kies een soort moment en een datum.';m.style.display='block';return;}
+  var e={id:EDIT_ID||('m'+Date.now()),type:t,naam:document.getElementById('kal-naam').value.trim(),datum:d,
+    inzet:parseInt(document.getElementById('kal-inzet').value,10),opbouw:FYSIEK[t]?parseInt(document.getElementById('kal-opbouw').value,10):1,
+    duur:EDIT_DUUR,tz:document.getElementById('kal-tijdzone').value};
+  var l=laadEvents().filter(function(x){return x.id!==e.id;});l.push(e);bewaarEvents(l);
+  toonMomentenLijst();
+}
+function verwijderEvent(){bewaarEvents(laadEvents().filter(function(x){return x.id!==EDIT_ID;}));toonMomentenLijst();}
+/* ── trainingen ── */
+function toonTrLabels(){document.getElementById('tr-int-label').textContent=INT_LABELS[document.getElementById('tr-int').value];}
+function vulMomentKeuze(sel){
+  var s=document.getElementById('tr-moment');s.innerHTML='<option value="">Kies een moment</option>';
+  momenten().filter(function(m){return dagenTot(m.datum)>=0;}).sort(function(a,b){return a.datum<b.datum?-1:1;}).forEach(function(m){var o=document.createElement('option');o.value=m.id;o.textContent=momentNaam(m)+' ('+dagStrNaarDate(m.datum).toLocaleDateString('nl-BE',{day:'numeric',month:'short'})+')';s.appendChild(o);});
+  s.value=sel||'';
+}
+function toonTrBlokken(){
+  document.getElementById('tr-moment-veld').style.display=TR.doel==='voorbereiding'?'block':'none';
+  document.getElementById('tr-herhaal-blok').style.display=(TR.herhaal&&TR.herhaal!=='nee')?'block':'none';
+}
+function standaardDag(){var d=document.getElementById('tr-datum').value;if(d&&(!TR.dagen||!TR.dagen.length)){TR.dagen=[dagStrNaarDate(d).getDay()];chipKeuze('tr-dagen',TR.dagen.map(String));}}
+function momentGekozen(){var id=document.getElementById('tr-moment').value;var m=momenten().filter(function(x){return x.id===id;})[0];if(m&&!document.getElementById('tr-tot').value){var t=dagStrNaarDate(m.datum);t.setDate(t.getDate()-1);document.getElementById('tr-tot').value=datumStr(t);syncDatums();}}
+function vulTraining(t,ds){
+  TR=JSON.parse(JSON.stringify(t));TR_DATUM_OPEN=ds||null;
+  chipKeuze('tr-sport',TR.sport||'');chipKeuze('tr-duur',TR.duur||'');chipKeuze('tr-doel',TR.doel||'');chipKeuze('tr-herhaal',TR.herhaal||'nee');chipKeuze('tr-dagen',(TR.dagen||[]).map(String));
+  document.getElementById('tr-int').value=TR.int||2;toonTrLabels();
+  document.getElementById('tr-datum').value=TR.datum||'';document.getElementById('tr-tot').value=TR.tot||'';
+  vulMomentKeuze(TR.moment_id);toonTrBlokken();
+  document.getElementById('tr-melding').style.display='none';document.getElementById('tr-bevestig').classList.remove('open');
+  syncDatums();toonKaart('kal-train-kaart');
+}
+function nieuweTraining(ds){EDIT_ID=null;document.getElementById('tr-titel').textContent='Nieuwe training';document.getElementById('tr-verwijder-btn').style.display='none';document.getElementById('tr-skip-btn').style.display='none';var d=ds||vandaagStr();vulTraining({kind:'training',datum:d,herhaal:'nee',int:2,dagen:[dagStrNaarDate(d).getDay()]},null);}
+function bewerkTraining(id,ds){var t=laadEvents().filter(function(x){return x.id===id;})[0];if(!t)return;EDIT_ID=id;document.getElementById('tr-titel').textContent=SPORT_LABELS[t.sport]||'Training';document.getElementById('tr-verwijder-btn').style.display='block';document.getElementById('tr-skip-btn').style.display=(ds&&t.herhaal&&t.herhaal!=='nee')?'block':'none';vulTraining(t,ds);}
+function initTrainingChips(){
+  function enkel(rij,veld,na){document.querySelectorAll('#'+rij+' .chip').forEach(function(c){c.onclick=function(){var w=c.getAttribute('data-w');TR[veld]=(TR[veld]===w&&veld!=='herhaal')?'':w;chipKeuze(rij,TR[veld]);if(na)na();};});}
+  enkel('tr-sport','sport');enkel('tr-duur','duur');enkel('tr-doel','doel',toonTrBlokken);enkel('tr-herhaal','herhaal',function(){standaardDag();toonTrBlokken();});
+  document.querySelectorAll('#tr-dagen .chip').forEach(function(c){c.onclick=function(){var w=parseInt(c.getAttribute('data-w'),10);TR.dagen=TR.dagen||[];var i=TR.dagen.indexOf(w);if(i>=0)TR.dagen.splice(i,1);else TR.dagen.push(w);chipKeuze('tr-dagen',TR.dagen.map(String));};});
+}
+function slaTrainingOp(){
+  var m=document.getElementById('tr-melding');
+  TR.datum=document.getElementById('tr-datum').value;TR.tot=document.getElementById('tr-tot').value;TR.int=parseInt(document.getElementById('tr-int').value,10);
+  TR.moment_id=TR.doel==='voorbereiding'?document.getElementById('tr-moment').value:'';
+  if(!TR.sport||!TR.datum){m.textContent='Kies wat je gaat doen en wanneer.';m.style.display='block';return;}
+  if(TR.herhaal&&TR.herhaal!=='nee'&&(!TR.dagen||!TR.dagen.length)){m.textContent='Kies op welke dagen.';m.style.display='block';return;}
+  TR.kind='training';TR.id=EDIT_ID||('t'+Date.now());TR.skip=TR.skip||[];
+  var l=laadEvents().filter(function(x){return x.id!==TR.id;});l.push(TR);bewaarEvents(l);
+  if(TR.herhaal==='nee')GEKOZEN_DAG=TR.datum;
+  toonMomentenLijst();
+}
+function slaKeerOver(){if(!EDIT_ID||!TR_DATUM_OPEN)return;var l=laadEvents();l.forEach(function(x){if(x.id===EDIT_ID){x.skip=x.skip||[];if(x.skip.indexOf(TR_DATUM_OPEN)<0)x.skip.push(TR_DATUM_OPEN);}});bewaarEvents(l);toonMomentenLijst();}
+function verwijderTraining(){bewaarEvents(laadEvents().filter(function(x){return x.id!==EDIT_ID;}));toonMomentenLijst();}
+/* ── teksten op het dashboard ── */
+function eventFaseTekst(e,d){
+  var naam=momentNaam(e),I=e.inzet||3,O=e.opbouw||1,pre='Nog '+d+' dag'+(d===1?'':'en')+' tot '+naam+'. ';
+  if(FYSIEK[e.type]){
+    var taper=I>=5?10:I===4?7:I===3?3:1;
+    if(d===0)return I>=4?'Vandaag is het zover: '+naam+'. Je hebt ernaartoe gewerkt. Vertrouw daarop.':I<=2?'Vandaag: '+naam+'. Geniet ervan, op je eigen tempo.':'Vandaag: '+naam+'. Ga op je gevoel.';
+    if(d===1)return I>=3?'Morgen is het zover. Vroeg slapen is vanavond de belangrijkste keuze.':'Morgen: '+naam+'. Een rustige avond is genoeg voorbereiding.';
+    if(d<=taper){if(I>=4)return pre+'Minder doen wordt nu belangrijker dan meer doen. Zo kom je fris aan de start.';return pre+'Hou het de laatste dagen wat lichter.';}
+    if(I<=2||O===1)return pre+'Je hoeft niets anders te doen dan je richting van de dag te volgen.';
+    if(O===2)return pre+'Wat extra beweging past, op de dagen dat je richting het toelaat.';
+    if(d>28)return pre+'Tijd genoeg om rustig en gericht op te bouwen, stap voor stap.';
+    return pre+'Dit is de periode waarin opbouwen het meest oplevert. Bouw op de dagen dat je richting het toelaat, rust op de andere.';
+  }
+  if(e.type==='examen'||e.type==='meeting'){if(d===0)return 'Vandaag is het zover: '+naam+'. Neem je tijd.';if(d===1)return pre+'Een rustige avond en op tijd naar bed.';if(d<=(I>=4?4:2))return pre+'Rust en slaap krijgen nu voorrang.';return pre+'De aftelling is begonnen.';}
+  if(e.type==='sociaal'){if(d===0)return 'Vandaag: '+naam+'. Geniet ervan.';if(d===1)return pre+'Vanavond wat vroeger naar bed helpt je morgen.';return pre+'De aftelling is begonnen.';}
+  if(e.type==='reis'){if(d===0)return 'Vandaag vertrek je: '+naam+'. Goede reis.';if(d<=3)return pre+'Probeer je slaapmoment de laatste dagen al wat te verschuiven.';return pre+'De aftelling is begonnen.';}
+  return pre+'De aftelling is begonnen.';
+}
+/* Spiegel: past de geplande training bij de richting van vandaag? Geen bevel. */
+function spiegelTraining(t){
+  var r=laatsteRichtingVandaag();if(!r)return '';var I=t.int||2;
+  if(r.richting==='cautela')return I>=2?'Vandaag vraagt je lichaam zorg. Misschien wordt dit vandaag een wandeling, of schuift het een dag.':'Rustig en kort past ook vandaag.';
+  if(r.richting==='recovery')return I>=4?'Je richting is vandaag Recovery. Deze training mag lichter, of een dag later.':I===3?'Je richting is Recovery. Hou het gerust wat rustiger dan gepland.':'Dit past bij een dag van herstel.';
+  if(r.richting==='build')return I>=5?'Een zware dag gepland op een dag van opbouwen. Luister onderweg goed.':'Dit past bij je richting van vandaag.';
+  return 'Dit past bij je richting van vandaag.';
+}
+function renderEventStatus(){
+  var k=document.getElementById('event-kaart'),tx=document.getElementById('event-tekst');if(!k)return;
+  var l=momenten(),regels=[];
+  plannenOpDag(vandaagStr()).trainingen.forEach(function(t){regels.push({t:'Vandaag: '+trainingTekst(t)+'.',s:spiegelTraining(t)+aansporenZin()});});
+  var herstel=l.filter(function(e){var d=dagenTot(e.datum);return d<0&&-d<=herstelDagen(e);}).sort(function(a,b){return a.datum<b.datum?1:-1;})[0];
+  var komend=l.filter(function(e){return dagenTot(e.datum)>=0;}).sort(function(a,b){return a.datum<b.datum?-1:1;});
+  if(herstel){
+    var dh=-dagenTot(herstel.datum),r='Dag '+dh+' van je herstel na '+momentNaam(herstel)+'. Rust is ook bouwen.';
+    if(komend[0]&&dagenTot(komend[0].datum)<=7)r='Dag '+dh+' van je herstel na '+momentNaam(herstel)+'. Over '+dagenTot(komend[0].datum)+' dagen volgt '+momentNaam(komend[0])+': herstellen is nu de beste voorbereiding.';
+    regels.push({t:r});
+  }
+  if(komend[0]&&!(herstel&&dagenTot(komend[0].datum)<=7))regels.push({t:eventFaseTekst(komend[0],dagenTot(komend[0].datum))});
+  if(komend[1]&&dagenTot(komend[1].datum)-dagenTot(komend[0].datum)<=14&&!herstel)regels.push({t:'Kort daarna volgt '+momentNaam(komend[1])+'. HRMNY houdt rekening met allebei.'});
+  if(!regels.length){k.style.display='none';return;}
+  tx.innerHTML='';regels.forEach(function(x){var dv=document.createElement('div');dv.className='event-regel';dv.textContent=x.t;if(x.s){var sp=document.createElement('div');sp.className='spiegel';sp.textContent=x.s;dv.appendChild(sp);}tx.appendChild(dv);});
+  k.style.display='block';
+}
+function agendaVoorPipeline(){
+  var mo=momenten().filter(function(e){return dagenTot(e.datum)>=-herstelDagen(e)&&dagenTot(e.datum)<=60;}).map(function(e){return {soort:e.type,datum:e.datum,dagen_tot:dagenTot(e.datum),inzet:e.inzet,opbouw:e.opbouw,duur:e.duur};});
+  var tr=[];for(var i=0;i<7;i++){var d=new Date();d.setDate(d.getDate()+i);var ds=datumStr(d);plannenOpDag(ds).trainingen.forEach(function(t){tr.push({datum:ds,sport:t.sport,zwaarte:t.int,duur:t.duur,doel:t.doel});});}
+  return {momenten:mo,trainingen_komende_7_dagen:tr};
+}
+
+
+/* ── THE QUARTER + NA DE TRAINING (10/10/2026) ── */
+var FEEDBACK_URL='https://hook.eu1.make.com/nybph8kv17g9gdajr8jkic8titu3anuw';
+function bewaarExtras(json,dag){
+  try{
+    if(json.quarter!==undefined||json.anker!==undefined)schrijf('hrmny_quarter',JSON.stringify({dag:dag,quarter:json.quarter||'',anker:json.anker||''}));
+    if(json.aansporen!==undefined)schrijf('hrmny_aansporen',JSON.stringify({dag:dag,w:json.aansporen||''}));
+    var act=json.activiteiten;if(typeof act==='string'){try{act=JSON.parse(act);}catch(e){act=[];}}
+    if(Array.isArray(act)&&act.length)schrijf('hrmny_activiteiten',JSON.stringify(act));
+  }catch(e){}
+  renderQuarter();renderTrainingFb();
+}
+function leesJSON(k,d){try{var v=lees(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function avondzinAan(){return lees('hrmny_avondzin')!=='uit';}
+function zetAvondzin(aan){schrijf('hrmny_avondzin',aan?'aan':'uit');renderQuarter();}
+function aansporenZin(){
+  var a=leesJSON('hrmny_aansporen',{});
+  if(!a||!a.w||a.dag!==vandaagStr())return '';
+  return ' Je had de vorige keren nog marge. Vandaag mag het een stap '+a.w+'.';
+}
+function minVan(hhmm){var m=/^(\d{1,2}):(\d{2})$/.exec(hhmm||'');return m?(+m[1])*60+(+m[2]):null;}
+function renderQuarter(){
+  var el=document.getElementById('quarter-kaart');if(!el)return;
+  var q=leesJSON('hrmny_quarter',{}),nu=new Date(),nuMin=nu.getHours()*60+nu.getMinutes();
+  var term='<span class="hrmny-term" tabindex="0" onclick="this.classList.toggle(\'open\')">The Quarter<span class="hrmny-tooltip">'+LEXICON['The Quarter']+'</span></span>';
+  var anker=minVan(q.anker),html='';
+  if(avondzinAan()&&anker!==null){
+    var d=((nuMin-anker+1440+720)%1440)-720;
+    if(d>=-45&&d<=60){
+      var zin=d<0?'Je gewone slaapuur is '+q.anker+'. Nog één aflevering, of het kwartier?':'Je gewone slaapuur is voorbij. Elk kwartier telt vanavond.';
+      var sub=q.quarter==='later'?'De laatste week ga je later slapen dan je gewoonte.':'Een kwartier vroeger slapen lijkt weinig. Over weken gemeten maakt het een groot verschil.';
+      var vesper='<span class="hrmny-term" tabindex="0" onclick="this.classList.toggle(\'open\')">The Vesper<span class="hrmny-tooltip">'+LEXICON['The Vesper']+'</span></span>';
+      html='<div class="label-mono" style="color:var(--navy)">'+vesper+' · '+term+'</div><div class="quarter-zin">'+zin+'</div><div class="quarter-sub">'+sub+'</div>';
+    }
+  }
+  if(!html&&q.dag===vandaagStr()&&nu.getHours()<18){
+    if(q.quarter==='later')html='<div class="label-mono" style="color:var(--navy)">'+term+'</div><div class="quarter-zin">De laatste week ga je later slapen dan je gewoonte.</div><div class="quarter-sub">Een kwartier vroeger vanavond doet meer dan je denkt.</div>';
+    else if(q.quarter==='vroeger')html='<div class="label-mono" style="color:var(--navy)">'+term+'</div><div class="quarter-zin">De laatste week slaap je vroeger dan je gewoonte.</div><div class="quarter-sub">Daar begint herstel. Hou het vast.</div>';
+  }
+  el.innerHTML=html;el.style.display=html?'block':'none';
+}
+var TFB_VRAGEN=[
+  {k:'gevoel',v:'Hoe voelde het?',o:[['te_licht','Te licht'],['goed','Goed'],['zwaar','Zwaar maar haalbaar'],['te_zwaar','Te zwaar']]},
+  {k:'over',v:'Had je op het einde nog over?',o:[['niets','Niets meer'],['beetje','Een beetje'],['ruim','Ruim']]},
+  {k:'nog',v:'Wat had je nog kunnen doen?',o:[['niets','Niets'],['langer','Langer'],['harder','Harder'],['allebei','Allebei']]},
+  {k:'zin',v:'Zin om het opnieuw te doen?',o:[['ja','Ja, graag'],['gewoon','Gewoon'],['niet','Even niet']]}
+];
+var TFB_SPORT={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',yoga:'Yoga of mobiliteit',andere:'Training'};
+function trainingKandidaat(){
+  var vandaag=vandaagStr(),g=new Date();g.setDate(g.getDate()-1);var gisteren=datumStr(g),uur=new Date().getHours();
+  var lijst=[];
+  leesJSON('hrmny_activiteiten',[]).forEach(function(a){if(a&&a.datum)lijst.push({datum:a.datum,tekst:(TFB_SPORT[a.type]||'Training')+(a.duur_min?', '+a.duur_min+' min':''),bron:'wearable'});});
+  [gisteren,vandaag].forEach(function(ds){
+    if(ds===vandaag&&uur<17)return;
+    try{plannenOpDag(ds).trainingen.forEach(function(t){lijst.push({datum:ds,tekst:trainingTekst(t),bron:'agenda'});});}catch(e){}
+  });
+  lijst=lijst.filter(function(x){return (x.datum===vandaag||x.datum===gisteren)&&!lees('hrmny_fb_'+x.datum);});
+  lijst.sort(function(a,b){return a.datum<b.datum?1:-1;});
+  return lijst[0]||null;
+}
+var TFB_ANTW={};
+function renderTrainingFb(){
+  var el=document.getElementById('training-fb');if(!el)return;
+  var k=trainingKandidaat();
+  if(!k){el.style.display='none';return;}
+  TFB_ANTW={};
+  var wanneer=k.datum===vandaagStr()?'Vandaag':'Gisteren';
+  var h='<div class="label-mono">Na je training</div><div class="tfb-titel">'+wanneer+': '+k.tekst+'. Hoe was het?</div>';
+  TFB_VRAGEN.forEach(function(q){
+    h+='<div class="tfb-vraag">'+q.v+'</div><div class="chip-rij" data-tfb="'+q.k+'">';
+    q.o.forEach(function(o){h+='<button class="chip" type="button" data-w="'+o[0]+'">'+o[1]+'</button>';});
+    h+='</div>';
+  });
+  h+='<div class="tfb-acties"><button class="btn-zacht" type="button" id="tfb-bewaar">Bewaren</button><button class="link" type="button" id="tfb-skip">Overslaan</button></div>';
+  el.innerHTML=h;el.style.display='block';
+  el.querySelectorAll('[data-tfb] .chip').forEach(function(c){c.onclick=function(){
+    var rij=c.parentNode,v=rij.getAttribute('data-tfb'),w=c.getAttribute('data-w');
+    TFB_ANTW[v]=(TFB_ANTW[v]===w)?'':w;
+    rij.querySelectorAll('.chip').forEach(function(x){x.classList.toggle('actief',x.getAttribute('data-w')===TFB_ANTW[v]);});
+  };});
+  document.getElementById('tfb-skip').onclick=function(){schrijf('hrmny_fb_'+k.datum,'overgeslagen');renderTrainingFb();};
+  document.getElementById('tfb-bewaar').onclick=function(){
+    var ingevuld=TFB_VRAGEN.some(function(q){return TFB_ANTW[q.k];});
+    if(!ingevuld){el.querySelector('.tfb-acties').insertAdjacentHTML('beforeend','<span style="font-size:0.82rem;color:var(--text-muted)">Kies minstens één antwoord, of tik op Overslaan.</span>');return;}
+    var rec={user_id:gebruiker(),datum:k.datum,activiteit:k.tekst,gevoel:TFB_ANTW.gevoel||'',over:TFB_ANTW.over||'',nog:TFB_ANTW.nog||'',zin:TFB_ANTW.zin||'',bron:k.bron,trigger:'trainingsfeedback'};
+    schrijf('hrmny_fb_'+k.datum,JSON.stringify(rec));
+    var rij=leesJSON('hrmny_fb_wachtrij',[]);rij.push(rec);schrijf('hrmny_fb_wachtrij',JSON.stringify(rij));
+    verstuurFeedback();
+    el.innerHTML='<div class="label-mono">Na je training</div><div class="tfb-dank" style="margin-top:0.4rem">Bedankt. Zo leert HRMNY wat jij aankunt.</div>';
+    setTimeout(function(){renderTrainingFb();},4000);
+  };
+}
+function verstuurFeedback(){
+  if(TESTMODUS||!FEEDBACK_URL||FEEDBACK_URL.indexOf('{{')===0)return;
+  var rij=leesJSON('hrmny_fb_wachtrij',[]);if(!rij.length)return;
+  var eerste=rij[0];
+  fetch(FEEDBACK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(eerste)})
+    .then(function(r){if(!r.ok)throw new Error(r.status);var rest=leesJSON('hrmny_fb_wachtrij',[]);rest.shift();schrijf('hrmny_fb_wachtrij',JSON.stringify(rest));if(rest.length)verstuurFeedback();})
+    .catch(function(){});
+}
+
+/* ── UITLEG BIJ DE RICHTING ── */
+var RICHTING_UITLEG={
+  flow:'Alles loopt samen. Lichaam en dag bewegen in dezelfde richting.',
+  build:'Er is ruimte om op te bouwen.',
+  recovery:'Je lichaam herstelt. Rust is ook bouwen.',
+  cautela:'Latijn voor voorzichtigheid. Een dag om zorg te dragen voor jezelf.'
+};
+document.addEventListener('click',function(e){
+  document.querySelectorAll('.hrmny-term.open').forEach(function(el){if(!el.contains(e.target))el.classList.remove('open');});
+});
+
+/* ── START ── */
+initVragen();
+initTrainingChips();
+document.querySelectorAll('#kal-duur .chip').forEach(function(c){c.onclick=function(){var w=c.getAttribute('data-w');EDIT_DUUR=(EDIT_DUUR===w)?'':w;document.querySelectorAll('#kal-duur .chip').forEach(function(x){x.classList.toggle('actief',x.getAttribute('data-w')===EDIT_DUUR);});};});
+(function(){
+  var el=document.getElementById('datum-label');
+  if(el)el.textContent=new Date().toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
+  if(TESTMODUS)document.getElementById('banner-test').style.display='block';
+  toonDashboard();
+  haalRichtingOp();
+  verstuurFeedback();
+  setInterval(renderQuarter,5*60*1000);
+})();
+</script>
+</body></html>

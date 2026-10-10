@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HRMNY · Dimitri</title>
+<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HRMNY · Mati</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -333,18 +333,17 @@ details.klein summary::-webkit-details-marker{display:none}
 </div>
 
 <script>
-/* Eenmalige opstart voor Dimitri. Eigen sleutelruimte (db.), zodat deze pagina
+/* Eenmalige opstart voor Mati. Eigen sleutelruimte (mt.), zodat deze pagina
    nooit botst met de app van Heidi op hetzelfde adres. */
 (function(){
   try{
-    var ls=window.localStorage,P='db.';
+    var ls=window.localStorage,P='mt.';
     if(!ls.getItem(P+'hrmny_seed_applied')){
-      ls.setItem(P+'hrmny_naam','Dimitri');
-      ls.setItem(P+'hrmny_user_id','dimitri-db01');
+      ls.setItem(P+'hrmny_naam','Mati');
+      ls.setItem(P+'hrmny_user_id','mati-mt01');
       ls.setItem(P+'hrmny_wearable','Garmin');
-      ls.setItem(P+'hrmny_leeftijd','45');
+      ls.setItem(P+'hrmny_leeftijd','35');
       ls.setItem(P+'hrmny_startdatum','2026-10-11');
-      ls.setItem(P+'hrmny_modus','Sportief');
       ls.setItem(P+'hrmny_seed_applied','1');
     }
   }catch(e){}
@@ -672,7 +671,7 @@ details.klein summary::-webkit-details-marker{display:none}
 </div>
 
 <script>
-/* HRMNY app voor Dimitri, versie 2.
+/* HRMNY app voor Mati, versie 2.
    Deze app berekent zelf geen richting. De richting, dagzin, reden en tip komen
    uit de HRMNY-pipeline. De app toont ze en verzamelt jouw invoer. */
 
@@ -683,7 +682,7 @@ var RICHTING_PROXY = 'valo-proxy.php';
 var TESTMODUS = /[?&]test\b/.test(location.search);
 
 /* ── OPSLAG (veilig, faalt stil) ── */
-var P='db.';
+var P='mt.';
 function lees(k){try{return localStorage.getItem(P+k);}catch(e){return null;}}
 function schrijf(k,v){try{localStorage.setItem(P+k,v);}catch(e){}}
 function wis(k){try{localStorage.removeItem(P+k);}catch(e){}}
@@ -736,7 +735,7 @@ var MODI=[
   {id:'Relaxatie', uitleg:'Zacht en ademend. Geeft je toestemming om te vertragen.'},
   {id:'Shift',     uitleg:'Los van de klok. Voor wie in wisselende diensten of een eigen ritme leeft.'}
 ];
-function huidigeModus(){return lees('hrmny_modus')||'Sportief';}
+function huidigeModus(){return lees('hrmny_modus')||'Grounded';}
 function tekenModi(rijId,hintId){
   var rij=document.getElementById(rijId);if(!rij)return;
   rij.innerHTML='';
@@ -833,7 +832,7 @@ function toggleWaarom(){
 }
 
 /* ── RICHTING OPHALEN ── */
-function gebruiker(){return 'dimitri-db01';}
+function gebruiker(){return 'mati-mt01';}
 function verwerkAntwoord(json){
   if(Array.isArray(json)){var ok=false;json.slice().reverse().forEach(function(x){if(verwerkEen(x))ok=true;});return ok;}
   return verwerkEen(json);
@@ -963,7 +962,7 @@ function versturen(){
     hrv_night:leeg(w.hrv),rhr_night:leeg(w.rhr),resting_hr:leeg(w.rhr),breath_rate:leeg(w.adem),
     sleep_score:leeg(w.slaap),body_battery:leeg(w.bb),stress_score:leeg(w.stress),
     gevoel:subj.gevoel||'',subjectief:JSON.stringify(subj),notitie:notitie,agenda:JSON.stringify(agendaVoorPipeline()),
-    modus:huidigeModus(),datum:vandaag,trigger:'dimitri_v2'
+    modus:huidigeModus(),datum:vandaag,trigger:'mati_v2'
   });
   var k=document.getElementById('verstuur-knop');k.disabled=true;k.textContent='Bewaard';
   var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat er gemeten wordt.';

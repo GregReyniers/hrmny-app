@@ -291,6 +291,40 @@ details.klein summary::-webkit-details-marker{display:none}
 .wk-knop:disabled{opacity:0.35;cursor:default}
 .wk-knop.rand{background:transparent;color:var(--navy);border:1.5px solid rgba(26,45,90,0.25);flex:0 0 auto;padding:0.95rem 1.2rem}
 .wk-klein{font-size:0.78rem;color:var(--text-muted);line-height:1.55}
+
+/* ── NUDA VERITAS ── */
+.veritas-knop{background:#111E3F;color:#fff;border:none;border-radius:16px;padding:1.05rem 1.15rem;text-align:left;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:space-between;gap:0.8rem;font:inherit}
+.veritas-knop .vk-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:#C9A84C;margin-bottom:0.25rem}
+.veritas-knop .vk-titel{font-family:'Cormorant Garamond',serif;font-size:1.3rem;line-height:1.2}
+.veritas-knop .vk-sub{font-size:0.78rem;color:rgba(255,255,255,0.7);margin-top:0.2rem;line-height:1.45}
+.veritas-knop .vk-pijl{color:#C9A84C;font-size:1.2rem}
+.veritas-kaarten{display:flex;flex-direction:column;gap:0.6rem}
+.vkaart{position:relative;border-radius:16px;padding:1.1rem 1.15rem;text-align:left;font:inherit;width:100%;border:1.5px solid rgba(201,168,76,0.55);background:#111E3F;color:#fff;cursor:pointer;transition:transform 0.15s}
+.vkaart:active{transform:scale(0.99)}
+.vkaart .vt{font-family:'Cormorant Garamond',serif;font-size:1.25rem}
+.vkaart .vs{font-size:0.8rem;color:rgba(255,255,255,0.7);margin-top:0.2rem;line-height:1.45}
+.vkaart .vslot{position:absolute;right:1rem;top:1rem;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9A84C}
+.vkaart.dicht{opacity:0.38;cursor:default;border-color:rgba(26,45,90,0.15)}
+.vkaart.open{background:var(--white);color:var(--text);border-color:#C9A84C;cursor:default}
+.vkaart.open .vt{color:var(--navy)}
+.vkaart.open .vfeit{font-size:1rem;line-height:1.6;color:var(--text);margin:0.6rem 0 0.5rem}
+.vkaart.open .vbet{font-size:0.86rem;line-height:1.6;color:var(--text-mid);margin-bottom:0.5rem}
+.vkaart.open .vhef{font-size:0.84rem;line-height:1.55;background:var(--cream);border-radius:10px;padding:0.7rem 0.85rem;color:var(--text)}
+.vkaart.open .vhef b{color:var(--navy)}
+
+.vweek{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:0.9rem}
+.vdag{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);background:none;border:none;padding:0;font-weight:400;cursor:default}
+.vdag i{display:block;width:100%;aspect-ratio:1/1.15;border-radius:9px;border:1.5px solid rgba(26,45,90,0.12);background:transparent;position:relative}
+.vdag.vol i{border-color:transparent}
+.vdag.vol{cursor:pointer;color:var(--navy)}
+.vdag.vandaag i{border:1.5px dashed #C9A84C;animation:vpuls 2.4s ease-in-out infinite}
+.vdag.vandaag{color:#B08F35}
+.vdag.gemist i{background:rgba(26,45,90,0.05);border-color:transparent}
+.vdag.later i{border-style:dotted;opacity:0.5}
+.vdag.gekozen i{box-shadow:0 0 0 2px var(--white),0 0 0 3.5px var(--navy)}
+@keyframes vpuls{0%,100%{opacity:1}50%{opacity:0.45}}
+.vweek-zin{font-size:0.82rem;color:var(--text-mid);line-height:1.55;margin-top:0.7rem}
+.vterug{margin-top:0.6rem}
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="HRMNY"><meta name="theme-color" content="#1A2D5A"><link rel="apple-touch-icon" href="data:image/png;base64,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"><link rel="icon" href="data:image/png;base64,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">
 </head>
@@ -417,6 +451,11 @@ var APPLE_ID=null;
         <button class="nav-btn" onclick="toonLaag(2)">Jouw nacht <span class="pijl">&rsaquo;</span></button>
         <button class="nav-btn" onclick="toonLaag(3)">Jouw ritme <span class="pijl">&rsaquo;</span></button>
       </div>
+      <button class="veritas-knop" type="button" onclick="toonLaag(4)">
+        <div><div class="vk-label">Nuda Veritas</div><div class="vk-titel">Eén eerlijke waarheid per dag</div><div class="vk-sub" id="vk-sub">Drie gesloten kaarten. Je mag er één openen.</div></div>
+        <div class="vk-pijl">&rsaquo;</div>
+      </button>
+
     </div>
 
     <!-- LAAG 2: JOUW NACHT -->
@@ -437,6 +476,18 @@ var APPLE_ID=null;
     </div>
 
     <!-- LAAG 3: RITME (richting per dag) -->
+
+    <div id="laag4" style="display:none;flex-direction:column;gap:0.6rem">
+      <div class="kaart" style="padding:1.1rem">
+        <div class="label-mono">Nuda Veritas</div>
+        <div class="ritme-titel">De naakte waarheid. Eén per dag.</div>
+        <div class="ritme-uitleg">Elke dag liggen er drie kaarten klaar, elk met één eerlijk feit over jou, zonder omwegen. Je opent er één. Zo vul je elke dag één vakje van je week. Een dag niet geopend, is een vakje dat leeg blijft.</div>
+        <div class="vweek" id="vweek"></div>
+        <div class="vweek-zin" id="vweek-zin"></div>
+      </div>
+      <div class="veritas-kaarten" id="veritas-kaarten"></div>
+      <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button></div>
+    </div>
     <div id="laag3" style="display:none;flex-direction:column;gap:0.6rem">
       <div class="kaart" style="padding:1.1rem">
         <div class="label-mono">Jouw ritme</div>
@@ -770,6 +821,8 @@ function toonLaag(n){
   document.getElementById('laag1').style.display=n===1?'flex':'none';
   document.getElementById('laag2').style.display=n===2?'flex':'none';
   document.getElementById('laag3').style.display=n===3?'flex':'none';
+  document.getElementById('laag4').style.display=n===4?'flex':'none';
+  if(n===4){tekenVeritas();window.scrollTo(0,0);}
   if(n===2)tekenSignalen();
   if(n===3)tekenStrook();
 }
@@ -1214,6 +1267,7 @@ var LEXICON={
   'The Breath':'Je ademhaling in rust. Vaak het eerste teken van wat komt.',
   'The Anchor':'Een vast slaapmoment. Het anker van jouw ritme.',
   'The Vesper':'Je avondzin. Eén zin rond je slaapuur, om de dag af te sluiten en je nacht te beschermen.',
+  'Nuda Veritas':'Latijn voor de naakte waarheid. Elke dag één eerlijk feit over jou, zonder omwegen, altijd gemeten aan jezelf.',
   'The Quarter':'Het kwartier voor je gewone bedtijd. Een kwartier vroeger slapen lijkt weinig, maar het telt elke nacht mee. Over weken gemeten maakt dat een groot verschil.',
   'The Temple':'Je slaapkamer en je avondritueel.',
   'The Rhythm':'Jouw eigen ritme van slaap, energie en herstel.',
@@ -1628,5 +1682,140 @@ function sluitWelkom(){
   toonDashboard();
 }
 if(WELKOM_TONEN&&!lees('hrmny_welkom'))toonWelkom();
+
+/* ── NUDA VERITAS: één eerlijke waarheid per dag ── */
+function vGem(k,van,tot){var v=reeksWaarden(k,van,tot);return v.length>=3?gemiddelde(v):null;}
+function vPct(a,b){return Math.round((a-b)/b*100);}
+function vKaarten(){
+  var K=[],heeftHrv=false;
+  NACHT_GROEPEN.forEach(function(g){if(g.keys.indexOf('hrv')>=0)heeftHrv=true;});
+  /* 1. De kleiharde waarheid: Night Work deze week vs de drie weken ervoor */
+  var s7=vGem('slaap',0,6),s21=vGem('slaap',7,27);
+  if(s7!==null&&s21!==null){
+    var d=Math.round(s7-s21),onder=reeksWaarden('slaap',0,6).filter(function(x){return x<s21-5;}).length,f,b,h;
+    if(d<=-3){f='Je Night Work zakte deze week naar gemiddeld '+Math.round(s7)+', tegenover '+Math.round(s21)+' de drie weken ervoor. Dat is '+(-d)+' punten minder.';
+      b=onder+' van je laatste 7 nachten lagen duidelijk onder je eigen gewoonte. Je lichaam herstelt minder dan het gewend is, ook als je dat overdag nog niet voelt.';
+      h='<b>Wat het snelst keert:</b> drie nachten op rij op je gewone uur. The Quarter is de kleinste stap met het grootste effect.';}
+    else if(d>=3){f='Je Night Work steeg deze week naar gemiddeld '+Math.round(s7)+', tegenover '+Math.round(s21)+' de drie weken ervoor. Dat is '+d+' punten meer.';
+      b='Dat is geen toeval. Betere nachten zijn het fundament waarop alles bouwt, ook je training en je humeur.';
+      h='<b>Houd vast wat werkt:</b> wat deed je deze week anders? Dat is jouw recept.';}
+    else{f='Je Night Work lag deze week op gemiddeld '+Math.round(s7)+', even hoog als de drie weken ervoor ('+Math.round(s21)+').';
+      b='Stabiel. Geen achteruitgang, maar ook nog geen stap vooruit.';
+      h='<b>De volgende stap:</b> een kwartier vroeger, vier avonden deze week. Daar zit je volgende punt.';}
+    K.push({id:'slaap',titel:'De kleiharde waarheid',teaser:'Over je nachten, zonder omwegen.',feit:f,bet:b,hef:h});
+  }
+  /* 2. Het sportieve vooruitzicht: Ground (of rusthartslag) laatste 3 nachten vs 28 dagen */
+  var k=heeftHrv?'hrv':'rhr',a3=vGem(k,0,2),a28=vGem(k,3,30),r3=vGem('rhr',0,2),r28=vGem('rhr',3,30);
+  if(a3!==null&&a28!==null){
+    var p=vPct(a3,a28),goed=heeftHrv?p>=5:p<=-3,slecht=heeftHrv?p<=-7:p>=4,f2,b2,h2;
+    var rd=(r3!==null&&r28!==null)?Math.round(r3-r28):null;
+    var rhrZin=(rd!==null&&k==='hrv')?' Je rusthartslag lag '+(Math.abs(rd)<1?'gelijk met je gewoonte':(rd<0?(-rd)+' slagen lager':rd+' slagen hoger'))+'.':'';
+    if(goed){f2=(heeftHrv?'Je HRV lag de laatste 3 nachten '+p+'% boven':'Je rusthartslag lag de laatste 3 nachten '+Math.abs(Math.round(a3-a28))+' slagen onder')+' je gewone niveau.'+rhrZin;
+      b2='Dat is het patroon van een lichaam dat bijgetrokken is. Je hebt meer in de tank dan je denkt.';
+      h2='<b>Vooruitzicht:</b> de komende twee dagen kan een stevigere prikkel goed vallen. Langer of iets harder, niet allebei.';}
+    else if(slecht){f2=(heeftHrv?'Je HRV lag de laatste 3 nachten '+Math.abs(p)+'% onder':'Je rusthartslag lag de laatste 3 nachten '+Math.round(a3-a28)+' slagen boven')+' je gewone niveau.'+rhrZin;
+      b2='Je lichaam is nog bezig met iets: training, stress, een korte nacht of iets dat eraan komt. Een zware sessie kost nu meer dan ze opbrengt.';
+      h2='<b>Vooruitzicht:</b> houd het twee dagen licht. Daarna mag het weer, en dan haal je er meer uit.';}
+    else{f2=(heeftHrv?'Je HRV':'Je rusthartslag')+' lag de laatste 3 nachten binnen je gewone band.'+rhrZin;
+      b2='Je lichaam draagt wat je vraagt. Geen alarm, geen extra marge.';
+      h2='<b>Vooruitzicht:</b> volg de richting van vandaag. Wil je meer, laat je gevoel na de training beslissen.';}
+    K.push({id:'sport',titel:'Het sportieve vooruitzicht',teaser:'Hoeveel heb je in de tank?',feit:f2,bet:b2,hef:h2});
+  }
+  /* 3. De status van je avondroutine: inslaaptijd */
+  var tijden=[];for(var i=7;i<=34;i++){var m=naarMin(lees('hrmny_inslaap_'+dagenTerug(i)));if(m!==null)tijden.push(m);}
+  var week=[];for(var j=0;j<=6;j++){var m2=naarMin(lees('hrmny_inslaap_'+dagenTerug(j)));if(m2!==null)week.push(m2);}
+  if(week.length>=4){
+    var basis=tijden.length>=5?tijden.slice().sort(function(x,y){return x-y;})[Math.floor(tijden.length/2)]:week.slice().sort(function(x,y){return x-y;})[Math.floor(week.length/2)];
+    var gw=gemiddelde(week),later=week.filter(function(x){return x>basis+15;}).length,spreid=Math.max.apply(null,week)-Math.min.apply(null,week),verschil=Math.round(gw-basis),f3,b3,h3;
+    f3='Je sliep deze week gemiddeld om '+vanMin(gw)+' in'+(tijden.length>=5?(Math.abs(verschil)<8?', rond je gewone uur ('+vanMin(basis)+')':', '+Math.abs(verschil)+' minuten '+(verschil>0?'later':'vroeger')+' dan je gewone uur ('+vanMin(basis)+')'):'')+'. Tussen je vroegste en je laatste avond zat '+Math.floor(spreid/60)+'u'+('0'+(spreid%60)).slice(-2)+'.';
+    if(later>=3||spreid>=75){b3=later+' van de '+week.length+' avonden ging je later dan een kwartier na je gewone uur. Een wisselend uur kost herstel, ook als je even lang slaapt.';h3='<b>Je hefboom:</b> kies één vast uur voor de rest van de week. The Anchor is belangrijker dan een vroeg uur.';}
+    else{b3='Je ritme houdt. Je lichaam weet wanneer het mag beginnen, en dat zie je terug in je nachten.';h3='<b>Je hefboom:</b> vasthouden. Een kwartier vroeger is de enige stap die nog meer oplevert.';}
+    K.push({id:'avond',titel:'De status van je avondroutine',teaser:'Hoe stabiel is je ritme echt?',feit:f3,bet:b3,hef:h3});
+  }
+  /* 4. Waar je energie naartoe gaat: The Charge */
+  var c7=vGem('bb',0,6),c21=vGem('bb',7,27);
+  if(c7!==null&&c21!==null){
+    var dc=Math.round(c7-c21),f4,b4,h4;
+    f4='Je begon deze week met gemiddeld '+Math.round(c7)+' The Charge, tegenover '+Math.round(c21)+' de drie weken ervoor'+(Math.abs(dc)<4?': even veel.':(dc<0?': '+(-dc)+' minder.':': '+dc+' meer.'));
+    if(dc<=-6){b4='Je laadt \'s nachts minder op dan je overdag verbruikt. Dat houd je een week vol, geen maand.';h4='<b>Waar het lekt:</b> meestal een late avond, alcohol of een drukke dag die blijft nazinderen. Kies er één om deze week te schrappen.';}
+    else if(dc>=6){b4='Je nachten laden je beter op. Dat is ruimte die je mag gebruiken.';h4='<b>Gebruik het bewust:</b> kies één ding deze week waar je echt energie in wilt steken.';}
+    else{b4='Je energiebalans is stabiel. Wat je verbruikt, laad je terug op.';h4='<b>Volgende stap:</b> beter opladen begint bij je nacht, niet bij koffie.';}
+    K.push({id:'charge',titel:'Waar je energie naartoe gaat',teaser:'Laad je op wat je verbruikt?',feit:f4,bet:b4,hef:h4});
+  }
+  /* 5. Het vroegste signaal: The Breath */
+  var b3n=vGem('adem',0,2),b28=vGem('adem',3,30);
+  if(b3n!==null&&b28!==null){
+    var db=Math.round((b3n-b28)*10)/10,f5,b5,h5;
+    f5='Je ademhaling lag de laatste 3 nachten op gemiddeld '+opmaak('adem',b3n)+' per minuut, '+(Math.abs(db)<0.3?'gelijk met':(db>0?String(db).replace('.',',')+' hoger dan':String(-db).replace('.',',')+' lager dan'))+' je gewone '+opmaak('adem',b28)+'.';
+    if(db>=0.6){b5='The Breath is vaak het eerste wat verschuift, nog voor je iets voelt: bij overbelasting, stress of een beginnende verkoudheid.';h5='<b>Luister vroeg:</b> neem vandaag geen extra belasting. Zakt het morgen terug, dan was het niets.';}
+    else{b5='The Breath is vaak het eerste wat verschuift als er iets aankomt. Bij jou is het rustig.';h5='<b>Goed nieuws:</b> geen vroege waarschuwing. Je lichaam heeft niets te melden.';}
+    K.push({id:'adem',titel:'Het vroegste signaal',teaser:'Wat je lichaam al weet en jij nog niet.',feit:f5,bet:b5,hef:h5});
+  }
+  return K;
+}
+function vDagKeuze(K){
+  if(K.length<=3)return K;
+  var d=vandaagStr(),seed=0;for(var i=0;i<d.length;i++)seed=(seed*31+d.charCodeAt(i))%9973;
+  var eerste=K.filter(function(x){return x.id==='slaap';}),rest=K.filter(function(x){return x.id!=='slaap';});
+  var uit=eerste.slice();while(uit.length<3&&rest.length){uit.push(rest.splice(seed%rest.length,1)[0]);seed=(seed*7+3)%9973;}
+  return uit;
+}
+function tekenVeritas(){
+  var el=document.getElementById('veritas-kaarten');if(!el)return;el.innerHTML='';
+  tekenVeritasWeek();
+  if(V_GEKOZEN&&V_GEKOZEN!==vandaagStr()){var og=leesJSON('hrmny_veritas_'+V_GEKOZEN,null);if(og){var bg=document.createElement('div');bg.className='vkaart open';bg.innerHTML='<div class="label-mono" style="margin-bottom:0.3rem"></div><div class="vt"></div><div class="vfeit"></div><div class="vbet"></div><div class="vhef">'+og.hef+'</div>';bg.querySelector('.label-mono').textContent=new Date(V_GEKOZEN+'T12:00:00').toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});bg.querySelector('.vt').textContent=og.titel;bg.querySelector('.vfeit').textContent=og.feit;bg.querySelector('.vbet').textContent=og.bet;el.appendChild(bg);var tb=document.createElement('button');tb.type='button';tb.className='nav-btn vterug';tb.textContent='Terug naar de kaarten van vandaag';tb.onclick=function(){V_GEKOZEN=null;tekenVeritas();};el.appendChild(tb);return;}}
+  var opgeslagen=leesJSON('hrmny_veritas_'+vandaagStr(),null);
+  var K=vDagKeuze(vKaarten());
+  if(!K.length){el.innerHTML='<div class="kaart"><div class="doel-tekst">Na een week met HRMNY liggen hier elke dag drie kaarten klaar. Elk met één eerlijk feit over jou, gemeten aan jezelf.</div></div>';return;}
+  K.forEach(function(c){
+    var b=document.createElement('button');b.type='button';
+    var isOpen=opgeslagen&&opgeslagen.id===c.id,isDicht=opgeslagen&&!isOpen;
+    b.className='vkaart'+(isOpen?' open':isDicht?' dicht':'');
+    if(isOpen){var o=opgeslagen;b.innerHTML='<div class="vt"></div><div class="vfeit"></div><div class="vbet"></div><div class="vhef">'+o.hef+'</div>';
+      b.querySelector('.vt').textContent=o.titel;b.querySelector('.vfeit').textContent=o.feit;b.querySelector('.vbet').textContent=o.bet;
+      ['.vt','.vfeit','.vbet','.vhef'].forEach(function(s){voegTooltipsToe(b.querySelector(s));});}
+    else{b.innerHTML='<span class="vslot">'+(isDicht?'morgen weer':'openen')+'</span><div class="vt"></div><div class="vs"></div>';
+      b.querySelector('.vt').textContent=c.titel;b.querySelector('.vs').textContent=c.teaser;
+      if(!isDicht)b.onclick=function(){schrijf('hrmny_veritas_'+vandaagStr(),JSON.stringify(c));tekenVeritas();zetVeritasKnop();};}
+    el.appendChild(b);
+  });
+  if(opgeslagen&&!K.some(function(c){return c.id===opgeslagen.id;})){
+    var b2=document.createElement('div');b2.className='vkaart open';b2.innerHTML='<div class="vt"></div><div class="vfeit"></div><div class="vbet"></div><div class="vhef">'+opgeslagen.hef+'</div>';
+    b2.querySelector('.vt').textContent=opgeslagen.titel;b2.querySelector('.vfeit').textContent=opgeslagen.feit;b2.querySelector('.vbet').textContent=opgeslagen.bet;el.insertBefore(b2,el.firstChild);
+  }
+}
+function zetVeritasKnop(){
+  var s=document.getElementById('vk-sub');if(!s)return;
+  var o=leesJSON('hrmny_veritas_'+vandaagStr(),null);
+  var vol=vWeekDagen().filter(function(d){return !!leesJSON('hrmny_veritas_'+d,null);}).length;
+  s.textContent=o?'Vandaag geopend: '+o.titel.toLowerCase()+'. '+vol+' van 7 deze week.':'Drie gesloten kaarten wachten. '+(vol?vol+' van 7 deze week.':'Vul vandaag je eerste vakje.');
+}
+
+/* ── NUDA VERITAS: de week van zeven vakjes ── */
+var V_KLEUR={slaap:'#378ADD',sport:'#1D9E75',avond:'#1A2D5A',charge:'#C9A84C',adem:'#5FA8A0'};
+var V_GEKOZEN=null;
+function vMaandag(){var d=new Date();var w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return d;}
+function vWeekDagen(){var m=vMaandag(),uit=[];for(var i=0;i<7;i++){var d=new Date(m);d.setDate(m.getDate()+i);uit.push(datumStr(d));}return uit;}
+function tekenVeritasWeek(){
+  var el=document.getElementById('vweek');if(!el)return;el.innerHTML='';
+  var vandaag=vandaagStr(),namen=['ma','di','wo','do','vr','za','zo'],vol=0,gemist=0;
+  vWeekDagen().forEach(function(dag,i){
+    var o=leesJSON('hrmny_veritas_'+dag,null),b=document.createElement('button');b.type='button';
+    var st=o?'vol':(dag===vandaag?'vandaag':(dag<vandaag?'gemist':'later'));
+    if(o)vol++;if(st==='gemist')gemist++;
+    b.className='vdag '+st+(V_GEKOZEN===dag?' gekozen':'');
+    b.innerHTML='<i></i><span>'+namen[i]+'</span>';
+    if(o){b.querySelector('i').style.background=V_KLEUR[o.id]||'#C9A84C';b.title=o.titel;
+      b.onclick=function(){V_GEKOZEN=(V_GEKOZEN===dag?null:dag);tekenVeritas();};}
+    else if(st==='gemist')b.title='Deze dag bleef stil';
+    else if(st==='vandaag')b.title='Vandaag nog te openen';
+    el.appendChild(b);
+  });
+  var z=document.getElementById('vweek-zin'),open=!!leesJSON('hrmny_veritas_'+vandaag,null),rest=7-((new Date().getDay()+6)%7)-1;
+  if(vol===7)z.textContent='Zeven van zeven. Een volle week eerlijk naar jezelf gekeken. Dat doen weinig mensen.';
+  else if(!open)z.textContent='Vandaag ligt nog open. '+(vol?'Deze week al '+vol+' van 7.':'Begin je week met één waarheid.');
+  else z.textContent=vol+' van 7 deze week.'+(rest>0?' Nog '+rest+(rest===1?' dag':' dagen')+' te gaan.':' Morgen begint een nieuwe week.')+(gemist?' Een lege dag is geen falen, wel een waarheid die je niet hoorde.':'');
+}
+zetVeritasKnop();
 </script>
 </body></html>

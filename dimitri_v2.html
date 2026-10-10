@@ -325,6 +325,26 @@ details.klein summary::-webkit-details-marker{display:none}
 @keyframes vpuls{0%,100%{opacity:1}50%{opacity:0.45}}
 .vweek-zin{font-size:0.82rem;color:var(--text-mid);line-height:1.55;margin-top:0.7rem}
 .vterug{margin-top:0.6rem}
+
+/* ── NUDA VERITAS: eerst je gevoel, dan je kaart ── */
+.veritas-knop{position:relative;overflow:hidden}
+.veritas-knop.slot .vk-titel{opacity:0.75}
+.veritas-knop.slot .vk-pijl svg{display:block}
+.veritas-knop.ontgrendel{animation:vglow 1.6s ease-in-out 2}
+.veritas-knop.ontgrendel:after{content:'';position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(100deg,transparent,rgba(201,168,76,0.35),transparent);animation:vveeg 1.6s ease-out 1}
+@keyframes vglow{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 0 3px rgba(201,168,76,0.85),0 0 22px rgba(201,168,76,0.45)}}
+@keyframes vveeg{from{left:-60%}to{left:120%}}
+.gevoel-kaart .gk-veritas{display:flex;align-items:center;gap:0.4rem;font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9A84C;margin-top:0.55rem}
+.vkaart.vergrendeld{cursor:default;background:#111E3F;border-color:rgba(201,168,76,0.25)}
+.vkaart.vergrendeld .vt{opacity:0.55}
+.vkaart.vergrendeld .vs{filter:blur(3.5px);user-select:none}
+.vkaart.vergrendeld .vslot{display:flex;align-items:center;gap:0.3rem;opacity:0.85}
+.vkaart.vrij{animation:vglow 1.6s ease-in-out 1}
+.vgate{background:var(--white);border:1.5px solid #C9A84C;border-radius:16px;padding:1.05rem 1.15rem}
+.vgate-t{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--navy);line-height:1.25}
+.vgate-s{font-size:0.86rem;line-height:1.6;color:var(--text-mid);margin:0.35rem 0 0.9rem}
+.vgate-k{width:100%;border:none;border-radius:999px;padding:0.9rem 1rem;font:inherit;font-weight:600;font-size:0.95rem;cursor:pointer;background:var(--navy);color:#fff}
+.vbeloning{font-size:0.86rem;line-height:1.55;color:#B08F35;text-align:center;padding:0.2rem 0 0.1rem}
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="HRMNY"><meta name="theme-color" content="#1A2D5A"><link rel="apple-touch-icon" href="data:image/png;base64,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"><link rel="icon" href="data:image/png;base64,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">
 </head>
@@ -824,6 +844,7 @@ function toonLaag(n){
 function toonDashboard(){
   toonScherm('s-dashboard');toonLaag(1);
   tekenGevoelKaart();
+  if(typeof zetVeritasKnop==='function')zetVeritasKnop();
   document.getElementById('avond-kaart').style.display=new Date().getHours()>=20?'block':'none';
   toonRichting(laatsteRichtingVandaag());
   renderEventStatus();
@@ -971,7 +992,7 @@ function initVragen(){
 }
 function gevoelVandaag(){try{return JSON.parse(lees('hrmny_subj_'+vandaagStr())||'null');}catch(e){return null;}}
 var TERUG_LAAG=1;
-function huidigeLaag(){return document.getElementById('s-dashboard').classList.contains('actief')?(document.getElementById('laag2').style.display==='flex'?2:document.getElementById('laag3').style.display==='flex'?3:1):1;}
+function huidigeLaag(){return document.getElementById('s-dashboard').classList.contains('actief')?(document.getElementById('laag2').style.display==='flex'?2:document.getElementById('laag3').style.display==='flex'?3:document.getElementById('laag4').style.display==='flex'?4:1):1;}
 function terugVanFormulier(){toonDashboard();toonLaag(TERUG_LAAG);}
 function toonFormulier(){
   TERUG_LAAG=huidigeLaag();
@@ -1019,7 +1040,7 @@ function versturen(){
     modus:huidigeModus(),datum:vandaag,trigger:'dimitri_v2'
   });
   var k=document.getElementById('verstuur-knop');k.disabled=true;k.textContent='Bewaard';
-  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat er gemeten wordt.';
+  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat er gemeten wordt.'+(leesJSON('hrmny_veritas_'+vandaagStr(),null)?'':' Je drie kaarten liggen klaar.');
   setTimeout(function(){terugVanFormulier();setTimeout(haalRichtingOp,8000);},1100);
 }
 function samenvattingGevoel(subj){
@@ -1037,7 +1058,7 @@ function tekenGevoelKaart(){
     k.innerHTML='<div><div class="gk-titel" style="font-size:0.9rem">Jouw gevoel vandaag</div>'+(tags?'<div class="gevoel-samenvatting">'+tags+'</div>':'<div class="gk-sub">Dank je om het te delen.</div>')+'</div><div class="gk-pijl" style="font-size:0.78rem;font-weight:600;color:var(--navy)">Aanpassen</div>';
   } else {
     k.className='gevoel-kaart';
-    k.innerHTML='<div><div class="gk-titel">En hoe voel jij je vandaag?</div><div class="gk-sub">Je wearable kent je nacht. Hoe je je voelt, weet alleen jij. Vertel het gerust.</div></div><div class="gk-pijl">&rsaquo;</div>';
+    k.innerHTML='<div><div class="gk-titel">En hoe voel jij je vandaag?</div><div class="gk-sub">Je wearable kent je nacht. Hoe je je voelt, weet alleen jij. Vertel het gerust.</div>'+(leesJSON('hrmny_veritas_'+vandaagStr(),null)?'':'<div class="gk-veritas">'+vSlot(0)+'Daarna openen je drie kaarten</div>')+'</div><div class="gk-pijl">&rsaquo;</div>';
   }
   k.style.display='flex';
 }
@@ -1518,6 +1539,7 @@ function bewaarExtras(json,dag){
     if(json.aansporen!==undefined)schrijf('hrmny_aansporen',JSON.stringify({dag:dag,w:json.aansporen||''}));
     var act=json.activiteiten;if(typeof act==='string'){try{act=JSON.parse(act);}catch(e){act=[];}}
     if(Array.isArray(act)&&act.length)schrijf('hrmny_activiteiten',JSON.stringify(act));
+    if(V_ACT&&json.activiteiten!==undefined){var gd=new Date(dag+'T12:00:00');gd.setDate(gd.getDate()-1);var gs=datumStr(gd),tot=0;(Array.isArray(act)?act:[]).forEach(function(a){if(a&&a.datum===gs)tot+=(+a.duur_min||0);});if(!(parseFloat(lees('hrmny_train_'+gs))>0))schrijf('hrmny_train_'+gs,String(tot));}
   }catch(e){}
   renderQuarter();renderTrainingFb();
 }
@@ -1691,7 +1713,7 @@ function vKaarten(){
   if(a3!==null&&a28!==null){
     var p=vPct(a3,a28),goed=heeftHrv?p>=5:p<=-3,slecht=heeftHrv?p<=-7:p>=4,f2,b2,h2;
     var rd=(r3!==null&&r28!==null)?Math.round(r3-r28):null;
-    var rhrZin=(rd!==null&&k==='hrv')?' Je rusthartslag lag '+(Math.abs(rd)<1?'gelijk met je gewoonte':(rd<0?(-rd)+' slagen lager':rd+' slagen hoger'))+'.':'';
+    var rhrZin=(rd!==null&&k==='hrv')?' Je rusthartslag lag '+(Math.abs(rd)<1?'gelijk met je gewoonte':(rd<0?(-rd)+(rd===-1?' slag':' slagen')+' lager':rd+(rd===1?' slag':' slagen')+' hoger'))+'.':'';
     if(goed){f2=(heeftHrv?'Je HRV lag de laatste 3 nachten '+p+'% boven':'Je rusthartslag lag de laatste 3 nachten '+Math.abs(Math.round(a3-a28))+' slagen onder')+' je gewone niveau.'+rhrZin;
       b2='Dat is het patroon van een lichaam dat bijgetrokken is. Je hebt meer in de tank dan je denkt.';
       h2='<b>Vooruitzicht:</b> de komende twee dagen kan een stevigere prikkel goed vallen. Langer of iets harder, niet allebei.';}
@@ -1735,24 +1757,29 @@ function vKaarten(){
   }
   return K;
 }
-function vDagKeuze(K){
-  if(K.length<=3)return K;
-  var d=vandaagStr(),seed=0;for(var i=0;i<d.length;i++)seed=(seed*31+d.charCodeAt(i))%9973;
-  var eerste=K.filter(function(x){return x.id==='slaap';}),rest=K.filter(function(x){return x.id!=='slaap';});
-  var uit=eerste.slice();while(uit.length<3&&rest.length){uit.push(rest.splice(seed%rest.length,1)[0]);seed=(seed*7+3)%9973;}
-  return uit;
-}
 function tekenVeritas(){
   var el=document.getElementById('veritas-kaarten');if(!el)return;el.innerHTML='';
   tekenVeritasWeek();
   if(V_GEKOZEN&&V_GEKOZEN!==vandaagStr()){var og=leesJSON('hrmny_veritas_'+V_GEKOZEN,null);if(og){var bg=document.createElement('div');bg.className='vkaart open';bg.innerHTML='<div class="label-mono" style="margin-bottom:0.3rem"></div><div class="vt"></div><div class="vfeit"></div><div class="vbet"></div><div class="vhef">'+og.hef+'</div>';bg.querySelector('.label-mono').textContent=new Date(V_GEKOZEN+'T12:00:00').toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});bg.querySelector('.vt').textContent=og.titel;bg.querySelector('.vfeit').textContent=og.feit;bg.querySelector('.vbet').textContent=og.bet;el.appendChild(bg);var tb=document.createElement('button');tb.type='button';tb.className='nav-btn vterug';tb.textContent='Terug naar de kaarten van vandaag';tb.onclick=function(){V_GEKOZEN=null;tekenVeritas();};el.appendChild(tb);return;}}
   var opgeslagen=leesJSON('hrmny_veritas_'+vandaagStr(),null);
-  var K=vDagKeuze(vKaarten());
+  var K=vDagKeuze(vAlleKaarten());
   if(!K.length){el.innerHTML='<div class="kaart"><div class="doel-tekst">Na een week met HRMNY liggen hier elke dag drie kaarten klaar. Elk met één eerlijk feit over jou, gemeten aan jezelf.</div></div>';return;}
+  if(!opgeslagen&&!vGevoelGedeeld()){
+    var g=document.createElement('div');g.className='vgate';
+    g.innerHTML='<div class="vgate-t">Eerst jij, dan de waarheid.</div><div class="vgate-s">Vertel HRMNY hoe je je vandaag voelt. Eén tik volstaat. Dan gaan je drie kaarten open en kies je er één.</div><button type="button" class="vgate-k">Hoe voel je je vandaag?</button>';
+    g.querySelector('button').onclick=function(){toonFormulier();};
+    el.appendChild(g);
+    K.forEach(function(c){var b=document.createElement('div');b.className='vkaart vergrendeld';
+      b.innerHTML='<span class="vslot">'+vSlot(0)+'op slot</span><div class="vt"></div><div class="vs"></div>';
+      b.querySelector('.vt').textContent=c.titel;b.querySelector('.vs').textContent=c.teaser;el.appendChild(b);});
+    return;
+  }
+  var vrijNu=!opgeslagen&&!lees('hrmny_veritas_vrij_'+vandaagStr());
+  if(vrijNu){schrijf('hrmny_veritas_vrij_'+vandaagStr(),'1');var bl=document.createElement('div');bl.className='vbeloning';bl.textContent='Dank je om te delen. Je kaarten zijn open. Kies er één.';el.appendChild(bl);}
   K.forEach(function(c){
     var b=document.createElement('button');b.type='button';
     var isOpen=opgeslagen&&opgeslagen.id===c.id,isDicht=opgeslagen&&!isOpen;
-    b.className='vkaart'+(isOpen?' open':isDicht?' dicht':'');
+    b.className='vkaart'+(isOpen?' open':isDicht?' dicht':(vrijNu?' vrij':''));
     if(isOpen){var o=opgeslagen;b.innerHTML='<div class="vt"></div><div class="vfeit"></div><div class="vbet"></div><div class="vhef">'+o.hef+'</div>';
       b.querySelector('.vt').textContent=o.titel;b.querySelector('.vfeit').textContent=o.feit;b.querySelector('.vbet').textContent=o.bet;
       ['.vt','.vfeit','.vbet','.vhef'].forEach(function(s){voegTooltipsToe(b.querySelector(s));});}
@@ -1771,8 +1798,327 @@ function zetVeritasKnop(){
   var o=leesJSON('hrmny_veritas_'+vandaagStr(),null);
   var vol=vWeekDagen().filter(function(d){return !!leesJSON('hrmny_veritas_'+d,null);}).length;
   s.textContent=o?'Vandaag geopend: '+o.titel.toLowerCase()+'. '+vol+' van 7 deze week.':'Drie gesloten kaarten wachten. '+(vol?vol+' van 7 deze week.':'Vul vandaag je eerste vakje.');
+  var knop=s.closest('.veritas-knop'),pijl=knop.querySelector('.vk-pijl');
+  knop.classList.remove('slot','ontgrendel');pijl.innerHTML='&rsaquo;';
+  if(!o&&!vGevoelGedeeld()){
+    knop.classList.add('slot');pijl.innerHTML=vSlot(1);
+    s.textContent='Op slot tot je vertelt hoe je je voelt. '+(vol?vol+' van 7 deze week.':'Dan opent je eerste vakje.');
+  } else if(!o&&!lees('hrmny_veritas_vrijk_'+vandaagStr())){
+    schrijf('hrmny_veritas_vrijk_'+vandaagStr(),'1');
+    s.textContent='Dank je. Je drie kaarten liggen klaar. '+(vol?vol+' van 7 deze week.':'');
+    void knop.offsetWidth;knop.classList.add('ontgrendel');
+  }
 }
 
+
+var V_ACT=true;
+
+/* ── NUDA VERITAS: de kaartenpool (oorzaak, gevoel, week, beste versie, trend) ── */
+var V_FAMKLEUR={oorzaak:'#D08A4E',gevoel:'#8C7AB8',week:'#4A6FA5',beste:'#7A9A5A',trend:'#B5838D'};
+var V_SLOT_VAN={slaap:'nu',sport:'nu',avond:'nu',charge:'nu',adem:'nu'};
+function vD(i){return dagenTerug(i);}
+function vSubj(i){return leesJSON('hrmny_subj_'+vD(i),null);}
+function vGist(i){var s=vSubj(i);return s&&Array.isArray(s.gisteren)?s.gisteren:null;}
+function vTag(t){return function(i){var g=vGist(i);return g?g.indexOf(t)>=0:null;};}
+function vInslaap(i){return naarMin(lees('hrmny_inslaap_'+vD(i)));}
+function vTrainMin(i){var t=parseFloat(lees('hrmny_train_'+vD(i+1))||'');return isNaN(t)?null:t;}
+function vTrain(i){var t=vTrainMin(i),g=vGist(i);
+  if((t!==null&&t>=20)||(g&&g.indexOf('zware_training')>=0))return true;
+  if(t===0||(g&&g.indexOf('rustig')>=0))return false;return null;}
+function vSplit(k,pred,van,tot){var a=[],b=[];for(var i=van;i<=(tot||30);i++){var x=waarde(k,vD(i));if(x===null)continue;var p=pred(i);if(p===true)a.push(x);else if(p===false)b.push(x);}return {a:a,b:b,ga:gemiddelde(a),gb:gemiddelde(b),na:a.length,nb:b.length};}
+function vMediaan(a){if(!a.length)return null;var s=a.slice().sort(function(x,y){return x-y;}),n=s.length;return n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2;}
+function vReeks(k,van,tot){return reeksWaarden(k,van,tot);}
+function vR(x){return Math.round(x);}
+function vMin(x){x=Math.round(Math.abs(x));return x>=60?Math.floor(x/60)+'u'+('0'+(x%60)).slice(-2):x+' minuten';}
+function vWeekdag(i){return new Date(vD(i)+'T12:00:00').toLocaleDateString('nl-BE',{weekday:'long'});}
+function vNacht(i){return 'de nacht van '+vWeekdag(i+1)+' op '+vWeekdag(i);}
+function vDatum(i){return new Date(vD(i)+'T12:00:00').toLocaleDateString('nl-BE',{day:'numeric',month:'long'});}
+function vHeeftHrv(){return NACHT_GROEPEN.some(function(g){return g.keys.indexOf('hrv')>=0;})&&vReeks('hrv',0,30).length>=7;}
+function vLbl(t){return (LABELS['gisteren:'+t]||t).toLowerCase();}
+function vGroundZin(pred){
+  if(!vHeeftHrv())return '';var h=vSplit('hrv',pred,0);if(h.na<2||h.nb<3)return '';
+  var p=vPct(h.ga,h.gb);if(Math.abs(p)<3)return ' Je Ground bleef die ochtenden gelijk.';
+  return ' Je Ground lag die ochtenden '+Math.abs(p)+'% '+(p<0?'lager':'hoger')+'.';
+}
+
+function vKaartenPool(){
+  var P=[],hrv=vHeeftHrv();
+  function kaart(o){if(o)P.push(o);}
+
+  /* ── OORZAAK EN GEVOLG ── */
+  kaart((function(){ /* alcohol */
+    var r=vSplit('slaap',vTag('alcohol'),0);if(r.na<2||r.nb<4)return null;
+    var d=vR(r.ga-r.gb),b,h;
+    var f='Na een avond met alcohol was je Night Work gemiddeld '+vR(r.ga)+', tegenover '+vR(r.gb)+' op andere nachten.'+vGroundZin(vTag('alcohol'))+' Dat over '+r.na+' avonden met en '+r.nb+' zonder.';
+    if(d<=-4){b='Bij jou is dat geen detail. Alcohol houdt je zenuwstelsel \'s nachts in een hogere versnelling: je slaapt wel, maar je herstelt minder.';h='<b>Je hefboom:</b> niet per se minder, wel vroeger. Het laatste glas drie uur voor je gaat slapen, scheelt al een deel.';}
+    else if(d>=-1){b='In je score kost een glas jou minder dan je zou denken. Dat is geluk, geen vrijbrief: het effect stapelt als het meerdere avonden op rij gebeurt.';h='<b>Je hefboom:</b> let op de tweede avond op rij. Daar ligt bij de meeste mensen de echte kost.';}
+    else{b='Een klein verschil, maar een echt. Je lichaam merkt het, ook als jij het de ochtend erna niet voelt.';h='<b>Je hefboom:</b> water tussendoor en een vroeger laatste glas. Kleine stappen, meetbaar effect.';}
+    return {id:'o_alcohol',fam:'oorzaak',slot:'waarom',score:Math.min(1,Math.abs(d)/8)+0.2,titel:'Het glas van gisteren',teaser:'Slaap jij slechter na een glas?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* laat gaan slapen */
+    var t=[];for(var i=0;i<=30;i++){var m=vInslaap(i);if(m!==null)t.push(m);}if(t.length<10)return null;
+    var basis=vMediaan(t),pred=function(i){var m=vInslaap(i);return m===null?null:m>basis+30;};
+    var r=vSplit('slaap',pred,0);if(r.na<3||r.nb<5)return null;
+    var c=vSplit('bb',pred,0),d=vR(r.ga-r.gb),b,h;
+    var f='Ging je meer dan een halfuur na je gewone uur ('+vanMin(basis)+') slapen, dan was je Night Work gemiddeld '+vR(r.ga)+'. Op je gewone avonden: '+vR(r.gb)+'.'+(c.na>=3&&c.nb>=5&&Math.abs(c.ga-c.gb)>=3?' Je begon de dag erna met '+vR(c.ga)+' The Charge in plaats van '+vR(c.gb)+'.':'');
+    if(d<=-4){b='Een laat uur kost je niet alleen tijd, maar ook kwaliteit. Je lichaam haalt dat niet in door \'s ochtends langer te blijven liggen.';h='<b>Je hefboom:</b> The Anchor. Niet vroeg, wel vast.';}
+    else{b='Opvallend: bij jou kost een later uur weinig aan je score. Waar het wel zit, is je ritme: wisselende uren maken je nachten op termijn onvoorspelbaar.';h='<b>Je hefboom:</b> laat mag, maar hou het binnen een uur van je gewone tijd.';}
+    return {id:'o_laat',fam:'oorzaak',slot:'waarom',score:Math.min(1,Math.abs(d)/8)+0.15,titel:'Het late uur',teaser:'Wat kost een laat uur jou echt?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* training */
+    var r=vSplit('slaap',vTrain,0);if(r.na<3||r.nb<3)return null;
+    var d=vR(r.ga-r.gb),b,h;
+    var f='Na een dag met training was je Night Work gemiddeld '+vR(r.ga)+', na een rustdag '+vR(r.gb)+'.'+vGroundZin(vTrain).replace('die ochtenden','na training');
+    if(d>=3){b='Je lichaam beloont beweging met betere nachten. Dat is het patroon van iemand die goed herstelt.';h='<b>Je hefboom:</b> ook op een rustdag helpt beweging. Een wandeling van een halfuur telt.';}
+    else if(d<=-3){b='Je training vraagt meer herstel dan je nacht nu teruggeeft. Vaak ligt het aan het uur: een late of harde sessie houdt je lichaam \'s avonds op toeren.';h='<b>Je hefboom:</b> plan harde sessies voor 18 uur, en geef je avond erna een rustig uur.';}
+    else{b='Training en nacht houden elkaar in evenwicht. Je lichaam verwerkt wat je vraagt.';h='<b>Je hefboom:</b> kijk de ochtend na een zware dag naar je Ground. Daar zie je het eerst als het te veel wordt.';}
+    return {id:'o_training',fam:'oorzaak',slot:'waarom',score:Math.min(1,Math.abs(d)/8)+0.25,titel:'Wat training met je nacht doet',teaser:'Slaap je beter na een training?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* stress van de dag */
+    var s=vReeks('stress',0,30);if(s.length<10)return null;var med=vMediaan(s);
+    var pred=function(i){var x=waarde('stress',vD(i));return x===null?null:(x>=med+5?true:(x<=med?false:null));};
+    var k=hrv?'hrv':'slaap',r=vSplit('slaap',pred,0);if(r.na<3||r.nb<3)return null;
+    var d=vR(r.ga-r.gb),b,h;
+    var f='Na je drukste dagen (stress boven '+vR(med+5)+') was je Night Work gemiddeld '+vR(r.ga)+', na rustigere dagen '+vR(r.gb)+'.'+vGroundZin(pred);
+    if(d<=-3){b='Je neemt je dag mee naar bed. Je lichaam blijft in de stand van de dag hangen, en dat kost herstel.';h='<b>Je hefboom:</b> een overgang. Tien minuten tussen werk en avond: wandelen, ademen, niets. The Breath vertraagt, je nacht volgt.';}
+    else{b='Je kunt een drukke dag goed loslaten. Dat is een sterkte, en lang niet iedereen heeft ze.';h='<b>Je hefboom:</b> let op wat je na drukke dagen doet. Daar zit je geheim, hou het vast.';}
+    return {id:'o_stress',fam:'oorzaak',slot:'waarom',score:Math.min(1,Math.abs(d)/8)+0.15,titel:'Wat een drukke dag meeneemt',teaser:'Neem jij je dag mee in je slaap?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* grootste lek */
+    var HEF={cafeine:'schuif je laatste koffie naar 14 uur. Cafeïne zit vijf à zes uur later nog voor de helft in je lichaam.',scherm:'leg je scherm een halfuur voor je gaat slapen weg. Niet alleen om het licht, ook om je hoofd.',laat_eten:'eet drie uur voor je gaat slapen. Je spijsvertering en je nacht werken liever niet tegelijk.',laat:'een vast uur, ook in het weekend. Dat is The Anchor.',stress:'een overgang tussen dag en avond: tien minuten niets.',zwaar:'na een zware dag: een rustig uur voor je gaat slapen. Je lichaam moet eerst landen.',reizen:'na een reisdag: daglicht, water en je gewone uur. Hou het simpel.'};
+    var best=null;Object.keys(HEF).forEach(function(t){var r=vSplit('slaap',vTag(t),0);if(r.na<2||r.nb<4)return;var d=r.ga-r.gb;if(d<=-3&&(!best||d<best.d))best={t:t,r:r,d:d};});
+    if(!best)return null;
+    return {id:'o_lek',fam:'oorzaak',slot:'waarom',score:Math.min(1,-best.d/8)+0.3,titel:'Je grootste lek',teaser:'Wat kost jou het meest herstel?',
+      feit:'Van alles wat je de voorbije weken aanduidde, kost "'+vLbl(best.t)+'" je het meest. Na zo\'n dag was je Night Work gemiddeld '+vR(best.r.ga)+', tegenover '+vR(best.r.gb)+' op andere dagen.',
+      bet:'Dat is jouw grootste lek. Niet dat van een ander, het jouwe, gemeten in je eigen nachten.',hef:'<b>Je hefboom:</b> '+HEF[best.t]};
+  })());
+
+  kaart((function(){ /* verborgen hefboom */
+    var HEF={buiten:'meer daglicht, liefst \'s ochtends. Het zet The Rhythm voor de hele dag.',rustig:'plan bewust een rustige dag na een drukke. Dat is geen luiheid, dat is herstel.',topdag:'wat maakte die dagen goed? Schrijf het op. Dat is je recept.',zware_training:'je lichaam houdt van inspanning. Blijf bewegen, ook in drukke weken.'};
+    var best=null;Object.keys(HEF).forEach(function(t){var r=vSplit('slaap',vTag(t),0);if(r.na<2||r.nb<4)return;var d=r.ga-r.gb;if(d>=3&&(!best||d>best.d))best={t:t,r:r,d:d};});
+    if(!best)return null;
+    return {id:'o_helpt',fam:'oorzaak',slot:'waarom',score:Math.min(1,best.d/8)+0.3,titel:'Je verborgen hefboom',teaser:'Wat helpt jou het meest?',
+      feit:'Na dagen die je aanduidde als "'+vLbl(best.t)+'", sliep je het best. Je Night Work was dan gemiddeld '+vR(best.r.ga)+', tegenover '+vR(best.r.gb)+' op andere dagen.',
+      bet:'Iets wat je al doet, en dat meer oplevert dan je dacht.',hef:'<b>Je hefboom:</b> '+HEF[best.t]};
+  })());
+
+  /* ── GEVOEL TEGENOVER METING ── */
+  var refK=hrv?'hrv':'bb',refAvg=gemiddelde(vReeks(refK,0,30)),refN=vReeks(refK,0,30).length;
+  function laag(i){var x=waarde(refK,vD(i));if(x===null||refN<7)return null;return refK==='hrv'?x<refAvg*0.93:x<refAvg-8;}
+  var refNaam=refK==='hrv'?'je Ground':'je Charge';
+
+  kaart((function(){ /* moe: hoofd of lijf */
+    var n=0,l=0;for(var i=0;i<=30;i++){var s=vSubj(i);if(!s||(s.gevoel!=='moe'&&s.gevoel!=='leeg'))continue;var x=laag(i);if(x===null)continue;n++;if(x)l++;}
+    if(n<3)return null;var fr=l/n,b,h;
+    var f='Je voelde je de voorbije weken '+n+' ochtenden moe of leeg. Op '+l+' daarvan lag ook '+refNaam+' onder je gewone niveau.';
+    if(fr>=0.6){b='Je gevoel en je lichaam vertellen hetzelfde verhaal. Je kunt jezelf vertrouwen.';h='<b>Je hefboom:</b> voel je je moe, dan mag je het geloven. Neem The Silence zonder schuldgevoel.';}
+    else if(fr<=0.34){b='Je moeheid zat meestal niet in je lijf. Dat wijst eerder op The Fog: een moe hoofd, geen moe lichaam.';h='<b>Je hefboom:</b> een moe hoofd herstelt door beweging en buitenlucht, niet door stil te zitten. Twintig minuten wandelen.';}
+    else{b='Soms zit het in je lijf, soms in je hoofd. '+(refK==='hrv'?'Je Ground':'Je Charge')+' vertelt je welke van de twee.';h='<b>Je hefboom:</b> een moe lijf vraagt rust, een moe hoofd vraagt beweging.';}
+    return {id:'g_moe',fam:'gevoel',slot:'waarom',score:0.45+Math.abs(fr-0.5),titel:'Moe in je hoofd of in je lijf?',teaser:'Klopt je vermoeidheid met je lichaam?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* goed gevoel, lichaam remt */
+    var n=0,mis=0;for(var i=0;i<=30;i++){var s=vSubj(i);if(!s||(s.gevoel!=='goed'&&s.gevoel!=='fris'))continue;var x=laag(i);if(x===null)continue;n++;if(x)mis++;}
+    if(n<3)return null;
+    if(mis>=2&&mis/n>=0.2)return {id:'g_goed',fam:'gevoel',slot:'waarom',score:0.5+Math.min(0.4,mis/n),titel:'Je lichaam is je voor',teaser:'Voel je je goed, of ben je het ook?',
+      feit:'Op '+mis+' van je '+n+' goede ochtenden lag '+refNaam+' eigenlijk onder je gewone niveau.',
+      bet:'Je voelde je goed, maar je lichaam remde al. Op zulke dagen vragen mensen te veel, en voelen ze het een paar dagen later.',
+      hef:'<b>Je hefboom:</b> voel je je goed maar zegt HRMNY voorzichtig? Geloof dan je lichaam, niet je humeur. Eén dag volstaat.'};
+    return {id:'g_goed',fam:'gevoel',slot:'waarom',score:0.35,titel:'Je lichaam is je voor',teaser:'Voel je je goed, of ben je het ook?',
+      feit:'Op '+(n-mis)+' van je '+n+' goede ochtenden stond '+refNaam+' ook op of boven je gewone niveau.',
+      bet:'Je goede gevoel is betrouwbaar. Als jij je fris voelt, ben je het meestal ook.',
+      hef:'<b>Je hefboom:</b> gebruik die ochtenden. Dat zijn je dagen voor een stevigere prikkel.'};
+  })());
+
+  kaart((function(){ /* hoe goed schat je je nacht in */
+    var W={slecht:1,onrustig:2,oke:3,goed:4,diep:5},s30=vReeks('slaap',0,30);if(s30.length<7)return null;var gem=gemiddelde(s30);
+    var n=0,juist=0,onder=0,boven=0;
+    for(var i=0;i<=30;i++){var s=vSubj(i),sc=waarde('slaap',vD(i));if(!s||!W[s.slaap_gevoel]||sc===null)continue;n++;
+      var gv=W[s.slaap_gevoel]<=2?-1:(W[s.slaap_gevoel]>=4?1:0),me=sc<gem-6?-1:(sc>gem+6?1:0);
+      if(gv===me)juist++;else if(gv<me)onder++;else boven++;}
+    if(n<5)return null;var b,h,f='Je schatte je nacht '+n+' keer in. '+juist+' keer klopte je gevoel met je Night Work.';
+    if(onder>=boven+2){f+=' Zat je ernaast, dan was je meestal strenger dan je lichaam.';b='Je bent strenger voor je nachten dan nodig. Een nacht die slecht aanvoelt, was vaak beter dan je denkt. Goed om te weten op een moeilijke ochtend.';h='<b>Je hefboom:</b> voel je je slecht bij het wakker worden? Kijk eerst naar je Night Work voor je de dag afschrijft.';}
+    else if(boven>=onder+2){f+=' Zat je ernaast, dan dacht je meestal dat je beter sliep dan je lichaam mat.';b='Je voelt je uitgeruster dan je lichaam is. Daar zit het risico: je vraagt meer dan er is.';h='<b>Je hefboom:</b> voel je je goed, kijk dan even naar je Ground voor je hard gaat.';}
+    else if(juist/n>=0.6){b='Je voelt je nachten goed aan. Je hebt je horloge eigenlijk niet nodig om te weten hoe je sliep.';h='<b>Je hefboom:</b> vertrouw je gevoel, ook op dagen zonder horloge.';}
+    else{b='Je gevoel en je meting lopen nog vaak uiteen. Dat is normaal in het begin: je leert je lichaam pas lezen.';h='<b>Je hefboom:</b> vergelijk elke ochtend kort je gevoel met je Night Work. Na twee weken voel je het beter aan.';}
+    return {id:'g_nacht',fam:'gevoel',slot:'waarom',score:0.4+Math.abs(onder-boven)/n,titel:'Hoe goed je je nacht inschat',teaser:'Weet jij hoe goed je sliep?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* helder hoofd */
+    var hi=[],wi=[],hs=[],ws=[];
+    for(var i=0;i<=30;i++){var s=vSubj(i);if(!s||!s.hoofd)continue;var helder=s.hoofd==='helder'?true:((s.hoofd==='wazig'||s.hoofd==='druk')?false:null);if(helder===null)continue;
+      var m=vInslaap(i),sc=waarde('slaap',vD(i));if(m!==null)(helder?hi:wi).push(m);if(sc!==null)(helder?hs:ws).push(sc);}
+    if(hi.length>=2&&wi.length>=2&&gemiddelde(wi)-gemiddelde(hi)>=20){
+      var a=gemiddelde(hi),w=gemiddelde(wi);
+      return {id:'g_hoofd',fam:'gevoel',slot:'waarom',score:0.5+Math.min(0.4,(w-a)/120),titel:'Wat een helder hoofd voorafgaat',teaser:'Wat maakt jouw ochtenden helder?',
+        feit:'Voor je heldere ochtenden ging je gemiddeld om '+vanMin(a)+' slapen. Voor ochtenden met een wazig of druk hoofd om '+vanMin(w)+'. Dat is '+vMin(w-a)+' verschil.',
+        bet:'Je helderheid begint de avond ervoor. The Fog komt bij jou vooral na een laat uur.',hef:'<b>Je hefboom:</b> moet je morgen helder zijn, dan begint dat vanavond om '+vanMin(a)+'.'};}
+    if(hs.length>=2&&ws.length>=2&&gemiddelde(hs)-gemiddelde(ws)>=4)
+      return {id:'g_hoofd',fam:'gevoel',slot:'waarom',score:0.5,titel:'Wat een helder hoofd voorafgaat',teaser:'Wat maakt jouw ochtenden helder?',
+        feit:'Op je heldere ochtenden was je Night Work gemiddeld '+vR(gemiddelde(hs))+'. Op ochtenden met een wazig of druk hoofd '+vR(gemiddelde(ws))+'.',
+        bet:'Je hoofd volgt je nacht. The Fog is bij jou vooral een slaapkwestie.',hef:'<b>Je hefboom:</b> bescherm je nacht vóór de dagen waarop je moet denken.'};
+    return null;
+  })());
+
+  /* ── PATRONEN IN JE WEEK ── */
+  kaart((function(){ /* beste en zwaarste nacht van de week */
+    var d=[];for(var i=0;i<=6;i++){var x=waarde('slaap',vD(i));if(x!==null)d.push({i:i,x:x});}if(d.length<5)return null;
+    d.sort(function(a,b){return b.x-a.x;});var be=d[0],zw=d[d.length-1];if(be.x-zw.x<8)return null;
+    var r=[],mb=vInslaap(be.i),mz=vInslaap(zw.i),sb=waarde('stress',vD(be.i)),sz=waarde('stress',vD(zw.i));
+    if(mb!==null&&mz!==null&&Math.abs(mz-mb)>=20)r.push('Voor je beste nacht ging je om '+vanMin(mb)+' slapen, voor je zwaarste om '+vanMin(mz)+'.');
+    if(sb!==null&&sz!==null&&sz-sb>=8)r.push('De dag voor je zwaarste nacht was je stress '+vR(sz)+', tegenover '+vR(sb)+'.');
+    var gz=vGist(zw.i),gb=vGist(be.i)||[];if(gz){var extra=gz.filter(function(t){return gb.indexOf(t)<0&&['buiten','rustig','topdag'].indexOf(t)<0;}).map(vLbl);if(extra.length)r.push('Die avond duidde je aan: '+extra.join(', ')+'.');}
+    return {id:'w_nachten',fam:'week',slot:'patroon',score:0.4+Math.min(0.4,(be.x-zw.x)/40)+(r.length?0.15:0),titel:'Je beste en je zwaarste nacht',teaser:'Wat maakte het verschil deze week?',
+      feit:'Je beste nacht deze week was '+vNacht(be.i)+', met Night Work '+vR(be.x)+'. Je zwaarste was '+vNacht(zw.i)+', met '+vR(zw.x)+'.',
+      bet:r.length?r.join(' '):'Wat het verschil maakte, zie ik niet in de cijfers. Jij weet het misschien wel.',
+      hef:'<b>Je hefboom:</b> herhaal de avond van '+vWeekdag(be.i+1)+'. Wat deed je toen, en kan dat vaker?'};
+  })());
+
+  kaart((function(){ /* weekend tegenover week */
+    var we=[],wd=[],swe=[],swd=[];
+    for(var i=0;i<=30;i++){var dg=new Date(vD(i)+'T12:00:00').getDay(),isWe=(dg===6||dg===0),m=vInslaap(i),sc=waarde('slaap',vD(i));
+      if(m!==null)(isWe?we:wd).push(m);if(sc!==null)(isWe?swe:swd).push(sc);}
+    if(we.length<3||wd.length<6)return null;var a=gemiddelde(we),w=gemiddelde(wd),v=vR(a-w),b,h;
+    var f='In het weekend ging je gemiddeld om '+vanMin(a)+' slapen, op weekdagen om '+vanMin(w)+'. '+(Math.abs(v)<10?'Bijna geen verschil.':'Een verschil van '+vMin(v)+'.');
+    if(swe.length>=3&&swd.length>=6)f+=' Je Night Work: '+vR(gemiddelde(swe))+' in het weekend, '+vR(gemiddelde(swd))+' in de week.';
+    if(v>=60){b='Dat heet sociale jetlag. Elk weekend reis je even naar een andere tijdzone, en elke maandag terug. Je lichaam betaalt dat in het begin van de week.';h='<b>Je hefboom:</b> hou het verschil onder een uur. Laat mag, maar niet veel later.';}
+    else if(v>=30){b='Een klein verschil, maar je lichaam merkt het. The Rhythm heeft na elke verschuiving tijd nodig om bij te benen.';h='<b>Je hefboom:</b> hou in het weekend je opstaanuur vast, ook als je later gaat slapen.';}
+    else{b='Je ritme houdt, ook in het weekend. Dat is zeldzaam, en het is een van de sterkste dingen die je voor je nachten kunt doen.';h='<b>Je hefboom:</b> niets veranderen. Dit is goud.';}
+    return {id:'w_weekend',fam:'week',slot:'patroon',score:0.35+Math.min(0.5,Math.abs(v)/120),titel:'Weekend tegenover week',teaser:'Leef jij in twee tijdzones?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* de zondagnacht */
+    var pred=function(i){return new Date(vD(i)+'T12:00:00').getDay()===1;},r=vSplit('slaap',pred,0);
+    if(r.na<3||r.nb<10)return null;var d=vR(r.ga)-vR(r.gb);if(Math.abs(d)<3)return null;
+    var f='Op maandagochtend was je Night Work de laatste weken gemiddeld '+vR(r.ga)+', tegenover '+vR(r.gb)+' op andere ochtenden.';
+    if(d<0)return {id:'w_zondag',fam:'week',slot:'patroon',score:0.4+Math.min(0.5,-d/10),titel:'De zondagnacht',teaser:'Hoe slaap jij voor een nieuwe week?',feit:f,
+      bet:'De zondagnacht is voor veel mensen de zwaarste. Het weekend heeft je uur verschoven, en de week die komt zit al in je hoofd.',
+      hef:'<b>Je hefboom:</b> maak van zondagavond je rustigste avond. Vroeg eten, scherm weg, je gewone uur.'};
+    return {id:'w_zondag',fam:'week',slot:'patroon',score:0.35,titel:'De zondagnacht',teaser:'Hoe slaap jij voor een nieuwe week?',feit:f,
+      bet:'Je begint je week uitgerust. Dat geeft je een voorsprong voor de hele week.',hef:'<b>Je hefboom:</b> hou je zondagavond zoals hij is.'};
+  })());
+
+  kaart((function(){ /* sterkste dag van de week */
+    var k=vReeks('bb',0,30).length>=14?'bb':'slaap',per={},n=0;
+    for(var i=0;i<=30;i++){var x=waarde(k,vD(i));if(x===null)continue;var w=vWeekdag(i);(per[w]=per[w]||[]).push(x);}
+    var dagen=Object.keys(per).filter(function(w){return per[w].length>=2;});if(dagen.length<5)return null;
+    dagen.sort(function(a,b){return gemiddelde(per[b])-gemiddelde(per[a]);});
+    var be=dagen[0],zw=dagen[dagen.length-1],gb=gemiddelde(per[be]),gz=gemiddelde(per[zw]);if(gb-gz<(k==='bb'?8:5))return null;
+    var nm=k==='bb'?'The Charge':'Night Work';
+    return {id:'w_sterkst',fam:'week',slot:'patroon',score:0.4+Math.min(0.4,(gb-gz)/40),titel:'Je sterkste dag van de week',teaser:'Op welke dag sta jij het sterkst op?',
+      feit:'Op '+be+' sta je het sterkst op, met gemiddeld '+vR(gb)+' '+nm+'. Op '+zw+' het zwakst, met '+vR(gz)+'.',
+      bet:'Dat is je golf over de week. Je lichaam heeft een vast ritme, en dat kun je gebruiken.',
+      hef:'<b>Je hefboom:</b> leg je zwaarste taak of training op '+be+'. En vraag op '+zw+' niets extra van jezelf.'};
+  })());
+
+  /* ── JE BESTE VERSIE ── */
+  kaart((function(){ /* beste nacht van de maand */
+    var d=[];for(var i=1;i<=30;i++){var x=waarde('slaap',vD(i));if(x!==null)d.push({i:i,x:x});}if(d.length<14)return null;
+    var gem=gemiddelde(d.map(function(o){return o.x;}));d.sort(function(a,b){return b.x-a.x;});var be=d[0];if(be.x-gem<6)return null;
+    var r=[],t=[];for(var j=0;j<=30;j++){var m=vInslaap(j);if(m!==null)t.push(m);}
+    var mb=vInslaap(be.i),st=vReeks('stress',0,30),sb=waarde('stress',vD(be.i));
+    if(mb!==null&&t.length>=7){var dv=vR(vMediaan(t)-mb);if(dv>=15)r.push('Je ging om '+vanMin(mb)+' slapen, '+vMin(dv)+' vroeger dan gewoonlijk.');else if(Math.abs(dv)<15)r.push('Je ging slapen op je gewone uur, om '+vanMin(mb)+'.');}
+    if(sb!==null&&st.length>=7&&sb<=vMediaan(st)-5)r.push('De dag ervoor was rustiger dan gemiddeld: stress '+vR(sb)+', tegenover '+vR(vMediaan(st))+'.');
+    if(vTrain(be.i)===true)r.push('Je had die dag getraind.');
+    var g=vGist(be.i);if(g){var pos=g.filter(function(x){return ['buiten','rustig','topdag'].indexOf(x)>=0;}).map(vLbl);if(pos.length)r.push('Je duidde aan: '+pos.join(', ')+'.');}
+    return {id:'b_nacht',fam:'beste',slot:'patroon',score:0.45+(r.length>=2?0.3:0.1),titel:'Je beste nacht van de maand',teaser:'Wat deed je toen anders?',
+      feit:'Je beste nacht van de voorbije maand was '+vNacht(be.i)+' ('+vDatum(be.i)+'), met Night Work '+vR(be.x)+'. Dat is '+vR(be.x-gem)+' punten boven je gewoonte.',
+      bet:r.length?r.join(' '):'Geen opvallend verschil in uur of stress. Soms zit het in iets wat geen horloge meet.',
+      hef:'<b>Je hefboom:</b> zo\'n nacht is geen toeval. Herhaal deze week één element ervan.'};
+  })());
+
+  kaart((function(){ /* je recept: wat je sterkste ochtenden gemeen hebben */
+    var k=hrv?'hrv':(vReeks('bb',0,30).length>=14?'bb':'slaap'),d=[];
+    for(var i=0;i<=30;i++){var x=waarde(k,vD(i));if(x!==null)d.push({i:i,x:x});}if(d.length<14)return null;
+    d.sort(function(a,b){return b.x-a.x;});var top=d.slice(0,5),rest=d.slice(5);
+    function gem(lijst,fn){var v=lijst.map(function(o){return fn(o.i);}).filter(function(x){return x!==null&&x!==undefined;});return v.length>=3?gemiddelde(v):null;}
+    var kand=[];
+    var it=gem(top,vInslaap),ir=gem(rest,vInslaap);if(it!==null&&ir!==null&&ir-it>=20)kand.push({s:(ir-it)/30,f:'je ging gemiddeld om '+vanMin(it)+' slapen, tegenover '+vanMin(ir)+' op andere dagen',h:'Rond '+vanMin(it)+' gaan slapen. Dat is jouw uur.'});
+    var stt=gem(top,function(i){return waarde('stress',vD(i));}),str=gem(rest,function(i){return waarde('stress',vD(i));});if(stt!==null&&str!==null&&str-stt>=5)kand.push({s:(str-stt)/10,f:'de dag ervoor was rustiger, met stress '+vR(stt)+' tegenover '+vR(str),h:'Een rustige dag is een investering in de ochtend erna.'});
+    if(k!=='slaap'){var slt=gem(top,function(i){return waarde('slaap',vD(i));}),slr=gem(rest,function(i){return waarde('slaap',vD(i));});if(slt!==null&&slr!==null&&slt-slr>=4)kand.push({s:(slt-slr)/6,f:'je Night Work lag gemiddeld op '+vR(slt)+', tegenover '+vR(slr),h:'Je sterkste dagen beginnen de avond ervoor. Bescherm je nacht.'});}
+    if(!kand.length)return null;kand.sort(function(a,b){return b.s-a.s;});var c=kand[0];
+    return {id:'b_recept',fam:'beste',slot:'patroon',score:0.5+Math.min(0.4,c.s/4),titel:'Je recept',teaser:'Wat hebben je sterkste ochtenden gemeen?',
+      feit:'Je vijf sterkste ochtenden van de maand ('+(k==='hrv'?'The Ground':k==='bb'?'The Charge':'Night Work')+') hadden één ding gemeen: '+c.f+'.',
+      bet:'Dat is je recept. Niet uit een boek, uit je eigen ochtenden.',hef:'<b>Je hefboom:</b> '+c.h};
+  })());
+
+  /* ── TREND OVER LANGERE TIJD ── */
+  kaart((function(){ /* rusthartslag over vier weken */
+    var n=vReeks('rhr',0,6),o=vReeks('rhr',21,27);if(n.length<4||o.length<4)return null;var a=gemiddelde(n),b0=gemiddelde(o),d=vR(a-b0),b,h;
+    var f='Je rusthartslag lag deze week gemiddeld op '+vR(a)+'. Vier weken geleden op '+vR(b0)+'.';
+    if(d<=-2){b='Een dalende rusthartslag is een van de duidelijkste tekens van een hart dat sterker wordt, of van een lichaam dat beter uitrust.';h='<b>Je hefboom:</b> blijf doen wat je doet. Dit is het werk van weken, niet van dagen.';}
+    else if(d>=2){b='Een rusthartslag die over weken stijgt, wijst op opgestapelde vermoeidheid, stress of te weinig herstel. Nog geen alarm, wel een signaal.';h='<b>Je hefboom:</b> een week met minder intensiteit en vaste nachten. Kijk daarna opnieuw.';}
+    else{b='Stabiel. Je hart draagt wat je vraagt, week na week.';h='<b>Je hefboom:</b> wil je hem laten zakken, dan zijn rustige duurtraining en vaste nachten de twee wegen.';}
+    return {id:'t_hart',fam:'trend',slot:'nu',score:0.35+Math.min(0.5,Math.abs(d)/6),titel:'Je hart over vier weken',teaser:'Wordt je hart sterker?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* Ground over vier weken */
+    if(!hrv)return null;var n=vReeks('hrv',0,6),o=vReeks('hrv',21,27);if(n.length<4||o.length<4)return null;var p=vPct(gemiddelde(n),gemiddelde(o)),b,h;
+    var f='Je Ground lag deze week '+(Math.abs(p)<3?'even hoog als':Math.abs(p)+'% '+(p>0?'hoger dan':'lager dan'))+' vier weken geleden.';
+    if(p>=5){b='Je zenuwstelsel heeft meer ruimte dan een maand geleden. Dat is wat goed herstel over weken doet.';h='<b>Je hefboom:</b> die ruimte mag je gebruiken. Eén stevigere week, daarna weer kijken.';}
+    else if(p<=-7){b='Je Ground zakt over weken, niet over één nacht. Dat vraagt aandacht: er wordt al een tijd meer gevraagd dan hersteld.';h='<b>Je hefboom:</b> zoek waar het lekt: nachten, stress of training. Eén ervan bijsturen is meestal genoeg.';}
+    else{b='Je basis is stabiel. Dat is het fundament waarop je kunt bouwen.';h='<b>Je hefboom:</b> wil je hem laten stijgen, dan werkt regelmaat het best: vaste nachten, rustige duur, een avond zonder alcohol.';}
+    return {id:'t_ground',fam:'trend',slot:'nu',score:0.35+Math.min(0.5,Math.abs(p)/15),titel:'Je Ground over vier weken',teaser:'Groeit je basis mee?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* stabiliteit van je nachten */
+    var n=vReeks('slaap',0,13),o=vReeks('slaap',14,27);if(n.length<8||o.length<8)return null;
+    function afw(a){var g=gemiddelde(a);return gemiddelde(a.map(function(x){return Math.abs(x-g);}));}
+    var an=afw(n),ao=afw(o),d=an-ao,b,h;if(Math.abs(d)<1.5)return null;
+    var f='Je Night Work schommelde de laatste twee weken gemiddeld '+vR(an)+' punten rond je gemiddelde. De twee weken ervoor was dat '+vR(ao)+'.';
+    if(d<0){b='Je nachten worden voorspelbaarder. Dat is vaak belangrijker dan één hoge score: je lichaam weet wat het kan verwachten.';h='<b>Je hefboom:</b> wat je de laatste twee weken deed, werkt. Hou het vast.';}
+    else{b='Je nachten wisselen meer dan voordien. Goede en slechte nachten door elkaar kosten meer dan een reeks gewone.';h='<b>Je hefboom:</b> The Anchor is het snelste middel tegen schommelingen.';}
+    return {id:'t_stabiel',fam:'trend',slot:'nu',score:0.35+Math.min(0.5,Math.abs(d)/8),titel:'Hoe voorspelbaar je nachten zijn',teaser:'Wordt je ritme rustiger?',feit:f,bet:b,hef:h};
+  })());
+
+  kaart((function(){ /* maand in richtingen */
+    var c={flow:0,build:0,recovery:0,cautela:0},n=0;
+    for(var i=0;i<=27;i++){var r=lees('hrmny_richting_'+vD(i));if(r&&c[r]!==undefined){c[r]++;n++;}}if(n<10)return null;
+    var bew=(c.flow+c.build)/n,rust=(c.recovery+c.cautela)/n,b,h;
+    var f='Van de laatste '+n+' dagen kreeg je '+c.flow+' keer Flow, '+c.build+' keer Build, '+c.recovery+' keer Recovery en '+c.cautela+' keer Cautela.';
+    if(bew>=0.7){b='Je lichaam geeft je vaak groen licht. Gebruik het, en onthoud dat groei landt tijdens herstel.';h='<b>Je hefboom:</b> neem een dag van The Silence als hij komt. Hij hoort bij het ritme.';}
+    else if(rust>=0.5){b='Je lichaam vraagt de laatste weken vaak om rust. Dat is geen falen, het is een boodschap: er wordt meer gevraagd dan hersteld.';h='<b>Je hefboom:</b> zoek waar het lekt: nachten, stress of training. Eén ervan is meestal genoeg.';}
+    else{b='Een gezonde mix van inspanning en herstel. Zo hoort een ritme te klinken.';h='<b>Je hefboom:</b> volg de richting, ook als je zin anders zegt. Daar zit je consistentie.';}
+    return {id:'t_richting',fam:'trend',slot:'nu',score:0.4+Math.abs(bew-0.6)/2,titel:'Je maand in richtingen',teaser:'Hoe vaak gaf je lichaam groen licht?',feit:f,bet:b,hef:h};
+  })());
+
+  return P;
+}
+
+function vAlleKaarten(){
+  var K=vKaarten().map(function(c){c.slot=V_SLOT_VAN[c.id]||'nu';c.fam=c.fam||'nu';if(c.score===undefined)c.score=/even hoog|even veel|binnen je gewone band|gelijk met/.test(c.feit)?0.3:(c.id==='slaap'?0.6:0.55);return c;});
+  try{K=K.concat(vKaartenPool());}catch(e){}
+  return K;
+}
+/* Drie kaarten per dag: één over hoe je er nu voor staat, één over oorzaak of gevoel, één over je patronen.
+   Vast voor de hele dag. Wat je de voorbije week opende, komt niet terug. */
+function vDagKeuze(K){
+  if(K.length<=3)return K;
+  var vandaag=vandaagStr(),byId={};K.forEach(function(c){byId[c.id]=c;});
+  var vast=leesJSON('hrmny_veritas_keuze_'+vandaag,null);
+  if(vast&&vast.length){var uit0=vast.map(function(id){return byId[id];}).filter(Boolean);if(uit0.length>=3)return uit0.slice(0,3);}
+  var straf={};
+  for(var i=1;i<=7;i++){var o=leesJSON('hrmny_veritas_'+dagenTerug(i),null);if(o&&o.id)straf[o.id]=(straf[o.id]||0)+1;
+    if(i<=2){var g=leesJSON('hrmny_veritas_keuze_'+dagenTerug(i),null);if(g)g.forEach(function(id){straf[id]=(straf[id]||0)+0.35;});}}
+  function ruis(id){var s=0,t=vandaag+id;for(var j=0;j<t.length;j++)s=(s*31+t.charCodeAt(j))%9973;return (s%100)/500;}
+  function waardeer(c){return (c.score||0.5)-(straf[c.id]||0)+ruis(c.id);}
+  var uit=[],gebruikt={};
+  ['nu','waarom','patroon'].forEach(function(slot){
+    var kand=K.filter(function(c){return c.slot===slot&&!gebruikt[c.id];}).sort(function(a,b){return waardeer(b)-waardeer(a);});
+    if(kand.length){uit.push(kand[0]);gebruikt[kand[0].id]=1;}
+  });
+  K.slice().sort(function(a,b){return waardeer(b)-waardeer(a);}).forEach(function(c){if(uit.length<3&&!gebruikt[c.id]){uit.push(c);gebruikt[c.id]=1;}});
+  if(uit.length===3)schrijf('hrmny_veritas_keuze_'+vandaag,JSON.stringify(uit.map(function(c){return c.id;})));
+  return uit;
+}
+
+/* ── NUDA VERITAS: eerst je gevoel, dan je kaart ── */
+function vSlot(groot){return groot?'<svg width="14" height="16" viewBox="0 0 14 16" fill="none" stroke="#C9A84C" stroke-width="1.6"><rect x="1.5" y="7" width="11" height="8" rx="2"/><path d="M4 7V4.8a3 3 0 0 1 6 0V7"/></svg>':'<svg width="10" height="12" viewBox="0 0 14 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1.5" y="7" width="11" height="8" rx="2"/><path d="M4 7V4.8a3 3 0 0 1 6 0V7"/></svg>';}
+function vGevoelGedeeld(){var s=gevoelVandaag();return !!(s&&Object.keys(s).length);}
 /* ── NUDA VERITAS: de week van zeven vakjes ── */
 var V_KLEUR={slaap:'#378ADD',sport:'#1D9E75',avond:'#1A2D5A',charge:'#C9A84C',adem:'#5FA8A0'};
 var V_GEKOZEN=null;
@@ -1787,7 +2133,7 @@ function tekenVeritasWeek(){
     if(o)vol++;if(st==='gemist')gemist++;
     b.className='vdag '+st+(V_GEKOZEN===dag?' gekozen':'');
     b.innerHTML='<i></i><span>'+namen[i]+'</span>';
-    if(o){b.querySelector('i').style.background=V_KLEUR[o.id]||'#C9A84C';b.title=o.titel;
+    if(o){b.querySelector('i').style.background=V_KLEUR[o.id]||V_FAMKLEUR[o.fam]||'#C9A84C';b.title=o.titel;
       b.onclick=function(){V_GEKOZEN=(V_GEKOZEN===dag?null:dag);tekenVeritas();};}
     else if(st==='gemist')b.title='Deze dag bleef stil';
     else if(st==='vandaag')b.title='Vandaag nog te openen';
@@ -1795,6 +2141,7 @@ function tekenVeritasWeek(){
   });
   var z=document.getElementById('vweek-zin'),open=!!leesJSON('hrmny_veritas_'+vandaag,null),rest=7-((new Date().getDay()+6)%7)-1;
   if(vol===7)z.textContent='Zeven van zeven. Een volle week eerlijk naar jezelf gekeken. Dat doen weinig mensen.';
+  else if(!open&&!vGevoelGedeeld())z.textContent='Vandaag ligt nog open. Eerst je gevoel, dan je kaart.'+(vol?' Deze week al '+vol+' van 7.':'');
   else if(!open)z.textContent='Vandaag ligt nog open. '+(vol?'Deze week al '+vol+' van 7.':'Begin je week met één waarheid.');
   else z.textContent=vol+' van 7 deze week.'+(rest>0?' Nog '+rest+(rest===1?' dag':' dagen')+' te gaan.':' Morgen begint een nieuwe week.')+(gemist?' Een lege dag is geen falen, wel een waarheid die je niet hoorde.':'');
 }

@@ -92,6 +92,26 @@ button{font-family:'DM Sans',sans-serif}
 .strook{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin:0.6rem 0 0.3rem}
 .strook-dag{height:28px;border-radius:5px;background:rgba(26,45,90,0.06)}
 .strook-as{display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:0.57rem;color:var(--text-muted)}
+.ritme-titel{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--navy);margin:0.35rem 0 0.4rem;line-height:1.3}
+.ritme-uitleg{font-size:0.8rem;color:var(--text-mid);line-height:1.6;margin-bottom:0.3rem}
+.ritme-zin{font-size:0.86rem;color:var(--text);line-height:1.6;margin-top:0.9rem;background:var(--cream);border-radius:12px;padding:0.8rem 0.95rem}
+.doel-blok{margin-top:0.7rem}
+.doel-blok+.doel-blok{margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.doel-naam{font-family:'Cormorant Garamond',serif;font-size:1.12rem;color:var(--navy);margin-bottom:0.45rem}
+.doel-dots{display:flex;gap:7px;margin:0.2rem 0 0.55rem}
+.doel-dot{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(26,45,90,0.25);background:transparent}
+.doel-dot.raak{background:#1D9E75;border-color:#1D9E75}
+.doel-dot.doel{border-color:var(--navy);border-style:dashed}
+.doel-tekst{font-size:0.84rem;color:var(--text);line-height:1.6}
+.doel-hoe{font-size:0.78rem;color:var(--text-muted);line-height:1.55;margin-top:0.35rem}
+.verg-rij{padding:0.6rem 0;border-bottom:1px solid var(--border);font-size:0.86rem;color:var(--text)}
+.verg-kop{display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem}
+.verg-sub{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--text-muted);margin-top:0.15rem}
+.verg-rij:last-of-type{border-bottom:none}
+.verg-wat{color:var(--text-mid)}
+.verg-cijfer{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--navy);white-space:nowrap}
+.verg-pijl{font-weight:600}
+.verg-pijl.beter{color:#1D9E75}.verg-pijl.lager{color:#B07A1F}
 .legende{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.7rem;font-size:0.68rem;color:var(--text-mid)}
 .legende span{display:inline-flex;align-items:center;gap:0.3rem}
 .legende i{display:inline-block;width:9px;height:9px;border-radius:3px}
@@ -346,7 +366,9 @@ details.klein summary::-webkit-details-marker{display:none}
     <!-- LAAG 3: RITME (richting per dag) -->
     <div id="laag3" style="display:none;flex-direction:column;gap:0.6rem">
       <div class="kaart" style="padding:1.1rem">
-        <div class="label-mono">Jouw richting, laatste 14 dagen</div>
+        <div class="label-mono">Jouw ritme</div>
+        <div class="ritme-titel">Hoe je lichaam de laatste twee weken sprak</div>
+        <div class="ritme-uitleg">Elk vakje is één dag, in de kleur van de richting die je lichaam die ochtend aangaf. Er is geen goede of foute kleur. Een sterk ritme wisselt beweging en herstel af, zoals bij de beste sporters: wie luistert naar zijn lichaam, gaat verder.</div>
         <div class="strook" id="strook"></div>
         <div class="strook-as"><span>14 dagen geleden</span><span>vandaag</span></div>
         <div class="legende">
@@ -355,7 +377,15 @@ details.klein summary::-webkit-details-marker{display:none}
           <span><i style="background:#378ADD"></i>Recovery</span>
           <span><i style="background:#E24B4A;opacity:0.7"></i>Cautela</span>
         </div>
-        <div class="stil" id="strook-tekst" style="margin-top:0.8rem;text-align:left"></div>
+        <div class="ritme-zin" id="strook-tekst"></div>
+      </div>
+      <div class="kaart" style="padding:1.1rem">
+        <div class="label-mono">Jouw doel deze week</div>
+        <div id="doel-inhoud"></div>
+      </div>
+      <div class="kaart" style="padding:1.1rem">
+        <div class="label-mono">Jij tegenover jezelf</div>
+        <div id="verg-inhoud"></div>
       </div>
       <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button></div>
     </div>
@@ -751,6 +781,7 @@ function verwerkEen(json){
   if(bron){var bd=new Date(bron);if(!isNaN(bd))bronDag=datumStr(bd);}
   bewaarNacht(json.nacht,bronDag);
   bewaarExtras(json,bronDag);
+  if(richting&&!dagzin){schrijf('hrmny_richting_'+bronDag,richting);}
   if(!richting||!dagzin)return false;
   schrijf('hrmny_richting_'+bronDag,richting);
   if(bronDag!==vandaagStr())return false;
@@ -905,6 +936,7 @@ var NACHT_GROEPEN=[{titel:'Herstel',sub:'hoe je nacht was',keys:['hrv','slaap','
 function bewaarNacht(n,dag){
   if(!n||typeof n!=='object')return;
   Object.keys(METRIEK).forEach(function(k){var v=n[k];if(v!==undefined&&v!==null&&String(v)!=='')schrijf('hrmny_w_'+k+'_'+dag,v);});
+  if(n.inslaap)schrijf('hrmny_inslaap_'+dag,n.inslaap);
 }
 function waarde(k,dag){
   var v=lees('hrmny_w_'+k+'_'+dag);if(v===null||v==='')v=lees('hrmny_'+k+'_'+dag);
@@ -956,18 +988,78 @@ function tekenSignalen(){
 
 /* ── RITME-STROOK (richting per dag) ── */
 function tekenStrook(){
-  var s=document.getElementById('strook');s.innerHTML='';var teller={};
+  var s=document.getElementById('strook');s.innerHTML='';var beweeg=0,rust=0,tot=0;
   for(var i=13;i>=0;i--){
-    var r=lees('hrmny_richting_'+dagenTerug(i));var div=document.createElement('div');div.className='strook-dag';
-    if(r&&RICHTINGEN[r]){div.style.background=RICHTINGEN[r].kleur;if(r==='cautela')div.style.opacity='0.7';div.title=RICHTINGEN[r].naam;teller[r]=(teller[r]||0)+1;}
+    var dag=dagenTerug(i),r=lees('hrmny_richting_'+dag),div=document.createElement('div');div.className='strook-dag';
+    var lbl=new Date(dag+'T12:00:00').toLocaleDateString('nl-BE',{weekday:'short',day:'numeric',month:'short'});
+    if(r&&RICHTINGEN[r]){div.style.background=RICHTINGEN[r].kleur;if(r==='cautela')div.style.opacity='0.7';div.title=lbl+': '+RICHTINGEN[r].naam;tot++;if(r==='flow'||r==='build')beweeg++;else rust++;}
+    else div.title=lbl+': nog geen richting';
     s.appendChild(div);
   }
-  var tot=Object.keys(teller).reduce(function(a,k){return a+teller[k];},0);
-  var t=document.getElementById('strook-tekst');
-  if(tot<3){t.textContent='Elke dag kleurt hier een vakje. Na een paar dagen zie je jouw eigen patroon verschijnen.';return;}
-  var meest=Object.keys(teller).sort(function(a,b){return teller[b]-teller[a];})[0];
-  var zinnen={flow:'De voorbije dagen stond je vaak in Flow.',build:'De voorbije dagen bouwde je vooral op.',recovery:'De voorbije dagen vroeg je lichaam vaak om herstel. Dat is ook bouwen.',cautela:'De voorbije dagen vroeg je lichaam vaak om zorg. Geef het die ruimte.'};
-  t.textContent=zinnen[meest];
+  var t=document.getElementById('strook-tekst'),z;
+  if(tot<3)z='Na drie dagen zie je hier hoe beweging en herstel elkaar bij jou afwisselen. Tot dan: je doel hieronder loopt al.';
+  else if(rust===0)z='De laatste '+tot+' dagen gaf je lichaam telkens ruimte voor beweging. Geniet ervan. Komt er een dag van The Silence, neem hem dan: daar groeit de volgende stap.';
+  else if(beweeg>=rust)z='Van de laatste '+tot+' dagen waren er '+beweeg+' voor beweging en '+rust+' voor herstel. Zo ziet een gezond ritme eruit: inspanning en rust die elkaar dragen.';
+  else z='De laatste '+tot+' dagen vroeg je lichaam vaker om herstel ('+rust+') dan om beweging ('+beweeg+'). Dat is geen stap terug. Je wint ze terug via je nachten: daar gaat je doel hieronder over.';
+  t.innerHTML='';t.textContent=z;voegTooltipsToe(t);
+  tekenDoel();tekenVergelijking();
+}
+function reeksWaarden(k,van,tot){var v=[];for(var i=van;i<=tot;i++){var x=waarde(k,dagenTerug(i));if(x!==null)v.push(x);}return v;}
+function gemiddelde(a){return a.length?a.reduce(function(s,x){return s+x;},0)/a.length:null;}
+function naarMin(hhmm){var m=/^(\d{1,2}):(\d{2})/.exec(hhmm||'');if(!m)return null;return ((+m[1])*60+(+m[2])-1080+1440)%1440;}
+function vanMin(x){var t=(Math.round(x)+1080)%1440;return ('0'+Math.floor(t/60)).slice(-2)+':'+('0'+(t%60)).slice(-2);}
+function doelBlok(naam,raakDagen,doel,tekst,hoe){
+  var dots='';for(var i=6;i>=0;i--){dots+='<span class="doel-dot'+(raakDagen[i]?' raak':'')+'" title="'+(i===0?'vannacht':i===1?'1 nacht geleden':i+' nachten geleden')+'"></span>';}
+  return '<div class="doel-blok"><div class="doel-naam">'+naam+'</div><div class="doel-dots">'+dots+'</div><div class="doel-tekst">'+tekst+'</div>'+(hoe?'<div class="doel-hoe">'+hoe+'</div>':'')+'</div>';
+}
+function tekenDoel(){
+  var el=document.getElementById('doel-inhoud');if(!el)return;var html='';
+  /* Doel 1: Night Work tegenover je eigen gewoonte */
+  var basis=reeksWaarden('slaap',1,28);
+  if(basis.length<5){
+    html+='<div class="doel-blok"><div class="doel-tekst">Zodra HRMNY vijf nachten van je kent, krijg je hier je eerste doel. Een doel dat bij jou past, gemeten aan jezelf, nooit aan een ander.</div></div>';
+  } else {
+    var norm=Math.round(gemiddelde(basis)),raak=[],hit=0,vorig=0;
+    for(var i=0;i<=6;i++){var x=waarde('slaap',dagenTerug(i));raak[i]=x!==null&&x>=norm;if(raak[i])hit++;}
+    for(var j=7;j<=13;j++){var y=waarde('slaap',dagenTerug(j));if(y!==null&&y>=norm)vorig++;}
+    var doel=Math.min(7,Math.max(3,vorig+1)),tekst;
+    if(hit>=doel)tekst='Doel gehaald: <b>'+hit+' van de laatste 7 nachten</b> op of boven jouw gewone Night Work. Dat is je lichaam dat bouwt. Volgende stap: '+Math.min(7,hit+1)+' nachten.';
+    else tekst='<b>'+hit+' van de laatste 7 nachten</b> op of boven jouw gewone Night Work. Jouw doel: '+doel+'. Nog '+(doel-hit)+(doel-hit===1?' nacht':' nachten')+' te gaan.';
+    html+=doelBlok('Night Work',raak,doel,tekst,'Jouw gewone slaapscore is '+norm+': het gemiddelde van jouw laatste weken. Wat het meest helpt: The Quarter, een kwartier vroeger slapen.');
+  }
+  /* Doel 2: The Anchor, zodra je gewone bedtijd gekend is */
+  var tijden=[];for(var a=1;a<=28;a++){var mm=naarMin(lees('hrmny_inslaap_'+dagenTerug(a)));if(mm!==null)tijden.push(mm);}
+  if(tijden.length>=5){
+    var srt=tijden.slice().sort(function(p,q){return p-q;}),anker=srt[Math.floor(srt.length/2)],raak2=[],hit2=0;
+    for(var b=0;b<=6;b++){var m2=naarMin(lees('hrmny_inslaap_'+dagenTerug(b)));raak2[b]=m2!==null&&m2<=anker+15;if(raak2[b])hit2++;}
+    var doel2=5,t2=hit2>=doel2?'Doel gehaald: <b>'+hit2+' van de 7 nachten</b> sliep je in voor '+vanMin(anker+15)+'. Je ritme wordt een gewoonte.':'<b>'+hit2+' van de 7 nachten</b> sliep je in voor '+vanMin(anker+15)+'. Jouw doel: '+doel2+' nachten.';
+    html+=doelBlok('The Anchor',raak2,doel2,t2,'Je gewone inslaapuur is '+vanMin(anker)+'. Een vast uur is het anker van je herstel: je lichaam weet wanneer het mag beginnen.');
+  } else if(basis.length>=5){
+    html+='<div class="doel-blok"><div class="doel-naam">The Anchor</div><div class="doel-tekst">Na vijf nachten met je inslaapuur krijg je hier een tweede doel: elke avond rond hetzelfde uur.</div></div>';
+  }
+  el.innerHTML=html;el.querySelectorAll('.doel-tekst,.doel-hoe,.doel-naam').forEach(function(x){voegTooltipsToe(x);});
+}
+function tekenVergelijking(){
+  var el=document.getElementById('verg-inhoud');if(!el)return;
+  var keys=[];NACHT_GROEPEN.forEach(function(g){g.keys.forEach(function(k){keys.push(k);});});
+  var kandidaten=[{k:'hrv',hoger:true},{k:'slaap',hoger:true},{k:'rhr',hoger:false},{k:'bb',hoger:true}].filter(function(c){return keys.indexOf(c.k)>=0;});
+  var rijen='',beter=0,lager=0,lagerNamen=[];
+  kandidaten.forEach(function(c){
+    var a=reeksWaarden(c.k,0,6),b=reeksWaarden(c.k,21,27),wanneer='4 weken terug';
+    if(b.length<3){b=reeksWaarden(c.k,7,13);wanneer='vorige week';}
+    if(a.length<3||b.length<3)return;
+    var ga=gemiddelde(a),gb=gemiddelde(b),d=METRIEK[c.k].drempel(gb),pijl,kl;
+    var goed=c.hoger?ga>gb+d:ga<gb-d,slecht=c.hoger?ga<gb-d:ga>gb+d;
+    if(goed){pijl='beter';kl='beter';beter++;}else if(slecht){pijl='iets lager';kl='lager';lager++;}else{pijl='stabiel';kl='';}
+    var naam=METRIEK[c.k].term&&METRIEK[c.k].term.indexOf('The ')===0||METRIEK[c.k].term==='Night Work'?METRIEK[c.k].term:METRIEK[c.k].lbl;
+    if(slecht)lagerNamen.push(naam);
+    rijen+='<div class="verg-rij"><div class="verg-kop"><span class="verg-wat">'+naam+'</span><span class="verg-pijl '+kl+'">'+pijl+'</span></div><div class="verg-sub">nu '+opmaak(c.k,ga)+' · '+wanneer+' '+opmaak(c.k,gb)+'</div></div>';
+  });
+  if(!rijen){el.innerHTML='<div class="doel-blok"><div class="doel-tekst">Na twee weken zie je hier hoe jij groeit tegenover jezelf. Niet tegenover een ander: jouw beste referentie ben jij.</div></div>';return;}
+  var lagerTekst=lagerNamen.join(' en ');
+  var zin=beter>0&&lager===0?'Je groeit. Van dag tot dag merk je het niet, over weken wel. Dit is wat ritme doet.':beter>0?'Je groeit op '+beter+(beter===1?' vlak':' vlakken')+'. '+lagerTekst+' ligt even lager: dat komt terug zodra je nachten terugkomen.':lager>0&&lager<kandidaten.length?'Grotendeels stabiel, een stevig fundament. '+lagerTekst+' ligt even lager dan eerder: je nachten zijn de snelste weg terug.':lager>0?'Even een dip tegenover eerder. Dat hoort bij een ritme. Je nachten zijn de snelste weg terug.':'Stabiel. Een stevig fundament is waar de volgende stap op rust.';
+  el.innerHTML='<div class="doel-blok">'+rijen+'<div class="ritme-zin" style="margin-top:0.7rem">'+zin+'</div></div>';
+  el.querySelectorAll('.verg-wat,.ritme-zin').forEach(function(x){voegTooltipsToe(x);});
 }
 
 /* ── HISTORIEK ── */

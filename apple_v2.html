@@ -697,7 +697,7 @@ function zetAccent(kleur){document.documentElement.style.setProperty('--accent',
 function zetWijzer(hoekDeg){
   var rad=hoekDeg*Math.PI/180,len=74;
   var w=document.getElementById('wijzer');
-  w.setAttribute('x2',(110-Math.cos(rad)*len).toFixed(1));
+  w.setAttribute('x2',(110+Math.cos(rad)*len).toFixed(1));
   w.setAttribute('y2',(108-Math.sin(rad)*len).toFixed(1));
 }
 function toonRichting(data){
@@ -898,10 +898,10 @@ function tekenGevoelKaart(){
   if(s&&Object.keys(s).length){
     k.className='gevoel-kaart ingevuld';
     var tags=samenvattingGevoel(s).map(function(t){return '<span class="gevoel-tag">'+t+'</span>';}).join('');
-    k.innerHTML='<div><div class="gk-titel" style="font-size:0.9rem">Jouw gevoel vandaag</div>'+(tags?'<div class="gevoel-samenvatting">'+tags+'</div>':'<div class="gk-sub">Bewaard.</div>')+'</div><div class="gk-pijl" style="font-size:0.78rem;font-weight:600;color:var(--navy)">Aanpassen</div>';
+    k.innerHTML='<div><div class="gk-titel" style="font-size:0.9rem">Jouw gevoel vandaag</div>'+(tags?'<div class="gevoel-samenvatting">'+tags+'</div>':'<div class="gk-sub">Dank je om het te delen.</div>')+'</div><div class="gk-pijl" style="font-size:0.78rem;font-weight:600;color:var(--navy)">Aanpassen</div>';
   } else {
     k.className='gevoel-kaart';
-    k.innerHTML='<div><div class="gk-titel">Hoe voel je je vandaag?</div><div class="gk-sub">Eén tik is al genoeg. Wat jij voelt, telt even zwaar als wat er gemeten wordt.</div></div><div class="gk-pijl">&rsaquo;</div>';
+    k.innerHTML='<div><div class="gk-titel">En hoe voel jij je vandaag?</div><div class="gk-sub">Je wearable kent je nacht. Hoe je je voelt, weet alleen jij. Vertel het gerust.</div></div><div class="gk-pijl">&rsaquo;</div>';
   }
   k.style.display='flex';
 }

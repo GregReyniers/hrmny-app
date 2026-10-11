@@ -1140,6 +1140,7 @@ function bewaarNacht(n,dag){
   if(n.inslaap)schrijf('hrmny_inslaap_'+dag,n.inslaap);
   if(n.ground!==undefined&&String(n.ground)!=='')schrijf('hrmny_ground_'+dag,n.ground);
   if(n.basis!==undefined&&String(n.basis)!=='')schrijf('hrmny_basis_'+dag,n.basis);
+  ['bel_a','bel_c','bel_r'].forEach(function(k){if(n[k]!==undefined&&String(n[k])!=='')schrijf('hrmny_'+k+'_'+dag,n[k]);});
 }
 function waarde(k,dag){
   var v=lees('hrmny_w_'+k+'_'+dag);if(v===null||v==='')v=lees('hrmny_'+k+'_'+dag);
@@ -2149,6 +2150,25 @@ function vKaartenPool(){
     return {id:'t_richting',fam:'trend',slot:'nu',score:0.4+Math.abs(bew-0.6)/2,titel:'Je maand in richtingen',teaser:'Hoe vaak gaf je lichaam groen licht?',feit:f,bet:b,hef:h};
   })());
 
+
+  kaart((function(){ /* trainingsweek tegenover gewoonte (Garmin-belasting) */
+    var d=vandaagStr(),r=parseFloat(lees('hrmny_bel_r_'+d)),a=parseFloat(lees('hrmny_bel_a_'+d)),c=parseFloat(lees('hrmny_bel_c_'+d));
+    if(isNaN(r)&&!isNaN(a)&&c>0)r=a/c;if(isNaN(r)||r<=0)return null;
+    var p=Math.round((r-1)*100),g=parseFloat(lees('hrmny_ground_'+d)),laag=!isNaN(g)&&g<50,f,b,h;
+    if(r>=1.5){f='Je trainde de voorbije 7 dagen duidelijk meer dan je gewoonte: je belasting ligt '+p+'% boven je gemiddelde van de laatste weken.';
+      b='Zo\'n week bouwt conditie, maar alleen als het herstel volgt. Net nu is je lichaam het gevoeligst voor te veel.'+(laag?' Je Ground zit ook onder je normaal: je lichaam is nog aan het verwerken.':'');
+      h='<b>Je hefboom:</b> twee rustige dagen leveren nu meer op dan een extra zware sessie.';}
+    else if(r>=1.3){f='Je trainde de voorbije 7 dagen iets meer dan je gewoonte: '+p+'% boven je gemiddelde van de laatste weken.';
+      b='Een stap vooruit. Die werkt het best als je hem even laat landen.'+(laag?' Je Ground zit onder je normaal: neem dat signaal mee.':'');
+      h='<b>Je hefboom:</b> hou het deze week bij deze stap. Niet nog meer erbovenop.';}
+    else if(r>=0.8){f='Je trainingsweek ligt in lijn met je gewoonte van de laatste weken'+(Math.abs(p)>=5?' ('+(p>0?p+'% erboven':(-p)+'% eronder')+').':'.');
+      b='Zo groeit conditie het best: geleidelijk, zonder dat je lichaam achterop raakt.';
+      h='<b>Je hefboom:</b> wil je meer, verhoog dan in kleine stappen. Je Ground vertelt je of je lichaam meekan.';}
+    else{f='Je trainde de voorbije 7 dagen lichter dan je gewoonte: '+(-p)+'% onder je gemiddelde van de laatste weken.';
+      b='Bewust gekozen is dat herstel. Onbedoeld verlies je stilaan wat je opbouwde.';
+      h='<b>Je hefboom:</b> staat je Ground op of boven je normaal, dan mag je de draad rustig weer oppakken.';}
+    return {id:'t_belasting',fam:'trend',slot:'nu',score:0.35+Math.min(0.55,Math.abs(r-1.05)),titel:'Je trainingsweek',teaser:'Train je meer dan je lichaam bijhoudt?',feit:f,bet:b,hef:h};
+  })());
   return P;
 }
 

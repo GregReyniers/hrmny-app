@@ -1095,7 +1095,7 @@ function koppelVerstuur(){
   if(!/^\S+@\S+\.\S+$/.test(email)||!pw){m.className='wk-melding fout';m.textContent='Vul je Garmin-e-mailadres en wachtwoord in.';return;}
   if(!KOPPEL_URL){welkomStap(5);return;}
   knop.disabled=true;m.className='wk-melding';m.style.display='block';m.textContent='Even verbinden\u2026';
-  fetch(KOPPEL_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_id:gebruiker(),email:email,wachtwoord:pw})})
+  fetch(KOPPEL_URL,{method:'POST',body:new URLSearchParams({user_id:gebruiker(),email:email,wachtwoord:pw})})
     .then(function(r){return r.json().catch(function(){return {ok:r.ok};});})
     .then(function(j){
       if(j&&j.ok){schrijf('hrmny_gekoppeld','1');p.value='';m.className='wk-melding ok';m.textContent='Gelukt. Je Garmin is gekoppeld.';

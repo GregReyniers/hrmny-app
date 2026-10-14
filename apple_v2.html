@@ -233,7 +233,12 @@ details.klein summary::-webkit-details-marker{display:none}
 .event-regel{font-size:0.84rem;color:var(--navy);line-height:1.55;margin-top:0.3rem}
 .event-regel+.event-regel{border-top:1px solid var(--border);padding-top:0.45rem;margin-top:0.45rem}
 
-.week-strook{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:0.7rem 0 0.4rem}
+.week-nav{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin:0.7rem 0 0}
+.week-nav-label{font-size:0.78rem;font-weight:700;color:var(--navy);text-align:center;flex:1}
+.week-nav-knop{background:var(--cream);border:1.5px solid var(--border);border-radius:9px;min-width:38px;height:32px;color:var(--navy);font-size:1.1rem;line-height:1;cursor:pointer;font-family:'DM Sans',sans-serif}
+.week-nav-knop:disabled{opacity:0.3;cursor:default}
+.week-strook{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:0.35rem 0 0.4rem}
+.week-dag.vandaag .wd-nr{color:var(--gold)}
 .week-dag{background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:0.4rem 0 0.35rem;text-align:center;cursor:pointer;font-family:'DM Sans',sans-serif}
 .week-dag.gekozen{border-color:var(--navy);background:var(--white)}
 .week-dag .wd-naam{font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em}
@@ -609,6 +614,7 @@ var APPLE_ID=null;
       </div>
       <div class="nav-btns">
         <button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button>
+        <button class="nav-btn" onclick="toonLaag(3)">Jouw ritme <span class="pijl">&rsaquo;</span></button>
       </div>
     </div>
 
@@ -648,7 +654,7 @@ var APPLE_ID=null;
         <div class="label-mono">Jij tegenover jezelf</div>
         <div id="verg-inhoud"></div>
       </div>
-      <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(1)">&lsaquo; Terug naar vandaag</button></div>
+      <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(2)">&lsaquo; Jouw nacht</button><button class="nav-btn" onclick="toonLaag(1)">Terug naar vandaag</button></div>
     </div>
 
     <!-- AVONDREFLECTIE (vanaf 20u) -->
@@ -718,6 +724,7 @@ var APPLE_ID=null;
       <button class="terug-knop" onclick="toonDashboard()">&lsaquo; Terug</button>
       <div class="form-titel" style="font-size:1.1rem">Jouw agenda</div>
       <div class="form-uitleg">Wat jij plant: trainingen, voorbereidingen en momenten waar je naartoe leeft. HRMNY legt niets op, maar laat zien of je plan past bij je richting van de dag.</div>
+      <div class="week-nav"><button type="button" class="week-nav-knop" id="week-terug" onclick="wisselWeek(-1)">&lsaquo;</button><div class="week-nav-label" id="week-label"></div><button type="button" class="week-nav-knop" onclick="wisselWeek(1)">&rsaquo;</button></div>
       <div class="week-strook" id="week-strook"></div>
       <div class="dag-paneel" id="dag-paneel"></div>
       <div class="sectie-kop">Momenten</div>
@@ -963,6 +970,7 @@ function toonLaag(n){
   if(n===4){tekenVeritas();window.scrollTo(0,0);}
   if(n===2)tekenSignalen();
   if(n===3)tekenStrook();
+  window.scrollTo(0,0);
 }
 function toonDashboard(){
   toonScherm('s-dashboard');toonLaag(1);
@@ -1621,7 +1629,7 @@ var TRDUUR_LABELS={kort:'tot 45 min',middel:'45 tot 90 min',lang:'1,5 tot 3 uur'
 var DOEL_LABELS={conditie:'conditie',voorbereiding:'voorbereiding',herstel:'actief herstel',plezier:'plezier'};
 var WD=['zo','ma','di','wo','do','vr','za'];
 var FYSIEK={race:1,activiteit:1};
-var EDIT_ID=null,EDIT_DUUR='',GEKOZEN_DAG=null,TR={},TR_DATUM_OPEN=null;
+var EDIT_ID=null,EDIT_DUUR='',GEKOZEN_DAG=null,TR={},TR_DATUM_OPEN=null; var WEEK_OFFSET=0;
 function eventTypeLabel(t){return {race:'jouw wedstrijd',examen:'jouw examen',sociaal:'jouw feest',reis:'jouw reis',meeting:'jouw meeting',activiteit:'jouw activiteit'}[t]||'jouw moment';}
 function laadEvents(){
   var l=[];try{l=JSON.parse(lees('hrmny_events')||'[]')||[];}catch(e){l=[];}
@@ -1666,13 +1674,15 @@ function toonMomentenLijst(){
   if(!GEKOZEN_DAG)GEKOZEN_DAG=vandaagStr();
   /* weekstrook */
   var ws=document.getElementById('week-strook');ws.innerHTML='';
+  var basis=WEEK_OFFSET*7;
   for(var i=0;i<7;i++){(function(i){
-    var d=new Date();d.setDate(d.getDate()+i);var ds=datumStr(d),p=plannenOpDag(ds);
-    var b=document.createElement('button');b.type='button';b.className='week-dag'+(ds===GEKOZEN_DAG?' gekozen':'');
+    var d=new Date();d.setDate(d.getDate()+basis+i);var ds=datumStr(d),p=plannenOpDag(ds);
+    var b=document.createElement('button');b.type='button';b.className='week-dag'+(ds===GEKOZEN_DAG?' gekozen':'')+(ds===vandaagStr()?' vandaag':'');
     var stip='';p.trainingen.forEach(function(){stip+='<i style="background:var(--navy)"></i>';});p.momenten.forEach(function(){stip+='<i style="background:var(--gold)"></i>';});
-    b.innerHTML='<div class="wd-naam">'+(i===0?'vand.':WD[d.getDay()])+'</div><div class="wd-nr">'+d.getDate()+'</div><div class="wd-stip">'+stip+'</div>';
+    b.innerHTML='<div class="wd-naam">'+((WEEK_OFFSET===0&&i===0)?'vand.':WD[d.getDay()])+'</div><div class="wd-nr">'+d.getDate()+'</div><div class="wd-stip">'+stip+'</div>';
     b.onclick=function(){GEKOZEN_DAG=ds;toonMomentenLijst();};ws.appendChild(b);
   })(i);}
+  weekLabelBij();
   /* paneel van de gekozen dag */
   var pn=document.getElementById('dag-paneel'),p=plannenOpDag(GEKOZEN_DAG);
   var titel=GEKOZEN_DAG===vandaagStr()?'Vandaag':dagStrNaarDate(GEKOZEN_DAG).toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
@@ -1705,7 +1715,9 @@ function toonMomentenLijst(){
     b.onclick=function(){bewerkTraining(t.id,null);};rb.appendChild(b);});
   toonScherm('s-kalender');
 }
-function toonKalender(){GEKOZEN_DAG=vandaagStr();toonMomentenLijst();}
+function wisselWeek(r){WEEK_OFFSET=Math.max(0,WEEK_OFFSET+r);toonMomentenLijst();}
+function weekLabelBij(){var d1=new Date();d1.setDate(d1.getDate()+WEEK_OFFSET*7);var d2=new Date(d1);d2.setDate(d2.getDate()+6);var o={day:'numeric',month:'short'};var lab=(WEEK_OFFSET===0?'Deze week \u00b7 ':'')+d1.toLocaleDateString('nl-BE',o)+' \u2013 '+d2.toLocaleDateString('nl-BE',o);var el=document.getElementById('week-label');if(el)el.textContent=lab;var tb=document.getElementById('week-terug');if(tb)tb.disabled=(WEEK_OFFSET<=0);}
+function toonKalender(){GEKOZEN_DAG=vandaagStr();WEEK_OFFSET=0;toonMomentenLijst();}
 /* ── momenten ── */
 function vulEditor(e){
   document.getElementById('kal-type').value=e.type||'';

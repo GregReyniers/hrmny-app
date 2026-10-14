@@ -189,6 +189,13 @@ button{font-family:'DM Sans',sans-serif}
 .uitschieter-kaart .us-oorzaak{margin-top:0.5rem}
 .uitschieter-kaart .us-invul{display:block;margin-top:0.5rem;background:none;border:none;padding:0;text-align:left;font:inherit;font-size:0.84rem;color:var(--navy);text-decoration:underline;cursor:pointer}
 .uitschieter-kaart .us-slot{font-size:0.8rem;color:var(--text-muted);margin-top:0.6rem;font-style:italic}
+.runlens-kaart{background:var(--white);border:1px solid var(--border);border-left:3px solid #1D9E75;border-radius:14px;padding:1rem 1.1rem;margin-top:0.6rem;text-align:left}
+.runlens-kaart .rl-label{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#1D9E75;margin-bottom:0.4rem}
+.runlens-kaart .rl-zin{font-family:'Cormorant Garamond',serif;font-size:1.12rem;font-weight:300;color:var(--navy);line-height:1.45}
+.vestigia-kaart{border-left:3px solid #1D9E75}
+.vestigia-kaart .vs-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;color:var(--navy);line-height:1.2}
+.vestigia-kaart .vs-sub{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:#1D9E75;margin:0.1rem 0 0.5rem}
+.vestigia-kaart .vs-zin{font-size:0.9rem;color:var(--text-mid);line-height:1.6}
 .slaap-svg{width:100%;height:120px;display:block;background:var(--white);border:1px solid var(--border);border-radius:12px}
 .slaap-cap{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--text-muted);margin-top:6px;display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center}
 .slaap-cap i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;vertical-align:middle}
@@ -605,6 +612,8 @@ html,body{background-color:var(--cream)}
 
       <div class="kaart uitschieter-kaart" id="uitschieter-kaart" style="display:none"></div>
 
+      <div class="kaart runlens-kaart" id="runlens-kaart" style="display:none"></div>
+
       <div class="event-kaart" id="event-kaart" onclick="toonKalender()" style="cursor:pointer">
         <div class="label-mono">Jouw agenda</div>
         <div class="event-tekst" id="event-tekst"></div>
@@ -691,6 +700,7 @@ html,body{background-color:var(--cream)}
         <div id="slaaptekort-grafiek"></div>
         <div class="ritme-zin" id="slaaptekort-tekst"></div>
       </div>
+      <div class="kaart vestigia-kaart" id="vestigia-kaart" style="padding:1.1rem;display:none"></div>
       <div class="kaart" style="padding:1.1rem">
         <div class="label-mono">Jij tegenover jezelf</div>
         <div id="verg-inhoud"></div>
@@ -886,6 +896,7 @@ html,body{background-color:var(--cream)}
       </div>
       <button class="liber-knop" type="button" onclick="toonLiber()"><div><b>Rerum Causae</b><span id="pv-liber">Liber</span></div><div style="color:#C9A84C;font-size:1.2rem">&rsaquo;</div></button>
       <div class="profiel-rij"><label for="pv-avondzin" style="display:flex;gap:0.7rem;align-items:flex-start;cursor:pointer"><input type="checkbox" id="pv-avondzin" onchange="zetAvondzin(this.checked)" style="margin-top:0.25rem;accent-color:#1A2D5A"><span><span class="profiel-rij-label">The Vesper</span><br><span style="font-size:0.84rem;color:var(--text-muted);line-height:1.5">Je avondzin rond je slaapuur. Eén zin over The Quarter, het kwartier voor je gewone bedtijd, als je de app &#39;s avonds opent.</span></span></label></div>
+      <div class="profiel-rij"><label for="pv-runlens" style="display:flex;gap:0.7rem;align-items:flex-start;cursor:pointer"><input type="checkbox" id="pv-runlens" onchange="zetRunLens(this.checked)" style="margin-top:0.25rem;accent-color:#1A2D5A"><span><span class="profiel-rij-label">HRMNY voor lopers</span><br><span style="font-size:0.84rem;color:var(--text-muted);line-height:1.5">Vertaalt je richting van vandaag naar één loopkeuze: rust, korter, hetzelfde, langer of sneller. Geen schema, nooit twee tegelijk.</span></span></label></div>
       <button class="btn-zacht" style="margin-top:0.8rem" onclick="vernieuwRichting()">Richting opnieuw ophalen</button>
       <details class="klein"><summary>Meer opties</summary>
         <button class="wis-link" onclick="document.getElementById('bevestig').classList.add('open')">Gegevens op dit toestel wissen</button>
@@ -1023,6 +1034,36 @@ function toonLaag(n){
   if(n===3)tekenStrook();
   window.scrollTo(0,0);
 }
+/* ── RUN-LENS (14/10/2026): richting + belasting -> één loopkeuze, opt-in ── */
+function runLensAan(){return lees('hrmny_runlens')==='1';}
+function zetRunLens(aan){schrijf('hrmny_runlens',aan?'1':'');if(typeof tekenRunLens==='function')tekenRunLens();}
+function loopBelastingRatio(){
+  var d=vandaagStr(),r=parseFloat(lees('hrmny_bel_r_'+d)),a=parseFloat(lees('hrmny_bel_a_'+d)),c=parseFloat(lees('hrmny_bel_c_'+d));
+  if(isNaN(r)&&!isNaN(a)&&c>0)r=a/c;
+  return (isNaN(r)||r<=0)?null:r;
+}
+function loopKeuze(){
+  var data=laatsteRichtingVandaag();if(!data||!data.richting)return null;
+  var ri=data.richting,r=loopBelastingRatio();
+  if(ri==='recovery')return 'Vandaag geen loop. Of hooguit tien minuten heel rustig, niet meer. Je wint vandaag door níet te pushen.';
+  if(ri==='cautela')return 'Hou het licht. Een korte, rustige loop mag, maar laat het daarbij: niet langer, niet sneller.';
+  if(r!==null&&r>=1.5)return 'Je trainde deze week al fors meer dan gewoonlijk. Hou vandaag hetzelfde aan, niet meer. Opbouw komt uit herhaling, niet uit één zware dag.';
+  if(r!==null&&r>=1.3)return 'Je zette deze week al een stap. Een rustige loop mag, maar laat die landen: niet nog meer erbovenop.';
+  if(ri==='flow')return 'Een rustige duurloop op gevoel. Niet forceren, zo groeit je basis.';
+  var a=leesJSON('hrmny_aansporen',{}),w=(a&&a.dag===vandaagStr())?a.w:'';
+  if(w==='langer')return 'Je lichaam heeft ruimte, en je had nog marge. Vandaag mag je iets lánger lopen, niet ook sneller.';
+  if(w==='steviger')return 'Je lichaam heeft ruimte, en je had nog marge. Vandaag mag je iets snéller lopen, niet ook langer.';
+  return 'Je lichaam heeft ruimte. Je mag vandaag iets meer: langer lopen óf iets sneller, kies één, niet allebei.';
+}
+function tekenRunLens(){
+  var el=document.getElementById('runlens-kaart');if(!el)return;
+  if(!runLensAan()){el.style.display='none';el.innerHTML='';return;}
+  var zin=loopKeuze();
+  if(!zin){el.style.display='none';el.innerHTML='';return;}
+  el.innerHTML='<div class="rl-label">HRMNY voor lopers</div><div class="rl-zin"></div>';
+  el.querySelector('.rl-zin').textContent=zin;
+  el.style.display='block';
+}
 function toonDashboard(){
   toonScherm('s-dashboard');toonLaag(1);
   tekenGevoelKaart();
@@ -1030,6 +1071,7 @@ function toonDashboard(){
   document.getElementById('avond-kaart').style.display=new Date().getHours()>=20?'block':'none';
   toonRichting(laatsteRichtingVandaag());
   if(typeof tekenUitschieter==='function')tekenUitschieter();
+  if(typeof tekenRunLens==='function')tekenRunLens();
   renderEventStatus();
   renderQuarter();
   renderTrainingFb();
@@ -1537,7 +1579,7 @@ function tekenStrook(){
   else if(beweeg>=rust)z='Van de laatste '+tot+' dagen waren er '+beweeg+' voor beweging en '+rust+' voor herstel. Zo ziet een gezond ritme eruit: inspanning en rust die elkaar dragen.';
   else z='De laatste '+tot+' dagen vroeg je lichaam vaker om herstel ('+rust+') dan om beweging ('+beweeg+'). Dat is geen stap terug. Je wint ze terug via je nachten: daar gaat je doel hieronder over.';
   t.innerHTML='';t.textContent=z;voegTooltipsToe(t);
-  tekenDoel();tekenVergelijking();if(typeof tekenSlaapritme==='function')tekenSlaapritme();if(typeof tekenSlaaptekort==='function')tekenSlaaptekort();
+  tekenDoel();tekenVergelijking();if(typeof tekenSlaapritme==='function')tekenSlaapritme();if(typeof tekenSlaaptekort==='function')tekenSlaaptekort();if(typeof tekenVestigia==='function')tekenVestigia();
 }
 function reeksWaarden(k,van,tot){var v=[];for(var i=van;i<=tot;i++){var x=waarde(k,dagenTerug(i));if(x!==null)v.push(x);}return v;}
 function gemiddelde(a){return a.length?a.reduce(function(s,x){return s+x;},0)/a.length:null;}
@@ -1611,6 +1653,24 @@ function tekenSlaapritme(){
   if(diff>=20)zin+=' Een later of wisselend uur knabbelt meestal als eerste aan je herstel. Je uur vast krijgen is de snelste stap.';
   else if(binnen>=Math.max(4,Math.round(laatste.length*0.6)))zin+=' Je houdt je uur mooi vast. Dat voedt je herstel.';
   tx.textContent=zin;
+}
+function tekenVestigia(){
+  var el=document.getElementById('vestigia-kaart');if(!el)return;
+  if(typeof runLensAan!=='function'||!runLensAan()){el.style.display='none';el.innerHTML='';return;}
+  var ruimte=0,rust=0,n=0;
+  for(var i=0;i<7;i++){var r=lees('hrmny_richting_'+dagenTerug(i));if(!r)continue;n++;if(r==='flow'||r==='build')ruimte++;else rust++;}
+  el.style.display='block';
+  var kop='<div class="vs-label">Vestigia</div><div class="vs-sub">je sporen van deze week</div><div class="vs-zin"></div>';
+  el.innerHTML=kop;
+  if(n<3){el.querySelector('.vs-zin').textContent='Na een paar dagen verschijnen hier je sporen: hoe je week bewoog, zonder oordeel.';return;}
+  var zin='Deze week gaf je lichaam '+ruimte+(ruimte===1?' keer':' keer')+' ruimte om te bewegen en '+rust+' keer rust.';
+  var tweede;
+  if(rust===0)tweede=' Veel groen. Geniet ervan, maar gun jezelf één dag rust: daar landt je opbouw.';
+  else if(ruimte===0)tweede=' Je lichaam vroeg vooral rust. Geen verloren week, zo komt je volgende sterke loop dichterbij.';
+  else tweede=' Dat wisselspel maakt een loper sterk: je bouwt op zonder te breken.';
+  var br=(typeof loopBelastingRatio==='function')?loopBelastingRatio():null,derde='';
+  if(br!==null){if(br>=1.3)derde=' Je trainingsweek lag boven je gewoonte, mooi als je het laat landen.';else if(br>=0.8)derde=' Je trainingsweek lag in lijn met je gewoonte.';else derde=' Je trainde lichter dan gewoonlijk.';}
+  el.querySelector('.vs-zin').textContent=zin+tweede+derde;
 }
 function tekenDoel(){
   var el=document.getElementById('doel-inhoud');if(!el)return;var html='';
@@ -1728,6 +1788,7 @@ function vulAnchor(){
 }
 function toonProfiel(){
   var az=document.getElementById('pv-avondzin');if(az)az.checked=avondzinAan();
+  var rl=document.getElementById('pv-runlens');if(rl)rl.checked=runLensAan();
   document.getElementById('pv-naam').textContent=lees('hrmny_naam')||'·';
   document.getElementById('pv-wearable').textContent=lees('hrmny_wearable')||'·';
   var s=lees('hrmny_startdatum');

@@ -134,7 +134,7 @@ button{font-family:'DM Sans',sans-serif}
 
 /* LEXICON TOOLTIP */
 .hrmny-term{border-bottom:1px dotted var(--gold);cursor:help;position:relative;white-space:nowrap}
-.hrmny-term .hrmny-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-style:normal;font-size:0.72rem;font-weight:400;line-height:1.5;padding:0.5rem 0.75rem;border-radius:9px;white-space:normal;width:210px;text-align:left;z-index:999;pointer-events:none;box-shadow:0 4px 16px rgba(17,30,63,0.18)}
+.hrmny-term .hrmny-tooltip{display:none;position:fixed;left:0;top:0;background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-style:normal;font-size:0.72rem;font-weight:400;line-height:1.5;padding:0.5rem 0.75rem;border-radius:9px;white-space:normal;width:210px;max-width:calc(100vw - 20px);text-align:left;z-index:999;box-shadow:0 4px 16px rgba(17,30,63,0.18)}
 .hrmny-tooltip{text-transform:none;letter-spacing:normal}
 .hrmny-term:hover .hrmny-tooltip,.hrmny-term:focus .hrmny-tooltip{display:block}
 
@@ -156,7 +156,7 @@ button{font-family:'DM Sans',sans-serif}
 
 .hrmny-term.open .hrmny-tooltip{display:block}
 .richting-term{border-bottom:1px dotted currentColor;cursor:pointer;white-space:nowrap;position:relative}
-.richting-term .hrmny-tooltip{bottom:calc(100% + 6px)}
+.richting-term .hrmny-tooltip{bottom:auto}
 .event-kaart{display:none;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1.1rem}
 .event-tekst{font-size:0.84rem;color:var(--navy);line-height:1.55;margin-top:0.3rem}
 .form-uitleg{font-size:0.78rem;color:var(--text-muted);line-height:1.55;margin:0.2rem 0 1rem}
@@ -212,7 +212,7 @@ details.horloge[open] summary{margin-bottom:0.7rem}
 
 #profiel-modus-rij,#modus-rij{position:relative}
 .modus-chip{position:static}
-.modus-chip .modus-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;width:auto;background:var(--navy);color:var(--white);font-size:0.72rem;font-weight:400;line-height:1.5;padding:0.5rem 0.75rem;border-radius:9px;width:220px;white-space:normal;text-align:left;z-index:999;pointer-events:none;box-shadow:0 4px 16px rgba(17,30,63,0.18)}
+.modus-chip .modus-tip{display:none;position:fixed;left:0;top:0;width:220px;max-width:calc(100vw - 20px);background:var(--navy);color:var(--white);font-size:0.72rem;font-weight:400;line-height:1.5;padding:0.5rem 0.75rem;border-radius:9px;white-space:normal;text-align:left;z-index:999;box-shadow:0 4px 16px rgba(17,30,63,0.18)}
 .modus-chip:hover .modus-tip,.modus-chip:focus .modus-tip{display:block}
 .modus-chip.actief .modus-tip{color:var(--white)}
 details.klein{margin-top:1.4rem}
@@ -1132,7 +1132,7 @@ function toonRichting(data){
     return;
   }
   zetAccent(r.kleur);zetWijzer(r.hoek);
-  naamEl.innerHTML='<span class="hrmny-term richting-term" tabindex="0" onclick="this.classList.toggle(\'open\')">'+r.naam+'<span class="hrmny-tooltip">'+RICHTING_UITLEG[data.richting]+'</span></span>';
+  naamEl.innerHTML='<span class="hrmny-term richting-term" tabindex="0">'+r.naam+'<span class="hrmny-tooltip">'+RICHTING_UITLEG[data.richting]+'</span></span>';
   subEl.innerHTML='';subEl.textContent=r.sub;voegTooltipsToe(subEl);
   dzEl.textContent=data.dagzin||'';voegTooltipsToe(dzEl);
 
@@ -1584,6 +1584,26 @@ var LEXICON={
   'The Undercurrent':'Een stroming onder het oppervlak. Je lichaam vertelt vandaag iets anders dan je nacht liet zien.',
   'Recovery Power':'Hoe snel je lichaam tot rust komt na inspanning.'
 };
+/* Tooltip-plaatsing + pin (14/10/2026): tooltip blijft binnen het scherm, en 'Lees het hele verhaal' wordt klikbaar. */
+function plaatsTip(host){
+  if(!host||!host.querySelector)return;
+  var tip=host.querySelector('.hrmny-tooltip, .modus-tip');if(!tip)return;
+  tip.style.bottom='auto';tip.style.transform='none';
+  var r=host.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
+  if(!tw||!th)return;
+  var vw=document.documentElement.clientWidth,vh=document.documentElement.clientHeight,m=10;
+  var left=r.left+r.width/2-tw/2;left=Math.max(m,Math.min(left,vw-tw-m));
+  var top=r.top-th-8;if(top<m)top=r.bottom+8;if(top+th>vh-m)top=Math.max(m,vh-th-m);
+  tip.style.left=Math.round(left)+'px';tip.style.top=Math.round(top)+'px';
+}
+document.addEventListener('mouseover',function(e){var h=e.target.closest&&e.target.closest('.hrmny-term, .modus-chip');if(h)plaatsTip(h);});
+document.addEventListener('focusin',function(e){var h=e.target.closest&&e.target.closest('.hrmny-term');if(h)plaatsTip(h);});
+document.addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('.tt-causa'))return;
+  var t=e.target.closest&&e.target.closest('.hrmny-term');
+  document.querySelectorAll('.hrmny-term.open').forEach(function(o){if(o!==t)o.classList.remove('open');});
+  if(t){t.classList.toggle('open');if(t.classList.contains('open'))plaatsTip(t);}
+});
 function voegTooltipsToe(el){
   if(!el)return;
   var tekst=el.textContent;if(!tekst)return;
@@ -1858,14 +1878,14 @@ function minVan(hhmm){var m=/^(\d{1,2}):(\d{2})$/.exec(hhmm||'');return m?(+m[1]
 function renderQuarter(){
   var el=document.getElementById('quarter-kaart');if(!el)return;
   var q=leesJSON('hrmny_quarter',{}),nu=new Date(),nuMin=nu.getHours()*60+nu.getMinutes();
-  var term='<span class="hrmny-term" tabindex="0" onclick="this.classList.toggle(\'open\')">The Quarter<span class="hrmny-tooltip">'+LEXICON['The Quarter']+'</span></span>';
+  var term='<span class="hrmny-term" tabindex="0">The Quarter<span class="hrmny-tooltip">'+LEXICON['The Quarter']+'</span></span>';
   var anker=minVan(q.anker),html='';
   if(avondzinAan()&&anker!==null){
     var d=((nuMin-anker+1440+720)%1440)-720;
     if(d>=-45&&d<=60){
       var zin=d<0?'Je gewone slaapuur is '+q.anker+'. Nog één aflevering, of het kwartier?':'Je gewone slaapuur is voorbij. Elk kwartier telt vanavond.';
       var sub=q.quarter==='later'?'De laatste week ga je later slapen dan je gewoonte.':'Een kwartier vroeger slapen lijkt weinig. Over weken gemeten maakt het een groot verschil.';
-      var vesper='<span class="hrmny-term" tabindex="0" onclick="this.classList.toggle(\'open\')">The Vesper<span class="hrmny-tooltip">'+LEXICON['The Vesper']+'</span></span>';
+      var vesper='<span class="hrmny-term" tabindex="0">The Vesper<span class="hrmny-tooltip">'+LEXICON['The Vesper']+'</span></span>';
       html='<div class="label-mono" style="color:var(--navy)">'+vesper+' · '+term+'</div><div class="quarter-zin">'+zin+'</div><div class="quarter-sub">'+sub+'</div>';
     }
   }

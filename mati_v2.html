@@ -192,6 +192,8 @@ button{font-family:'DM Sans',sans-serif}
 .slaap-svg{width:100%;height:120px;display:block;background:var(--white);border:1px solid var(--border);border-radius:12px}
 .slaap-cap{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--text-muted);margin-top:6px;display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center}
 .slaap-cap i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.slaap-head{font-size:0.8rem;color:var(--text-mid);line-height:1.5;margin-bottom:0.5rem}
+.slaap-head b{color:var(--navy)}
 .voor-vandaag{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:0.9rem 1rem;margin-top:1rem}
 
 /* Duidelijkere knoppen (zonder beweging) */
@@ -1541,68 +1543,62 @@ function tekenSlaaptekort(){
   if(!g||!tx)return;
   var bed=naarMin(lees('hrmny_anchor_bed')),wek=naarMin(lees('hrmny_anchor_op'));
   var venster=(bed!==null&&wek!==null)?((wek-bed+1440)%1440):null;
-  var N=21,pts=[];
+  var N=14,pts=[];
   for(var i=N-1;i>=0;i--){var d=lees('hrmny_slaapduur_'+dagenTerug(i));var m=(d===null||d==='')?null:parseFloat(d);pts.push({i:i,m:(m===null||isNaN(m))?null:m});}
   var hebben=pts.filter(function(p){return p.m!==null;});
-  if(!hebben.length){g.innerHTML='';tx.textContent=(venster!==null)?('Zodra je nachten met slaapduur binnenkomen, zie je hier je uren slaap tegenover je venster van '+toonTijd(venster)+'.'):'Kies je Anchor en opsta-uur in je profiel. Zodra je nachten met slaapduur binnenkomen, zie je hier je slaapduur tegenover je eigen venster.';return;}
+  if(!hebben.length){g.innerHTML='';tx.textContent=(venster!==null)?('Zodra je nachten met slaapduur binnenkomen, zie je hier je uren slaap tegenover je venster van '+toonTijd(venster)+'.'):'Kies je slaapuur en opsta-uur in je profiel. Zodra je nachten met slaapduur binnenkomen, zie je hier hoeveel je slaapt tegenover je eigen venster.';return;}
   var durs=hebben.map(function(p){return p.m;});
   var hi=Math.ceil((Math.max.apply(null,durs.concat([venster||0]))+30)/60)*60;if(hi<480)hi=480;
-  var W=100,H=64,pad=5;
+  var W=100,H=58,pad=5;
   function X(i){return pad+(N-1-i)/(N-1)*(W-2*pad);}
   function Y(m){return pad+(1-m/hi)*(H-2*pad);}
   var eigen=mediaanVan(durs);
-  var svg='<svg class="slaap-svg" viewBox="0 0 100 64" preserveAspectRatio="none">';
-  if(venster!==null)svg+='<line x1="0" y1="'+Y(venster).toFixed(1)+'" x2="100" y2="'+Y(venster).toFixed(1)+'" stroke="#1A2D5A" stroke-width="0.8" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/>';
+  var svg='<svg class="slaap-svg" viewBox="0 0 100 58" preserveAspectRatio="none">';
+  if(venster!==null)svg+='<line x1="0" y1="'+Y(venster).toFixed(1)+'" x2="100" y2="'+Y(venster).toFixed(1)+'" stroke="#1A2D5A" stroke-width="1.4" vector-effect="non-scaling-stroke"/>';
   var lijn=hebben.map(function(p){return X(p.i).toFixed(1)+','+Y(p.m).toFixed(1);}).join(' ');
-  svg+='<polyline points="'+lijn+'" fill="none" stroke="rgba(26,45,90,0.25)" stroke-width="1" vector-effect="non-scaling-stroke"/>';
-  hebben.forEach(function(p){var kort=eigen!==null&&p.m<eigen-45;var c=kort?'#C9A84C':'#1D9E75';svg+='<circle cx="'+X(p.i).toFixed(1)+'" cy="'+Y(p.m).toFixed(1)+'" r="'+(p.i===0?2.7:1.9)+'" fill="'+c+'" vector-effect="non-scaling-stroke"/>';});
+  svg+='<polyline points="'+lijn+'" fill="none" stroke="rgba(26,45,90,0.18)" stroke-width="1" vector-effect="non-scaling-stroke"/>';
+  hebben.forEach(function(p){var kort=eigen!==null&&p.m<eigen-45;svg+='<circle cx="'+X(p.i).toFixed(1)+'" cy="'+Y(p.m).toFixed(1)+'" r="2.2" fill="'+(kort?'#C9A84C':'#1D9E75')+'" vector-effect="non-scaling-stroke"/>';});
   svg+='</svg>';
-  svg+='<div class="slaap-cap"><span>uren slaap per nacht</span>'+(venster!==null?'<span>- - je venster ('+toonTijd(venster)+' in bed)</span>':'')+'</div>';
-  g.innerHTML=svg;
-  var laatste=hebben.filter(function(p){return p.i<=13;});
+  var kop=(venster!==null)?('De lijn is <b>je venster ('+toonTijd(venster)+' in bed)</b>. Elke bol is één nacht slaap.'):'Elke bol is één nacht slaap. Kies je uren in je profiel voor je venster erbij.';
+  g.innerHTML='<div class="slaap-head">'+kop+'</div>'+svg+'<div class="slaap-cap"><span><i style="background:#1D9E75"></i>gewone nacht</span><span><i style="background:#C9A84C"></i>korte nacht</span><span>hoger = meer slaap</span></div>';
+  var laatste=hebben;
   var gem=laatste.reduce(function(a,p){return a+p.m;},0)/laatste.length;
   var zin='Je sliep de laatste '+laatste.length+' nachten gemiddeld '+toonTijd(gem)+'.';
   if(eigen!==null&&Math.abs(gem-eigen)>=20)zin+=' Dat is '+(gem<eigen?'korter':'langer')+' dan je gewone nachtduur van ongeveer '+toonTijd(eigen)+'.';
-  if(venster!==null){
-    var benut=Math.round(gem/venster*100);
-    zin+=' Van je venster van '+toonTijd(venster)+' slaap je gemiddeld '+benut+'% — het verschil is deels gewone waaktijd.';
-    if(venster-gem>=90)zin+=' Dit gat is groter dan gewoon. Het hoeft geen probleem te zijn, maar als het blijft duren is het de moeite om je venster te beschermen: op tijd beginnen bij je Anchor.';
-  }
+  if(venster!==null){var benut=Math.round(gem/venster*100);zin+=' Van je venster van '+toonTijd(venster)+' slaap je gemiddeld '+benut+'% — het verschil is deels gewone waaktijd.';if(venster-gem>=90)zin+=' Dit gat is groter dan gewoon. Als het blijft duren, bescherm dan je venster: op tijd beginnen bij je uur.';}
   tx.textContent=zin;
 }
 function tekenSlaapritme(){
   var g=document.getElementById('slaapritme-grafiek'),tx=document.getElementById('slaapritme-tekst');
   if(!g||!tx)return;
   var ankerMin=naarMin(lees('hrmny_anchor_bed'));
-  var N=21,pts=[];
+  var N=14,pts=[];
   for(var i=N-1;i>=0;i--){var m=naarMin(lees('hrmny_inslaap_'+dagenTerug(i)));pts.push({i:i,m:m});}
   var hebben=pts.filter(function(p){return p.m!==null;});
-  if(ankerMin===null){g.innerHTML='';tx.textContent='Kies eerst je Anchor in je profiel. Daarna zie je hier, nacht na nacht, hoe vast je slaapuur is.';return;}
-  if(hebben.length<4){g.innerHTML='';tx.textContent='Na enkele nachten verschijnt hier je slaapritme tegenover je Anchor van '+vanMin(ankerMin)+'.';return;}
+  if(ankerMin===null){g.innerHTML='';tx.textContent='Kies eerst je slaapuur in je profiel. Daarna zie je hier, nacht na nacht, hoe vast je slaapuur is.';return;}
+  if(hebben.length<4){g.innerHTML='';tx.textContent='Na enkele nachten verschijnt hier je slaapritme tegenover je uur van '+vanMin(ankerMin)+'.';return;}
   var alle=hebben.map(function(p){return p.m;}).concat([ankerMin]);
-  var lo=Math.min.apply(null,alle)-20,hi=Math.max.apply(null,alle)+20;
-  if(hi-lo<90){var mid=(hi+lo)/2;lo=mid-45;hi=mid+45;}
-  var W=100,H=64,pad=5,tol=15;
+  var lo=Math.min.apply(null,alle)-25,hi=Math.max.apply(null,alle)+25;
+  if(hi-lo<120){var mid=(hi+lo)/2;lo=mid-60;hi=mid+60;}
+  var W=100,H=58,pad=5,tol=15;
   function X(i){return pad+(N-1-i)/(N-1)*(W-2*pad);}
   function Y(m){return pad+(1-(m-lo)/(hi-lo))*(H-2*pad);}
-  var svg='<svg class="slaap-svg" viewBox="0 0 100 64" preserveAspectRatio="none">';
-  svg+='<rect x="0" y="'+Y(ankerMin+tol).toFixed(1)+'" width="100" height="'+(Y(ankerMin-tol)-Y(ankerMin+tol)).toFixed(1)+'" fill="#1D9E75" opacity="0.09"/>';
-  svg+='<line x1="0" y1="'+Y(ankerMin).toFixed(1)+'" x2="100" y2="'+Y(ankerMin).toFixed(1)+'" stroke="#1A2D5A" stroke-width="0.8" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/>';
+  var svg='<svg class="slaap-svg" viewBox="0 0 100 58" preserveAspectRatio="none">';
+  svg+='<line x1="0" y1="'+Y(ankerMin).toFixed(1)+'" x2="100" y2="'+Y(ankerMin).toFixed(1)+'" stroke="#1A2D5A" stroke-width="1.4" vector-effect="non-scaling-stroke"/>';
   var lijn=hebben.map(function(p){return X(p.i).toFixed(1)+','+Y(p.m).toFixed(1);}).join(' ');
-  svg+='<polyline points="'+lijn+'" fill="none" stroke="rgba(26,45,90,0.25)" stroke-width="1" vector-effect="non-scaling-stroke"/>';
-  hebben.forEach(function(p){var laat=p.m>ankerMin+tol,vroeg=p.m<ankerMin-tol;var c=laat?'#C9A84C':(vroeg?'#378ADD':'#1D9E75');svg+='<circle cx="'+X(p.i).toFixed(1)+'" cy="'+Y(p.m).toFixed(1)+'" r="'+(p.i===0?2.7:1.9)+'" fill="'+c+'" vector-effect="non-scaling-stroke"/>';});
+  svg+='<polyline points="'+lijn+'" fill="none" stroke="rgba(26,45,90,0.18)" stroke-width="1" vector-effect="non-scaling-stroke"/>';
+  hebben.forEach(function(p){var opuur=Math.abs(p.m-ankerMin)<=tol;svg+='<circle cx="'+X(p.i).toFixed(1)+'" cy="'+Y(p.m).toFixed(1)+'" r="2.2" fill="'+(opuur?'#1D9E75':'#C9A84C')+'" vector-effect="non-scaling-stroke"/>';});
   svg+='</svg>';
-  svg+='<div class="slaap-cap"><span>hoger = later naar bed</span><span><i style="background:#1D9E75"></i>op je uur</span><span><i style="background:#C9A84C"></i>later</span><span>- - je Anchor</span></div>';
-  g.innerHTML=svg;
-  var laatste=hebben.filter(function(p){return p.i<=13;});
+  g.innerHTML='<div class="slaap-head">De lijn is <b>jouw uur ('+vanMin(ankerMin)+')</b>. Hoe dichter de bollen bij de lijn, hoe vaster je ritme.</div>'+svg+'<div class="slaap-cap"><span><i style="background:#1D9E75"></i>rond je uur</span><span><i style="background:#C9A84C"></i>ervan af</span><span>hoger = later, lager = vroeger</span></div>';
+  var laatste=hebben;
   var binnen=laatste.filter(function(p){return Math.abs(p.m-ankerMin)<=tol;}).length;
   var gem=Math.round(laatste.reduce(function(a,p){return a+p.m;},0)/laatste.length);
   var diff=gem-ankerMin;
-  var zin='Van je laatste '+laatste.length+' nachten ging je '+binnen+' keer rond je Anchor van '+vanMin(ankerMin)+' (een kwartier ruimte). Gemiddeld ga je om '+vanMin(gem)+' slapen';
+  var zin='Van je laatste '+laatste.length+' nachten ging je '+binnen+' keer rond je uur van '+vanMin(ankerMin)+' slapen. Gemiddeld om '+vanMin(gem);
   if(Math.abs(diff)<10)zin+=', mooi op je uur.';
-  else zin+=', '+Math.abs(diff)+' minuten '+(diff>0?'later':'vroeger')+' dan je Anchor.';
-  if(diff>=20)zin+=' Een later of wisselend uur is meestal het eerste dat aan je herstel knabbelt — niet de uren alleen, wel het bewegende startpunt. Je uur vast krijgen is hier de snelste stap.';
-  else if(binnen>=Math.max(4,Math.round(laatste.length*0.6)))zin+=' Je houdt je uur mooi vast. Dat is precies wat je herstel voedt.';
+  else zin+=', '+Math.abs(diff)+' minuten '+(diff>0?'later':'vroeger')+'.';
+  if(diff>=20)zin+=' Een later of wisselend uur knabbelt meestal als eerste aan je herstel. Je uur vast krijgen is de snelste stap.';
+  else if(binnen>=Math.max(4,Math.round(laatste.length*0.6)))zin+=' Je houdt je uur mooi vast. Dat voedt je herstel.';
   tx.textContent=zin;
 }
 function tekenDoel(){

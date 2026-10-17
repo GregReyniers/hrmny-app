@@ -1420,7 +1420,7 @@ function versturen(){
     modus:huidigeModus(),profiel:profielVoorPipeline(),datum:vandaag,trigger:'gregory_v2'
   });
   var k=document.getElementById('verstuur-knop');k.disabled=true;k.textContent='Bewaard';
-  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat er gemeten wordt.'+(leesJSON('hrmny_veritas_'+vandaagStr(),null)?'':' Je drie kaarten liggen klaar.');
+  var m=document.getElementById('form-melding');m.style.display='block';m.textContent='Dank je. Wat jij voelt, telt even zwaar als wat er gemeten wordt. Je richting van vandaag ligt al vast; dit vormt mee die van morgen.'+(leesJSON('hrmny_veritas_'+vandaagStr(),null)?'':' Je drie kaarten liggen klaar.');
   setTimeout(function(){terugVanFormulier();setTimeout(haalRichtingOp,8000);},1100);
 }
 function samenvattingGevoel(subj){

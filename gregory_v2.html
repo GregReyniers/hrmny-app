@@ -492,10 +492,13 @@ html,body{background-color:var(--cream)}
 .noc-stat{flex:1;background:#122047;border:1px solid rgba(200,210,235,.1);border-radius:11px;padding:.55rem .25rem;text-align:center}
 .noc-stat .v{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#EFEAE0}
 .noc-stat .l{font-size:.6rem;color:#9aa4c0;letter-spacing:.03em;margin-top:.15rem}
-.noc-tijd{display:inline-flex;align-items:center;gap:.08rem}
+.noc-tijd{display:inline-flex;align-items:center;gap:.1rem}
 .noc-colon{color:#6f7aa0;font-weight:bold}
-.noc-tot{color:#6f7aa0;font-size:.72rem;margin:0 .15rem}
-.noc-venster-rij select{background:#122047;border:1px solid rgba(200,210,235,.22);color:#EFEAE0;border-radius:8px;padding:.32rem .3rem;font-size:.95rem;font-family:'Cormorant Garamond',serif;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer}
+#noc-venster{display:grid;grid-template-columns:1.9rem 1fr 1fr;gap:.5rem .45rem;align-items:center;margin-top:.5rem}
+.noc-vh{font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:#CBB064;font-weight:700;text-align:center}
+.noc-vh .sym{font-size:1.05rem;display:block;margin-bottom:.1rem}
+.noc-cel{display:flex;justify-content:center}
+#noc-venster select{background:#122047;border:1px solid rgba(200,210,235,.22);color:#EFEAE0;border-radius:8px;padding:.32rem .28rem;font-size:.95rem;font-family:'Cormorant Garamond',serif;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer}
 .noc-terug{text-align:center;margin-top:.4rem}
 #tabbalk{position:fixed;left:0;right:0;bottom:0;max-width:460px;margin:0 auto;height:70px;background:#0A142D;border-top:2px solid rgba(201,168,76,.4);box-shadow:0 -6px 24px rgba(10,20,45,.3);display:flex;align-items:stretch;justify-content:space-around;gap:.35rem;padding:.45rem .55rem;z-index:60}
 #tabbalk .tabknop{flex:1;background:none;border:none;color:#b3bbd6;font-size:.7rem;font-weight:600;letter-spacing:.01em;text-align:center;cursor:pointer;padding:.25rem 0;line-height:1.2;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .15s,color .15s}
@@ -2864,10 +2867,10 @@ function bewaarVeld(dag,veld){var u=document.getElementById('v-'+dag+'-'+veld+'-
 function vulVenster(){
   nocSeedVenster();
   var host=document.getElementById('noc-venster');if(!host)return;
-  var h='';
+  var h='<div></div><div class="noc-vh"><span class="sym">&#9790;</span>slapen</div><div class="noc-vh"><span class="sym">&#9728;</span>opstaan</div>';
   for(var k=0;k<NOC_DAGEN.length;k++){
     var d=NOC_DAGEN[k];
-    h+='<div class="noc-venster-rij"><span class="noc-dag">'+d.n+'</span>'+nocVeld(d.i,'bed')+'<span class="noc-tot">tot</span>'+nocVeld(d.i,'op')+'</div>';
+    h+='<div class="noc-dag">'+d.n+'</div><div class="noc-cel">'+nocVeld(d.i,'bed')+'</div><div class="noc-cel">'+nocVeld(d.i,'op')+'</div>';
   }
   host.innerHTML=h; nocVensterTekst();
 }

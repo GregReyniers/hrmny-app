@@ -492,6 +492,10 @@ html,body{background-color:var(--cream)}
 .noc-stat{flex:1;background:#122047;border:1px solid rgba(200,210,235,.1);border-radius:11px;padding:.55rem .25rem;text-align:center}
 .noc-stat .v{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#EFEAE0}
 .noc-stat .l{font-size:.6rem;color:#9aa4c0;letter-spacing:.03em;margin-top:.15rem}
+.noc-tijd{display:inline-flex;align-items:center;gap:.08rem}
+.noc-colon{color:#6f7aa0;font-weight:bold}
+.noc-tot{color:#6f7aa0;font-size:.72rem;margin:0 .15rem}
+.noc-venster-rij select{background:#122047;border:1px solid rgba(200,210,235,.22);color:#EFEAE0;border-radius:8px;padding:.32rem .3rem;font-size:.95rem;font-family:'Cormorant Garamond',serif;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer}
 .noc-terug{text-align:center;margin-top:.4rem}
 #tabbalk{position:fixed;left:0;right:0;bottom:0;max-width:460px;margin:0 auto;height:70px;background:#0A142D;border-top:2px solid rgba(201,168,76,.4);box-shadow:0 -6px 24px rgba(10,20,45,.3);display:flex;align-items:stretch;justify-content:space-around;gap:.35rem;padding:.45rem .55rem;z-index:60}
 #tabbalk .tabknop{flex:1;background:none;border:none;color:#b3bbd6;font-size:.7rem;font-weight:600;letter-spacing:.01em;text-align:center;cursor:pointer;padding:.25rem 0;line-height:1.2;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .15s,color .15s}
@@ -753,7 +757,7 @@ body{padding-bottom:80px}
       <div class="noc-card">
         <div class="noc-kick">Je venster</div>
         <div class="noc-ct">Jouw ritme per dag</div>
-        <div class="noc-help">Stel per dag in wanneer je wil gaan slapen en opstaan. Elke dag mag anders zijn, niet alleen het weekend. Wijzig maandag en de andere dagen volgen mee, tot je ze zelf aanpast.</div>
+        <div class="noc-help">Stel per dag in wanneer je wil gaan slapen en opstaan. Elke dag mag anders. Wijzig maandag en de rest neemt het over, tot je een dag zelf aanpast. Dit is je doel: HRMNY vergelijkt je echte nachten ermee.</div>
         <div id="noc-venster"></div>
         <div id="noc-venster-tekst" class="noc-hint"></div>
       </div>
@@ -2849,16 +2853,21 @@ function nocSeedVenster(){
   for(var j=0;j<NOC_ORDER.length;j++){schrijf('hrmny_venster_bed_'+NOC_ORDER[j],b);schrijf('hrmny_venster_op_'+NOC_ORDER[j],o);}
 }
 function vVensterVal(dag,veld){return lees('hrmny_venster_'+veld+'_'+dag)||'';}
+function nocUurOpts(sel){var h='';for(var u=0;u<24;u++){var v=('0'+u).slice(-2);h+='<option value="'+v+'"'+(v===sel?' selected':'')+'>'+v+'</option>';}return h;}
+function nocMinOpts(sel){var m=['00','05','10','15','20','25','30','35','40','45','50','55'];if(sel&&m.indexOf(sel)<0){m.push(sel);m.sort();}var h='';for(var i=0;i<m.length;i++){h+='<option value="'+m[i]+'"'+(m[i]===sel?' selected':'')+'>'+m[i]+'</option>';}return h;}
+function nocVeld(dag,veld){
+  var v=vVensterVal(dag,veld)||'23:00', p=v.split(':');
+  var hh=('0'+parseInt(p[0]||'23',10)).slice(-2), mm=('0'+parseInt(p[1]||'0',10)).slice(-2);
+  return '<span class="noc-tijd"><select id="v-'+dag+'-'+veld+'-u" onchange="bewaarVeld('+dag+',\''+veld+'\')">'+nocUurOpts(hh)+'</select><span class="noc-colon">:</span><select id="v-'+dag+'-'+veld+'-m" onchange="bewaarVeld('+dag+',\''+veld+'\')">'+nocMinOpts(mm)+'</select></span>';
+}
+function bewaarVeld(dag,veld){var u=document.getElementById('v-'+dag+'-'+veld+'-u'),m=document.getElementById('v-'+dag+'-'+veld+'-m');if(u&&m)bewaarVenster(dag,veld,u.value+':'+m.value);}
 function vulVenster(){
   nocSeedVenster();
   var host=document.getElementById('noc-venster');if(!host)return;
   var h='';
   for(var k=0;k<NOC_DAGEN.length;k++){
     var d=NOC_DAGEN[k];
-    h+='<div class="noc-venster-rij"><span class="noc-dag">'+d.n+'</span>'
-      +'<input type="time" value="'+vVensterVal(d.i,'bed')+'" onchange="bewaarVenster('+d.i+',\'bed\',this.value)">'
-      +'<span style="color:#6f7aa0;font-size:.72rem">tot</span>'
-      +'<input type="time" value="'+vVensterVal(d.i,'op')+'" onchange="bewaarVenster('+d.i+',\'op\',this.value)"></div>';
+    h+='<div class="noc-venster-rij"><span class="noc-dag">'+d.n+'</span>'+nocVeld(d.i,'bed')+'<span class="noc-tot">tot</span>'+nocVeld(d.i,'op')+'</div>';
   }
   host.innerHTML=h; nocVensterTekst();
 }

@@ -487,13 +487,20 @@ html,body{background-color:var(--cream)}
 .noc-leg{display:flex;gap:.8rem;flex-wrap:wrap;font-size:.66rem;color:#9aa4c0;margin-top:.5rem}
 .noc-leg span{display:flex;align-items:center;gap:.3rem}
 .noc-leg i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.noc-hint{font-size:.72rem;color:#8b93a4;font-style:italic;margin-top:.5rem;line-height:1.45}
+.noc-stats{display:flex;gap:.45rem}
+.noc-stat{flex:1;background:#122047;border:1px solid rgba(200,210,235,.1);border-radius:11px;padding:.55rem .25rem;text-align:center}
+.noc-stat .v{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#EFEAE0}
+.noc-stat .l{font-size:.6rem;color:#9aa4c0;letter-spacing:.03em;margin-top:.15rem}
 .noc-terug{text-align:center;margin-top:.4rem}
-#tabbalk{position:fixed;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;height:60px;background:rgba(10,20,45,.97);border-top:1px solid rgba(200,210,235,.14);display:flex;align-items:center;justify-content:space-around;z-index:60}
-#tabbalk .tabknop{background:none;border:none;color:#6f7aa0;font-size:.62rem;letter-spacing:.02em;text-align:center;cursor:pointer;padding:0;line-height:1.25}
-#tabbalk .tabknop .ic{display:block;font-size:1.1rem;margin-bottom:.15rem}
-#tabbalk .tabknop.actief{color:#EFEAE0}
+#tabbalk{position:fixed;left:0;right:0;bottom:0;max-width:460px;margin:0 auto;height:70px;background:#0A142D;border-top:2px solid rgba(201,168,76,.4);box-shadow:0 -6px 24px rgba(10,20,45,.3);display:flex;align-items:stretch;justify-content:space-around;gap:.35rem;padding:.45rem .55rem;z-index:60}
+#tabbalk .tabknop{flex:1;background:none;border:none;color:#b3bbd6;font-size:.7rem;font-weight:600;letter-spacing:.01em;text-align:center;cursor:pointer;padding:.25rem 0;line-height:1.2;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .15s,color .15s}
+#tabbalk .tabknop .ic{display:block;font-size:1.3rem;margin-bottom:.2rem}
+#tabbalk .tabknop.actief{background:rgba(201,168,76,.16);color:#F3ECD6}
 #tabbalk .tabknop.noc{color:#C9A84C}
-body{padding-bottom:70px}
+#tabbalk .tabknop.noc.actief{background:rgba(201,168,76,.24);color:#E9C86A}
+#tabbalk .tabknop:not(.actief):hover{color:#EFEAE0}
+body{padding-bottom:80px}
 </style>
 </head>
 <body>
@@ -738,22 +745,35 @@ body{padding-bottom:70px}
       </div>
 
       <div class="noc-card">
-        <div class="noc-kick">Je venster</div>
-        <div class="noc-ct">Jouw ritme per dag</div>
-        <div class="noc-help">Een keer ingesteld: wanneer je wil gaan slapen en opstaan, per dag. Weekend mag anders. HRMNY legt je echte nachten er stil naast. Je kan dit altijd aanpassen.</div>
-        <div id="noc-venster"></div>
-        <button class="noc-knop" onclick="kopieerWeekdagen()">Neem maandag over voor alle weekdagen</button>
-        <div id="noc-venster-tekst" class="noc-zin"></div>
+        <div class="noc-kick">Vannacht</div>
+        <div class="noc-ct">Je nacht in cijfers</div>
+        <div id="noc-vannacht"></div>
       </div>
 
       <div class="noc-card">
-        <div class="noc-kick">Progressie, 14 nachten</div>
-        <div class="noc-ct">Hoeveel je slaapt</div>
-        <div class="noc-help">Elke stip is een nacht, je echte uren slaap. De stippellijn is je eigen venster van die dag. HRMNY vergelijkt je met jezelf, niet met een norm.</div>
+        <div class="noc-kick">Je venster</div>
+        <div class="noc-ct">Jouw ritme per dag</div>
+        <div class="noc-help">Stel per dag in wanneer je wil gaan slapen en opstaan. Elke dag mag anders zijn, niet alleen het weekend. Wijzig maandag en de andere dagen volgen mee, tot je ze zelf aanpast.</div>
+        <div id="noc-venster"></div>
+        <div id="noc-venster-tekst" class="noc-hint"></div>
+      </div>
+
+      <div class="noc-card">
+        <div class="noc-kick">Hoeveel je slaapt, 14 nachten</div>
+        <div class="noc-ct">Je uren tegenover je venster</div>
+        <div class="noc-help">Elke stip is een nacht, je echte uren slaap. De stippellijn is je gekozen venster van die dag. HRMNY vergelijkt je met jezelf, niet met een norm.</div>
         <div id="noc-progressie"></div>
         <div class="noc-leg"><span><i style="background:#C9A84C"></i>jouw nacht</span><span><i style="background:rgba(91,127,192,.55)"></i>je venster</span></div>
         <div id="noc-schuld"></div>
         <div id="noc-progressie-tekst" class="noc-zin"></div>
+      </div>
+
+      <div class="noc-card">
+        <div class="noc-kick">Wanneer je slaapt, 14 nachten</div>
+        <div class="noc-ct">Hoe vast je inslaapt</div>
+        <div class="noc-help">Elke stip is een nacht, hoe hoger hoe later je insliep. De stippellijn is je gekozen slaapuur. Niet vroeg, wel vast.</div>
+        <div id="noc-wanneer"></div>
+        <div id="noc-wanneer-tekst" class="noc-zin"></div>
       </div>
 
       <div class="noc-terug"><button class="noc-knop" onclick="toonLaag(1)">Terug naar vandaag</button></div>
@@ -1085,7 +1105,7 @@ function toonLaag(n){
   if(n===4){tekenVeritas();window.scrollTo(0,0);}
   if(n===2)tekenSignalen();
   if(n===3)tekenStrook();
-  if(n===5){if(typeof vulVenster==='function')vulVenster();if(typeof tekenNocturne==='function')tekenNocturne();}
+  if(n===5){if(typeof nocVannacht==='function')nocVannacht();if(typeof vulVenster==='function')vulVenster();if(typeof tekenNocturne==='function')tekenNocturne();if(typeof tekenNocturneWanneer==='function')tekenNocturneWanneer();}
   if(typeof updateTabbalk==='function')updateTabbalk(n);
   window.scrollTo(0,0);
 }
@@ -2821,32 +2841,74 @@ function nocVenster(dag){
   if(!o)o=lees('hrmny_anchor_op')||'';
   return {bed:b,op:o};
 }
+var NOC_ORDER=[1,2,3,4,5,6,0];
+function nocSeedVenster(){
+  var any=false;for(var k=0;k<NOC_ORDER.length;k++){if(lees('hrmny_venster_bed_'+NOC_ORDER[k])){any=true;break;}}
+  if(any)return;
+  var b=lees('hrmny_anchor_bed')||'23:00', o=lees('hrmny_anchor_op')||'07:00';
+  for(var j=0;j<NOC_ORDER.length;j++){schrijf('hrmny_venster_bed_'+NOC_ORDER[j],b);schrijf('hrmny_venster_op_'+NOC_ORDER[j],o);}
+}
+function vVensterVal(dag,veld){return lees('hrmny_venster_'+veld+'_'+dag)||'';}
 function vulVenster(){
+  nocSeedVenster();
   var host=document.getElementById('noc-venster');if(!host)return;
   var h='';
   for(var k=0;k<NOC_DAGEN.length;k++){
-    var d=NOC_DAGEN[k], v=nocVenster(d.i);
+    var d=NOC_DAGEN[k];
     h+='<div class="noc-venster-rij"><span class="noc-dag">'+d.n+'</span>'
-      +'<input type="time" value="'+v.bed+'" onchange="bewaarVenster('+d.i+',this.value,null)">'
+      +'<input type="time" value="'+vVensterVal(d.i,'bed')+'" onchange="bewaarVenster('+d.i+',\'bed\',this.value)">'
       +'<span style="color:#6f7aa0;font-size:.72rem">tot</span>'
-      +'<input type="time" value="'+v.op+'" onchange="bewaarVenster('+d.i+',null,this.value)"></div>';
+      +'<input type="time" value="'+vVensterVal(d.i,'op')+'" onchange="bewaarVenster('+d.i+',\'op\',this.value)"></div>';
   }
-  host.innerHTML=h;
+  host.innerHTML=h; nocVensterTekst();
 }
-function bewaarVenster(dag,bed,op){
-  if(bed!==null&&bed!=='')schrijf('hrmny_venster_bed_'+dag,bed);
-  if(op!==null&&op!=='')schrijf('hrmny_venster_op_'+dag,op);
+function bewaarVenster(dag,veld,waarde){
+  if(waarde===''||waarde==null)return;
+  var oud=lees('hrmny_venster_'+veld+'_'+dag);
+  schrijf('hrmny_venster_'+veld+'_'+dag,waarde);
+  if(dag===1){for(var k=0;k<NOC_ORDER.length;k++){var d=NOC_ORDER[k];if(d===1)continue;if(lees('hrmny_venster_'+veld+'_'+d)===oud)schrijf('hrmny_venster_'+veld+'_'+d,waarde);}}
   var mb=lees('hrmny_venster_bed_1'), mo=lees('hrmny_venster_op_1');
-  if(mb)schrijf('hrmny_anchor_bed',mb);
-  if(mo)schrijf('hrmny_anchor_op',mo);
+  if(mb)schrijf('hrmny_anchor_bed',mb); if(mo)schrijf('hrmny_anchor_op',mo);
   if(typeof vulAnchor==='function')vulAnchor();
-  tekenNocturne();
+  vulVenster(); tekenNocturne(); if(typeof tekenNocturneWanneer==='function')tekenNocturneWanneer();
 }
-function kopieerWeekdagen(){
-  var b=lees('hrmny_venster_bed_1'), o=lees('hrmny_venster_op_1');
-  if(!b||!o)return;
-  for(var i=2;i<=5;i++){schrijf('hrmny_venster_bed_'+i,b);schrijf('hrmny_venster_op_'+i,o);}
-  vulVenster();tekenNocturne();
+function nocVensterTekst(){
+  var vt=document.getElementById('noc-venster-tekst');if(!vt)return;
+  var mb=lees('hrmny_venster_bed_1'), mo=lees('hrmny_venster_op_1'), afw=0;
+  for(var k=0;k<NOC_ORDER.length;k++){var d=NOC_ORDER[k];if(d===1)continue;if(lees('hrmny_venster_bed_'+d)!==mb||lees('hrmny_venster_op_'+d)!==mo)afw++;}
+  vt.textContent=afw===0?'Alle dagen volgen je maandag. Pas een dag aan die er voor jou anders uitziet.':(afw+' '+(afw===1?'dag wijkt':'dagen wijken')+' af van je maandag.');
+}
+function nocVannacht(){
+  var host=document.getElementById('noc-vannacht');if(!host)return;
+  var dag=null;
+  for(var i=0;i<7;i++){var ds=dagenTerug(i);if(lees('hrmny_slaapduur_'+ds)||waarde('slaap',ds)!==null){dag=ds;break;}}
+  if(!dag){host.innerHTML='<div class="noc-help" style="margin:0">Zodra je eerste nacht binnen is, zie je hier je nacht in cijfers.</div>';return;}
+  var durRaw=lees('hrmny_slaapduur_'+dag), dur=durRaw?toonTijd(parseFloat(durRaw)):'--';
+  var ins=lees('hrmny_inslaap_'+dag)||'--', wek=lees('hrmny_wektijd_'+dag)||'--';
+  var sc=waarde('slaap',dag); sc=(sc===null)?'--':Math.round(sc);
+  host.innerHTML='<div class="noc-stats"><div class="noc-stat"><div class="v">'+dur+'</div><div class="l">slaap</div></div>'
+    +'<div class="noc-stat"><div class="v">'+ins+'</div><div class="l">in bed</div></div>'
+    +'<div class="noc-stat"><div class="v">'+wek+'</div><div class="l">op</div></div>'
+    +'<div class="noc-stat"><div class="v">'+sc+'</div><div class="l">score</div></div></div>';
+}
+function tekenNocturneWanneer(){
+  var g=document.getElementById('noc-wanneer'), tx=document.getElementById('noc-wanneer-tekst');if(!g)return;
+  var N=14, pts=[];for(var i=N-1;i>=0;i--){pts.push(naarMin(lees('hrmny_inslaap_'+dagenTerug(i))));}
+  var heb=pts.filter(function(v){return v!==null;});
+  var anker=naarMin(lees('hrmny_anchor_bed'));
+  if(!heb.length){g.innerHTML='';if(tx)tx.textContent='Zodra je nachten binnenkomen, zie je hier hoe vast je inslaapt.';return;}
+  var alle=heb.slice();if(anker!==null)alle.push(anker);
+  var lo=Math.min.apply(null,alle), hi=Math.max.apply(null,alle);if(hi-lo<60){lo-=30;hi+=30;}
+  var W=320,H=82,pad=8;
+  function x(idx){return pad+idx/(N-1)*(W-2*pad);}
+  function y(v){return pad+(1-(v-lo)/(hi-lo))*(H-2*pad);}
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto">';
+  if(anker!==null)svg+='<line x1="0" y1="'+y(anker).toFixed(1)+'" x2="'+W+'" y2="'+y(anker).toFixed(1)+'" stroke="rgba(201,168,76,.55)" stroke-width="1.3" stroke-dasharray="4 4"/>';
+  pts.forEach(function(v,idx){if(v!==null)svg+='<circle cx="'+x(idx).toFixed(1)+'" cy="'+y(v).toFixed(1)+'" r="2.8" fill="#8FB0E0"/>';});
+  svg+='</svg>';g.innerHTML=svg;
+  if(tx){if(anker!==null){var raak=0,tel=0;for(var j=0;j<7;j++){var m=pts[N-1-j];if(m!==null){tel++;if(m<=anker+15)raak++;}}
+    tx.textContent=tel>0?(raak+' van je laatste '+tel+' nachten sliep je rond je uur of vroeger.'):'Nog te weinig nachten om je ritme te tonen.';}
+    else tx.textContent='Stel je slaapuur in bij Je venster, dan zie je hoe vast je inslaapt.';}
 }
 function nocDoelDuur(ds){
   var wd=new Date(ds+'T12:00:00').getDay(), v=nocVenster(wd);
@@ -2865,9 +2927,6 @@ function tekenNocturne(){
     pts.push({ds:ds,m:(m===null||isNaN(m))?null:m,doel:nocDoelDuur(ds)});
   }
   var heb=pts.filter(function(p){return p.m!==null;});
-  var vt=document.getElementById('noc-venster-tekst');
-  if(vt){var gezet=0;for(var q=0;q<NOC_DAGEN.length;q++){if(lees('hrmny_venster_bed_'+NOC_DAGEN[q].i)&&lees('hrmny_venster_op_'+NOC_DAGEN[q].i))gezet++;}
-    vt.textContent=gezet>0?('Je venster staat voor '+gezet+' van 7 dagen. HRMNY vergelijkt je nachten er stil mee.'):'Stel hierboven je venster in. HRMNY legt je nachten er daarna stil naast.';}
   if(!heb.length){g.innerHTML='';if(tx)tx.textContent='Zodra je nachten met slaapduur binnenkomen, zie je hier je uren slaap tegenover je venster.';if(sc)sc.innerHTML='';return;}
   var alle=[];pts.forEach(function(p){if(p.m!==null)alle.push(p.m);if(p.doel!==null)alle.push(p.doel);});
   var lo=Math.min.apply(null,alle),hi=Math.max.apply(null,alle);lo=Math.min(lo,360);hi=Math.max(hi,540);

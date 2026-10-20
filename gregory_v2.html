@@ -499,6 +499,17 @@ html,body{background-color:var(--cream)}
 .noc-vh .sym{font-size:1.05rem;display:block;margin-bottom:.1rem}
 .noc-cel{display:flex;justify-content:center}
 #noc-venster select{background:#122047;border:1px solid rgba(200,210,235,.22);color:#EFEAE0;border-radius:8px;padding:.32rem .28rem;font-size:.95rem;font-family:'Cormorant Garamond',serif;-webkit-appearance:none;appearance:none;text-align:center;cursor:pointer}
+.noc-venster-kop{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.noc-chev{color:#CBB064;font-size:1rem;transition:transform .15s;padding-left:.5rem}
+.noc-samenvatting{cursor:pointer;margin-top:.5rem;display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.noc-sam-tijd{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#EFEAE0}
+.noc-sam-sub{font-size:.72rem;color:#9aa4c0}
+.noc-sam-link{margin-left:auto;font-size:.72rem;color:#CBB064}
+#laag5 .doel-naam{color:#EFEAE0}
+#laag5 .doel-tekst{color:#c3cadd}
+#laag5 .doel-hoe{color:#9aa4c0}
+#laag5 .doel-dot{border-color:rgba(78,154,107,.7)}
+#laag5 .doel-dot.raak{background:#4E9A6B}
 .noc-terug{text-align:center;margin-top:.4rem}
 #tabbalk{position:fixed;left:0;right:0;bottom:0;max-width:460px;margin:0 auto;height:70px;background:#0A142D;border-top:2px solid rgba(201,168,76,.4);box-shadow:0 -6px 24px rgba(10,20,45,.3);display:flex;align-items:stretch;justify-content:space-around;gap:.35rem;padding:.45rem .55rem;z-index:60}
 #tabbalk .tabknop{flex:1;background:none;border:none;color:#b3bbd6;font-size:.7rem;font-weight:600;letter-spacing:.01em;text-align:center;cursor:pointer;padding:.25rem 0;line-height:1.2;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .15s,color .15s}
@@ -704,9 +715,13 @@ body{padding-bottom:80px}
     </div>
     <div id="laag3" style="display:none;flex-direction:column;gap:0.6rem">
       <div class="kaart" style="padding:1.1rem">
+        <div class="label-mono">Jij tegenover jezelf</div>
+        <div id="verg-inhoud"></div>
+      </div>
+      <div class="kaart" style="padding:1.1rem">
         <div class="label-mono">Jouw ritme</div>
         <div class="ritme-titel">Hoe je lichaam de laatste twee weken sprak</div>
-        <div class="ritme-uitleg">Elk vakje is één dag, in de kleur van de richting die je lichaam die ochtend aangaf. Er is geen goede of foute kleur. Een sterk ritme wisselt beweging en herstel af, zoals bij de beste sporters: wie luistert naar zijn lichaam, gaat verder.</div>
+        <div class="ritme-uitleg">Elk vakje is één dag, in de kleur van de richting van die ochtend. Een sterk ritme wisselt beweging en herstel af.</div>
         <div class="strook" id="strook"></div>
         <div class="strook-as"><span>14 dagen geleden</span><span>vandaag</span></div>
         <div class="legende">
@@ -718,28 +733,12 @@ body{padding-bottom:80px}
         <div class="ritme-zin" id="strook-tekst"></div>
       </div>
       <div class="kaart" style="padding:1.1rem">
-        <div class="label-mono">Jouw doel deze week</div>
-        <div id="doel-inhoud"></div>
-      </div>
-      <div class="kaart" style="padding:1.1rem">
-        <div class="label-mono">Je slaapritme</div>
-        <div class="ritme-titel" style="font-size:1.15rem">Wanneer je gaat slapen</div>
-        <div class="ritme-uitleg">Elke stip is één nacht: hoe hoger, hoe later je ging slapen. De stippellijn is je gekozen Anchor. Niet vroeg, wel vast — hoe dichter je stippen bij je lijn blijven, hoe meer rust je ritme je geeft.</div>
-        <div id="slaapritme-grafiek"></div>
-        <div class="ritme-zin" id="slaapritme-tekst"></div>
-      </div>
-      <div class="kaart" style="padding:1.1rem">
-        <div class="label-mono">Je slaapduur</div>
-        <div class="ritme-titel" style="font-size:1.15rem">Hoeveel je slaapt</div>
-        <div class="ritme-uitleg">Elke stip is één nacht: je werkelijke uren slaap. De stippellijn is je eigen venster, van je slaapuur tot je opsta-uur. HRMNY vergelijkt je met jezelf, niet met een norm.</div>
-        <div id="slaaptekort-grafiek"></div>
-        <div class="ritme-zin" id="slaaptekort-tekst"></div>
+        <div class="label-mono">Je slaap</div>
+        <div class="ritme-titel" style="font-size:1.15rem">Je nachten, je venster, je ritme</div>
+        <div class="ritme-uitleg">Je slaapdoelen en je slaapgrafieken staan nu samen in Nocturne.</div>
+        <button class="nav-btn" onclick="toonLaag(5)" style="margin-top:0.3rem">Open Nocturne &rsaquo;</button>
       </div>
       <div class="kaart vestigia-kaart" id="vestigia-kaart" style="padding:1.1rem;display:none"></div>
-      <div class="kaart" style="padding:1.1rem">
-        <div class="label-mono">Jij tegenover jezelf</div>
-        <div id="verg-inhoud"></div>
-      </div>
       <div class="nav-btns"><button class="nav-btn" onclick="toonLaag(2)">&lsaquo; Jouw nacht</button><button class="nav-btn" onclick="toonLaag(1)">Terug naar vandaag</button></div>
     </div>
 
@@ -758,11 +757,23 @@ body{padding-bottom:80px}
       </div>
 
       <div class="noc-card">
-        <div class="noc-kick">Je venster</div>
-        <div class="noc-ct">Jouw ritme per dag</div>
-        <div class="noc-help">Stel per dag in wanneer je wil gaan slapen en opstaan. Elke dag mag anders. Wijzig maandag en de rest neemt het over, tot je een dag zelf aanpast. Dit is je doel: HRMNY vergelijkt je echte nachten ermee.</div>
-        <div id="noc-venster"></div>
-        <div id="noc-venster-tekst" class="noc-hint"></div>
+        <div class="noc-venster-kop" onclick="nocVensterToggle()">
+          <div><div class="noc-kick">Je venster</div><div class="noc-ct" style="margin-bottom:0">Jouw ritme per dag</div></div>
+          <div class="noc-chev" id="noc-chev">&#9662;</div>
+        </div>
+        <div id="noc-venster-samenvatting" class="noc-samenvatting" onclick="nocVensterToggle()"></div>
+        <div id="noc-venster-body" style="display:none">
+          <div class="noc-help" style="margin-top:.7rem">Stel per dag in wanneer je wil gaan slapen en opstaan. Elke dag mag anders. Wijzig maandag en de rest neemt het over, tot je een dag zelf aanpast. Dit is je doel: HRMNY vergelijkt je echte nachten ermee.</div>
+          <div id="noc-venster"></div>
+          <div id="noc-venster-tekst" class="noc-hint"></div>
+          <div style="text-align:center;margin-top:.7rem"><button class="noc-knop" onclick="nocVensterToggle()">Klaar</button></div>
+        </div>
+      </div>
+
+      <div class="noc-card">
+        <div class="noc-kick">Jouw slaapdoelen deze week</div>
+        <div class="noc-ct">Night Work en je anker</div>
+        <div id="doel-inhoud"></div>
       </div>
 
       <div class="noc-card">
@@ -966,12 +977,8 @@ body{padding-bottom:80px}
       </div>
       <div class="profiel-rij" style="flex-direction:column;align-items:stretch">
         <div class="profiel-rij-label" style="margin-bottom:0.4rem">The Anchor</div>
-        <div class="anchor-waarom">Niet vroeg naar bed, maar <b>elke avond rond hetzelfde uur</b> — dat is wat je herstel oplevert. Je lichaam begint zijn nachtwerk op tijd als het weet wanneer het mag beginnen. Kies een uur dat je echt volhoudt, niet het ideale. HRMNY vergelijkt je nachten dan met jouw eigen keuze, en legt je niets op.</div>
-        <div class="anchor-velden">
-          <label class="anchor-veld"><span>Rond welk uur wil je gaan slapen?</span><input type="time" id="pv-anchor-bed" onchange="bewaarAnchor()"></label>
-          <label class="anchor-veld"><span>Rond welk uur sta je meestal op?</span><input type="time" id="pv-anchor-op" onchange="bewaarAnchor()"></label>
-        </div>
-        <div class="anchor-bevestig" id="anchor-bevestig"></div>
+        <div class="anchor-waarom">Niet vroeg naar bed, wel elke avond rond hetzelfde uur: dat is wat je herstel oplevert. Je slaapuren stel je nu in bij Nocturne, per dag, en HRMNY vergelijkt je nachten met jouw eigen keuze.</div>
+        <button class="nav-btn" type="button" onclick="gaNaar(5)" style="margin-top:0.4rem;align-self:flex-start">Stel je venster in bij Nocturne &rsaquo;</button>
       </div>
       <button class="liber-knop" type="button" onclick="toonLiber()"><div><b>Rerum Causae</b><span id="pv-liber">Liber</span></div><div style="color:#C9A84C;font-size:1.2rem">&rsaquo;</div></button>
       <div class="profiel-rij"><label for="pv-avondzin" style="display:flex;gap:0.7rem;align-items:flex-start;cursor:pointer"><input type="checkbox" id="pv-avondzin" onchange="zetAvondzin(this.checked)" style="margin-top:0.25rem;accent-color:#1A2D5A"><span><span class="profiel-rij-label">The Vesper</span><br><span style="font-size:0.84rem;color:var(--text-muted);line-height:1.5">Je avondzin rond je slaapuur. Eén zin over The Quarter, het kwartier voor je gewone bedtijd, als je de app &#39;s avonds opent.</span></span></label></div>
@@ -1112,7 +1119,7 @@ function toonLaag(n){
   if(n===4){tekenVeritas();window.scrollTo(0,0);}
   if(n===2)tekenSignalen();
   if(n===3)tekenStrook();
-  if(n===5){if(typeof nocVannacht==='function')nocVannacht();if(typeof vulVenster==='function')vulVenster();if(typeof tekenNocturne==='function')tekenNocturne();if(typeof tekenNocturneWanneer==='function')tekenNocturneWanneer();}
+  if(n===5){if(typeof nocVannacht==='function')nocVannacht();if(typeof nocVensterInit==='function')nocVensterInit();if(typeof tekenDoel==='function')tekenDoel();if(typeof tekenNocturne==='function')tekenNocturne();if(typeof tekenNocturneWanneer==='function')tekenNocturneWanneer();}
   if(typeof updateTabbalk==='function')updateTabbalk(n);
   window.scrollTo(0,0);
 }
@@ -2850,10 +2857,10 @@ function nocVenster(dag){
 }
 var NOC_ORDER=[1,2,3,4,5,6,0];
 function nocSeedVenster(){
-  var any=false;for(var k=0;k<NOC_ORDER.length;k++){if(lees('hrmny_venster_bed_'+NOC_ORDER[k])){any=true;break;}}
-  if(any)return;
   var b=lees('hrmny_anchor_bed')||'23:00', o=lees('hrmny_anchor_op')||'07:00';
-  for(var j=0;j<NOC_ORDER.length;j++){schrijf('hrmny_venster_bed_'+NOC_ORDER[j],b);schrijf('hrmny_venster_op_'+NOC_ORDER[j],o);}
+  for(var j=0;j<NOC_ORDER.length;j++){var d=NOC_ORDER[j];
+    if(!lees('hrmny_venster_bed_'+d))schrijf('hrmny_venster_bed_'+d,b);
+    if(!lees('hrmny_venster_op_'+d))schrijf('hrmny_venster_op_'+d,o);}
 }
 function vVensterVal(dag,veld){return lees('hrmny_venster_'+veld+'_'+dag)||'';}
 function nocUurOpts(sel){var h='';for(var u=0;u<24;u++){var v=('0'+u).slice(-2);h+='<option value="'+v+'"'+(v===sel?' selected':'')+'>'+v+'</option>';}return h;}
@@ -2890,6 +2897,22 @@ function nocVensterTekst(){
   for(var k=0;k<NOC_ORDER.length;k++){var d=NOC_ORDER[k];if(d===1)continue;if(lees('hrmny_venster_bed_'+d)!==mb||lees('hrmny_venster_op_'+d)!==mo)afw++;}
   vt.textContent=afw===0?'Alle dagen volgen je maandag. Pas een dag aan die er voor jou anders uitziet.':(afw+' '+(afw===1?'dag wijkt':'dagen wijken')+' af van je maandag.');
 }
+var nocVensterOpen=false;
+function nocVensterSamenvatting(){
+  var el=document.getElementById('noc-venster-samenvatting');if(!el)return;
+  nocSeedVenster();
+  var mb=lees('hrmny_venster_bed_1')||'23:00', mo=lees('hrmny_venster_op_1')||'07:00', afw=0;
+  for(var k=0;k<NOC_ORDER.length;k++){var d=NOC_ORDER[k];if(d===1)continue;if(lees('hrmny_venster_bed_'+d)!==mb||lees('hrmny_venster_op_'+d)!==mo)afw++;}
+  var sub=afw===0?'alle dagen gelijk':(afw+' '+(afw===1?'dag':'dagen')+' anders');
+  el.innerHTML='<span class="noc-sam-tijd">&#9790; '+mb+'&nbsp;&nbsp;&#9728; '+mo+'</span><span class="noc-sam-sub">'+sub+'</span><span class="noc-sam-link">aanpassen &#9662;</span>';
+}
+function nocVensterInit(){
+  nocSeedVenster();
+  var body=document.getElementById('noc-venster-body'), sam=document.getElementById('noc-venster-samenvatting'), chev=document.getElementById('noc-chev');
+  if(nocVensterOpen){ if(body)body.style.display='block'; if(sam)sam.style.display='none'; if(chev)chev.style.transform='rotate(180deg)'; vulVenster(); }
+  else { if(body)body.style.display='none'; if(sam)sam.style.display='flex'; if(chev)chev.style.transform='none'; nocVensterSamenvatting(); }
+}
+function nocVensterToggle(){ nocVensterOpen=!nocVensterOpen; nocVensterInit(); }
 function nocVannacht(){
   var host=document.getElementById('noc-vannacht');if(!host)return;
   var dag=null;

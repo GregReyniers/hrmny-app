@@ -2216,7 +2216,7 @@ document.querySelectorAll('#kal-duur .chip').forEach(function(c){c.onclick=funct
     toonScherm('s-dashboard');return;
   }
   toonDashboard();
-  haalRichtingOp();
+  if(!laatsteRichtingVandaag())haalRichtingOp(); /* ochtendcache: richting 1x per dag ophalen, daarna uit lokale opslag */
   verstuurFeedback();
   setInterval(renderQuarter,5*60*1000);
 })();

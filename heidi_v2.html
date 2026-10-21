@@ -2211,7 +2211,7 @@ document.querySelectorAll('#kal-duur .chip').forEach(function(c){c.onclick=funct
   if(el)el.textContent=new Date().toLocaleDateString('nl-BE',{weekday:'long',day:'numeric',month:'long'});
   if(TESTMODUS)document.getElementById('banner-test').style.display='block';
   toonDashboard();
-  haalRichtingOp();
+  if(!laatsteRichtingVandaag())haalRichtingOp(); /* ochtendcache: richting 1x per dag ophalen, daarna uit lokale opslag */
   verstuurFeedback();
   setInterval(renderQuarter,5*60*1000);
 })();

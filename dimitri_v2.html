@@ -1416,6 +1416,7 @@ function versturen(){
     leeftijd:parseInt(lees('hrmny_leeftijd'))||'',
     hrv_night:leeg(gr.night),hrv_ruw:leeg(w.hrv),hrv_basis:gr.basis,rhr_night:leeg(w.rhr),resting_hr:leeg(w.rhr),breath_rate:leeg(w.adem),
     sleep_score:leeg(w.slaap),body_battery:leeg(w.bb),stress_score:leeg(w.stress),
+    slaap_start:leeg(lees('hrmny_inslaap_'+vandaag)),wakker:leeg(lees('hrmny_wektijd_'+vandaag)),slaap_duur_min:leeg(lees('hrmny_slaapduur_'+vandaag)),slaap_start_min:(function(){var _m=naarMin(lees('hrmny_inslaap_'+vandaag));return _m===null?'':_m;})(),
     gevoel:subj.gevoel||'',subjectief:JSON.stringify(subj),notitie:notitie,agenda:JSON.stringify(agendaVoorPipeline()),
     modus:huidigeModus(),profiel:profielVoorPipeline(),datum:vandaag,trigger:'dimitri_v2'
   });

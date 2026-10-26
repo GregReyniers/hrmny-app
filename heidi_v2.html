@@ -832,7 +832,7 @@ html,body{background-color:var(--cream)}
       <div class="form-titel" id="tr-titel" style="font-size:1.1rem">Nieuwe training</div>
       <div class="vraag" style="margin-top:0.8rem"><div class="vraag-titel">Wat ga je doen?</div>
         <div class="chip-rij" id="tr-sport">
-          <button class="chip" type="button" data-w="fietsen">Fietsen</button><button class="chip" type="button" data-w="lopen">Lopen</button><button class="chip" type="button" data-w="wandelen">Wandelen</button><button class="chip" type="button" data-w="kracht">Kracht</button><button class="chip" type="button" data-w="zwemmen">Zwemmen</button><button class="chip" type="button" data-w="yoga">Yoga of mobiliteit</button><button class="chip" type="button" data-w="andere">Iets anders</button>
+          <button class="chip" type="button" data-w="fietsen">Fietsen</button><button class="chip" type="button" data-w="lopen">Lopen</button><button class="chip" type="button" data-w="wandelen">Wandelen</button><button class="chip" type="button" data-w="kracht">Kracht</button><button class="chip" type="button" data-w="zwemmen">Zwemmen</button><button class="chip" type="button" data-w="padel">Padel</button><button class="chip" type="button" data-w="yoga">Yoga of mobiliteit</button><button class="chip" type="button" data-w="andere">Iets anders</button>
         </div></div>
       <div class="vraag"><div class="vraag-titel">Hoe zwaar?</div>
         <div class="schuif-wrap"><input type="range" id="tr-int" min="1" max="5" step="1" value="2" oninput="toonTrLabels()">
@@ -1870,7 +1870,7 @@ function syncDatums(){['kal-datum','tr-datum','tr-tot'].forEach(function(id){if(
 var INZET_LABELS={1:'Ontspannen, puur genieten',2:'Rustig, zonder druk',3:'Goed voorbereid zijn',4:'Belangrijk, ik wil scherp staan',5:'Alles geven, 100%'};
 var OPBOUW_LABELS={1:'Niets extra, gewoon mijn ritme volgen',2:'Wat extra, als het past',3:'Gericht opbouwen naar dit moment'};
 var INT_LABELS={1:'Heel rustig, herstel',2:'Rustig, op duur',3:'Gemiddeld',4:'Stevig',5:'Zwaar, intervallen of wedstrijdtempo'};
-var SPORT_LABELS={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',yoga:'Yoga of mobiliteit',andere:'Training'};
+var SPORT_LABELS={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',padel:'Padel',yoga:'Yoga of mobiliteit',andere:'Training'};
 var TRDUUR_LABELS={kort:'tot 45 min',middel:'45 tot 90 min',lang:'1,5 tot 3 uur',heel_lang:'meer dan 3 uur'};
 var DOEL_LABELS={conditie:'conditie',voorbereiding:'voorbereiding',herstel:'actief herstel',plezier:'plezier'};
 var WD=['zo','ma','di','wo','do','vr','za'];
@@ -2138,7 +2138,7 @@ var TFB_VRAGEN=[
   {k:'nog',v:'Wat had je nog kunnen doen?',o:[['niets','Niets'],['langer','Langer'],['harder','Harder'],['allebei','Allebei']]},
   {k:'zin',v:'Zin om het opnieuw te doen?',o:[['ja','Ja, graag'],['gewoon','Gewoon'],['niet','Even niet']]}
 ];
-var TFB_SPORT={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',yoga:'Yoga of mobiliteit',andere:'Training'};
+var TFB_SPORT={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',padel:'Padel',yoga:'Yoga of mobiliteit',andere:'Training'};
 function trainingKandidaat(){
   var vandaag=vandaagStr(),g=new Date();g.setDate(g.getDate()-1);var gisteren=datumStr(g),uur=new Date().getHours();
   var lijst=[];

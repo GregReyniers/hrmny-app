@@ -919,7 +919,7 @@ body{padding-bottom:80px}
       <div class="form-titel" id="tr-titel" style="font-size:1.1rem">Nieuwe training</div>
       <div class="vraag" style="margin-top:0.8rem"><div class="vraag-titel">Wat ga je doen?</div>
         <div class="chip-rij" id="tr-sport">
-          <button class="chip" type="button" data-w="fietsen">Fietsen</button><button class="chip" type="button" data-w="lopen">Lopen</button><button class="chip" type="button" data-w="wandelen">Wandelen</button><button class="chip" type="button" data-w="kracht">Kracht</button><button class="chip" type="button" data-w="zwemmen">Zwemmen</button><button class="chip" type="button" data-w="yoga">Yoga of mobiliteit</button><button class="chip" type="button" data-w="andere">Iets anders</button>
+          <button class="chip" type="button" data-w="fietsen">Fietsen</button><button class="chip" type="button" data-w="lopen">Lopen</button><button class="chip" type="button" data-w="wandelen">Wandelen</button><button class="chip" type="button" data-w="kracht">Kracht</button><button class="chip" type="button" data-w="zwemmen">Zwemmen</button><button class="chip" type="button" data-w="padel">Padel</button><button class="chip" type="button" data-w="yoga">Yoga of mobiliteit</button><button class="chip" type="button" data-w="andere">Iets anders</button>
         </div></div>
       <div class="vraag"><div class="vraag-titel">Hoe zwaar?</div>
         <div class="schuif-wrap"><input type="range" id="tr-int" min="1" max="5" step="1" value="2" oninput="toonTrLabels()">
@@ -1965,7 +1965,7 @@ function syncDatums(){['kal-datum','tr-datum','tr-tot'].forEach(function(id){if(
 var INZET_LABELS={1:'Ontspannen, puur genieten',2:'Rustig, zonder druk',3:'Goed voorbereid zijn',4:'Belangrijk, ik wil scherp staan',5:'Alles geven, 100%'};
 var OPBOUW_LABELS={1:'Niets extra, gewoon mijn ritme volgen',2:'Wat extra, als het past',3:'Gericht opbouwen naar dit moment'};
 var INT_LABELS={1:'Heel rustig, herstel',2:'Rustig, op duur',3:'Gemiddeld',4:'Stevig',5:'Zwaar, intervallen of wedstrijdtempo'};
-var SPORT_LABELS={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',yoga:'Yoga of mobiliteit',andere:'Training'};
+var SPORT_LABELS={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',padel:'Padel',yoga:'Yoga of mobiliteit',andere:'Training'};
 var TRDUUR_LABELS={kort:'tot 45 min',middel:'45 tot 90 min',lang:'1,5 tot 3 uur',heel_lang:'meer dan 3 uur'};
 var DOEL_LABELS={conditie:'conditie',voorbereiding:'voorbereiding',herstel:'actief herstel',plezier:'plezier'};
 var WD=['zo','ma','di','wo','do','vr','za'];
@@ -2233,7 +2233,7 @@ var TFB_VRAGEN=[
   {k:'nog',v:'Wat had je nog kunnen doen?',o:[['niets','Niets'],['langer','Langer'],['harder','Harder'],['allebei','Allebei']]},
   {k:'zin',v:'Zin om het opnieuw te doen?',o:[['ja','Ja, graag'],['gewoon','Gewoon'],['niet','Even niet']]}
 ];
-var TFB_SPORT={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',yoga:'Yoga of mobiliteit',andere:'Training'};
+var TFB_SPORT={fietsen:'Fietsen',lopen:'Lopen',wandelen:'Wandelen',kracht:'Kracht',zwemmen:'Zwemmen',padel:'Padel',yoga:'Yoga of mobiliteit',andere:'Training'};
 function trainingKandidaat(){
   var vandaag=vandaagStr(),g=new Date();g.setDate(g.getDate()-1);var gisteren=datumStr(g),uur=new Date().getHours();
   var lijst=[];
@@ -2982,9 +2982,14 @@ function tekenNocturne(){
   if(reel.length>1)svg+='<polyline points="'+reel.join(' ')+'" fill="none" stroke="rgba(201,168,76,.5)" stroke-width="1.6"/>';
   pts.forEach(function(p,idx){if(p.m!==null)svg+='<circle cx="'+x(idx).toFixed(1)+'" cy="'+y(p.m).toFixed(1)+'" r="2.8" fill="#C9A84C"/>';});
   svg+='</svg>';g.innerHTML=svg;
-  var tekort=0,geteld=0;
-  for(var j=0;j<7;j++){var p=pts[N-1-j];if(p&&p.m!==null&&p.doel!==null){geteld++;if(p.m<p.doel)tekort+=(p.doel-p.m);}}
-  if(sc)sc.innerHTML=geteld>0?('<div class="noc-schuld"><span class="l">Slaapschuld deze week</span><span class="v">'+(tekort>0?'-':'')+toonTijd(tekort)+'</span></div>'):'';
+  var saldo=0,geteld=0;
+  for(var j=0;j<7;j++){var p=pts[N-1-j];if(p&&p.m!==null&&p.doel!==null){geteld++;saldo+=(p.m-p.doel);}}
+  if(sc){
+    if(geteld<=0){sc.innerHTML='';}
+    else if(saldo<-10){sc.innerHTML='<div class="noc-schuld"><span class="l">Slaapschuld deze week</span><span class="v">-'+toonTijd(-saldo)+'</span></div>';}
+    else if(saldo>10){sc.innerHTML='<div class="noc-schuld"><span class="l">Slaapvoorsprong deze week</span><span class="v">+'+toonTijd(saldo)+'</span></div>';}
+    else{sc.innerHTML='<div class="noc-schuld"><span class="l">Deze week</span><span class="v">op schema</span></div>';}
+  }
   var l3=heb.slice(-3),gem=l3.reduce(function(a,b){return a+b.m;},0)/l3.length;
   if(tx)tx.textContent='Je laatste '+l3.length+' nachten gemiddeld '+toonTijd(gem)+'.';
 }

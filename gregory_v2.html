@@ -776,6 +776,12 @@ body{padding-bottom:80px}
         <div id="doel-inhoud"></div>
       </div>
 
+      <div class="noc-card" id="noc-diensten-kaart" style="display:none">
+        <div class="noc-kick">Jouw diensten</div>
+        <div class="noc-ct">HRMNY leest je ritme, los van de klok</div>
+        <div id="noc-diensten"></div>
+      </div>
+
       <div class="noc-card">
         <div class="noc-kick">Hoeveel je slaapt, 14 nachten</div>
         <div class="noc-ct">Je uren tegenover je venster</div>
@@ -1083,7 +1089,7 @@ var MODI=[
   {id:'Focus',     uitleg:'Helder en rustig. Vertaalt je herstel naar ruimte in je hoofd en je werk.'},
   {id:'Grounded',  uitleg:'Nuchter en menselijk. Voor wie gewoon goed wil leven. Een goed vertrekpunt.'},
   {id:'Relaxatie', uitleg:'Zacht en ademend. Geeft je toestemming om te vertragen.'},
-  {id:'Shift',     uitleg:'Los van de klok. Voor wie in wisselende diensten of een eigen ritme leeft.'}
+  {id:'Shift',     uitleg:'Los van de klok, in blokken in plaats van ochtenden. HRMNY leert wat je wisselende diensten je echt kosten en helpt je je zwaarste dagen voor te blijven.'}
 ];
 function huidigeModus(){return lees('hrmny_modus')||'Peak';}
 function tekenModi(rijId,hintId){
@@ -2953,7 +2959,34 @@ function nocDoelDuur(ds){
   if(b===null||o===null)return null;
   return ((o-b)+1440)%1440;
 }
+function tekenDiensten(){
+  var kaart=document.getElementById('noc-diensten-kaart'), box=document.getElementById('noc-diensten');
+  if(!kaart||!box)return;
+  if(huidigeModus()!=='Shift'){kaart.style.display='none';return;}
+  kaart.style.display='';
+  var nacht=[],dag=[];
+  for(var i=0;i<30;i++){
+    var ds=dagenTerug(i);
+    var ins=lees('hrmny_inslaap_'+ds), dur=parseFloat(lees('hrmny_slaapduur_'+ds)), gr=parseFloat(lees('hrmny_ground_'+ds));
+    if(!ins||isNaN(dur)||isNaN(gr))continue;
+    var p=ins.split(':'); if(p.length<2)continue;
+    var real=(+p[0])*60+(+p[1]), mid=((real+dur/2)%1440+1440)%1440;
+    if(mid>=60&&mid<=480)nacht.push({g:gr,dur:dur});
+    else if(mid>=540&&mid<=1020)dag.push({g:gr,dur:dur});
+  }
+  function gem(a,f){return a.reduce(function(s,x){return s+f(x);},0)/a.length;}
+  if(nacht.length>=3&&dag.length>=2){
+    var dG=gem(dag,function(x){return x.g;})-gem(nacht,function(x){return x.g;});
+    var dS=gem(dag,function(x){return x.dur;})-gem(nacht,function(x){return x.dur;});
+    var zs=dS<-5?('sliep je gemiddeld '+toonTijd(Math.abs(dS))+' korter'):(dS>5?('sliep je gemiddeld '+toonTijd(dS)+' langer'):'sliep je ongeveer even lang');
+    var zh=dG<=-10?'en zat je herstel een flink stuk onder je normaal':(dG<=-5?'en zat je herstel merkbaar onder je normaal':(dG<-2?'en zat je herstel licht onder je normaal':'en bleef je herstel goed op peil'));
+    box.innerHTML='<div class="noc-zin">Op je slaap na een nachtdienst '+zs+', '+zh+'. Je lichaam bevestigt wat je voelt.</div>';
+  }else{
+    box.innerHTML='<div class="noc-help">HRMNY leest je diensten mee, los van de klok. Zodra je een paar nachtdiensten en gewone nachten hebt doorlopen, zie je hier wat een dienst jou echt kost en wanneer je lichaam het zwaarst krijgt. Je hoeft niets extra te doen: draag je horloge terwijl je slaapt en hou je venster bij.</div>';
+  }
+}
 function tekenNocturne(){
+  if(typeof tekenDiensten==='function')tekenDiensten();
   var g=document.getElementById('noc-progressie'), tx=document.getElementById('noc-progressie-tekst'), sc=document.getElementById('noc-schuld');
   if(!g)return;
   var N=14, pts=[];

@@ -30,7 +30,18 @@ button{font-family:'DM Sans',sans-serif}
 .banner{background:rgba(29,158,117,0.08);border:1px solid rgba(29,158,117,0.25);border-radius:10px;padding:0.55rem 1rem;font-size:0.72rem;color:var(--green);text-align:center;font-weight:500;display:none}
 
 /* KOMPAS */
-.kompas-kaart{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.1rem 1.25rem;display:flex;flex-direction:column;align-items:center;gap:0.45rem;position:relative;overflow:hidden}
+.charge-kaart{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1rem 1.1rem}
+    .charge-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.5rem;gap:.5rem}
+    .charge-kop{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-muted)}
+    .charge-woord{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--navy);white-space:nowrap}
+    .charge-bar{height:10px;border-radius:6px;background:rgba(26,45,90,.08);overflow:hidden}
+    .charge-vul{height:100%;border-radius:6px;background:linear-gradient(90deg,#C9A84C,#1D9E75);transition:width .6s}
+    .charge-sub{font-size:.72rem;color:var(--text-muted);margin-top:.45rem;line-height:1.5}
+    #shift-top{display:none;background:linear-gradient(90deg,rgba(201,168,76,.16),rgba(201,168,76,.05));border:1px solid rgba(201,168,76,.4);border-left:4px solid #C9A84C;border-radius:12px;padding:.6rem .85rem}
+    #shift-top .k{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:#8A6A1C;margin-bottom:.22rem}
+    #shift-top .t{font-size:.85rem;line-height:1.45;color:var(--navy)}
+    #shift-top .meer{font-size:.68rem;color:#8A6A1C;text-decoration:underline;cursor:pointer;margin-top:.35rem;display:inline-block}
+    .kompas-kaart{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.1rem 1.25rem;display:flex;flex-direction:column;align-items:center;gap:0.45rem;position:relative;overflow:hidden}
 .kompas-kaart::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transition:background 0.6s}
 .kompas-wrap svg{width:220px;height:118px;display:block}
 .richting-naam{font-family:'Cormorant Garamond',serif;font-size:2.6rem;font-weight:300;color:var(--accent);line-height:1.05;text-align:center;transition:color 0.6s}
@@ -626,6 +637,8 @@ body{padding-bottom:80px}
 
     <!-- LAAG 1: RICHTING -->
     <div id="laag1" style="display:flex;flex-direction:column;gap:0.75rem">
+      <div id="shift-top"></div>
+      <div id="charge-kaart" class="charge-kaart" style="display:none"></div>
       <div class="kompas-kaart">
         <div class="kompas-wrap">
           <svg viewBox="0 0 220 118" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1115,6 +1128,7 @@ function toonScherm(id){
 }
 function toonLaag(n){
   document.getElementById('laag1').style.display=n===1?'flex':'none';
+  if(n===1){if(typeof tekenCharge==='function')tekenCharge();if(typeof tekenDiensten==='function')tekenDiensten();}
   document.getElementById('laag2').style.display=n===2?'flex':'none';
   document.getElementById('laag3').style.display=n===3?'flex':'none';
   document.getElementById('laag4').style.display=n===4?'flex':'none';
@@ -2965,10 +2979,46 @@ function nocDoelDuur(ds){
   if(b===null||o===null)return null;
   return ((o-b)+1440)%1440;
 }
+function gevoelScore(){
+  var s=gevoelVandaag(); if(!s)return null;
+  var p=62, g=(s.gevoel||'').toLowerCase();
+  if(g==='top'||g==='fris'||g==='sterk')p+=28; else if(g==='goed')p+=14; else if(g==='moe')p-=18; else if(g==='leeg'||g==='uitgeput')p-=35;
+  var b=(s.beweegzin||'').toLowerCase();
+  if(b==='veel')p+=8; else if(b==='weinig')p-=6; else if(b==='geen')p-=14;
+  var sl=(s.slaap_gevoel||'').toLowerCase();
+  if(sl==='top'||sl==='goed')p+=6; else if(sl==='slecht'||sl==='onrustig')p-=10;
+  var h=(s.hoofd||'').toLowerCase();
+  if(h==='helder')p+=5; else if(h==='wazig'||h==='druk')p-=6;
+  if(Array.isArray(s.lichaam))s.lichaam.forEach(function(x){x=(x+'').toLowerCase();if(x==='pijn'||x==='zwaar'||x==='stijf'||x==='ziek')p-=8;});
+  return Math.max(0,Math.min(100,p));
+}
+function chargeVandaag(){
+  var dag=null;
+  for(var i=0;i<7;i++){var ds=dagenTerug(i);if(lees('hrmny_slaapduur_'+ds)||waarde('slaap',ds)!==null||lees('hrmny_ground_'+ds)){dag=ds;break;}}
+  if(!dag)return null;
+  var bb=waarde('bb',dag), obj;
+  if(bb!==null){obj=bb;}
+  else{var g=parseFloat(lees('hrmny_ground_'+dag)), sl=waarde('slaap',dag); if(isNaN(g)||sl===null)return null; obj=-37+0.74*g+0.92*sl;}
+  obj=Math.max(0,Math.min(100,obj));
+  var gv=gevoelScore(), val=obj, betrokken=false;
+  if(gv!==null){val=0.5*obj+0.5*gv; betrokken=true;}
+  return {waarde:Math.round(Math.max(0,Math.min(100,val))), bron:(bb!==null?'meting':'schatting'), gevoel:betrokken};
+}
+function chargeWoord(v){if(v>=80)return 'vol';if(v>=62)return 'goed gevuld';if(v>=42)return 'half';if(v>=22)return 'laag';return 'bijna leeg';}
+function tekenCharge(){
+  var k=document.getElementById('charge-kaart'); if(!k)return;
+  var c=chargeVandaag();
+  if(!c){k.style.display='none';return;}
+  k.style.display='';
+  var sub=c.gevoel?'Je meting en je gevoel samen.':(c.bron==='schatting'?'Berekend uit je HRV en je slaap.':'Uit je Body Battery.');
+  k.innerHTML='<div class="charge-top"><div class="charge-kop">The Charge, je energie</div><div class="charge-woord">'+chargeWoord(c.waarde)+'</div></div><div class="charge-bar"><div class="charge-vul" style="width:'+c.waarde+'%"></div></div><div class="charge-sub">'+sub+'</div>';
+}
 function tekenDiensten(){
   var kaart=document.getElementById('noc-diensten-kaart'), box=document.getElementById('noc-diensten');
+  var stop=document.getElementById('shift-top');
+  if(huidigeModus()!=='Shift'){if(kaart)kaart.style.display='none';if(stop)stop.style.display='none';return;}
+  if(stop)stop.style.display='block';
   if(!kaart||!box)return;
-  if(huidigeModus()!=='Shift'){kaart.style.display='none';return;}
   kaart.style.display='';
   var nacht=[],dag=[];
   for(var i=0;i<30;i++){
@@ -2987,8 +3037,10 @@ function tekenDiensten(){
     var zs=dS<-5?('sliep je gemiddeld '+toonTijd(Math.abs(dS))+' korter'):(dS>5?('sliep je gemiddeld '+toonTijd(dS)+' langer'):'sliep je ongeveer even lang');
     var zh=dG<=-10?'en zat je herstel een flink stuk onder je normaal':(dG<=-5?'en zat je herstel merkbaar onder je normaal':(dG<-2?'en zat je herstel licht onder je normaal':'en bleef je herstel goed op peil'));
     box.innerHTML='<div class="noc-zin">Op je slaap na een nachtdienst '+zs+', '+zh+'. Je lichaam bevestigt wat je voelt.</div>';
+    if(stop)stop.innerHTML='<div class="k">Jouw diensten</div><div class="t">Na een nachtdienst '+zs+', '+zh+'.</div><div class="meer" onclick="toonLaag(5)">Meer in Nocturne</div>';
   }else{
     box.innerHTML='<div class="noc-help">HRMNY leest je diensten mee, los van de klok. Zodra je een paar nachtdiensten en gewone nachten hebt doorlopen, zie je hier wat een dienst jou echt kost en wanneer je lichaam het zwaarst krijgt. Je hoeft niets extra te doen: draag je horloge terwijl je slaapt en hou je venster bij.</div>';
+    if(stop)stop.innerHTML='<div class="k">Jouw diensten</div><div class="t">HRMNY leest je diensten mee, los van de klok. Binnenkort zie je hier wat een dienst jou echt kost.</div><div class="meer" onclick="toonLaag(5)">Meer in Nocturne</div>';
   }
 }
 function tekenNocturne(){

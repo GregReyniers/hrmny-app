@@ -2942,10 +2942,15 @@ function nocVannacht(){
   var durRaw=lees('hrmny_slaapduur_'+dag), dur=durRaw?toonTijd(parseFloat(durRaw)):'--';
   var ins=lees('hrmny_inslaap_'+dag)||'--', wek=lees('hrmny_wektijd_'+dag)||'--';
   var sc=waarde('slaap',dag); sc=(sc===null)?'--':Math.round(sc);
-  host.innerHTML='<div class="noc-stats"><div class="noc-stat"><div class="v">'+dur+'</div><div class="l">slaap</div></div>'
+  var _html='<div class="noc-stats"><div class="noc-stat"><div class="v">'+dur+'</div><div class="l">slaap</div></div>'
     +'<div class="noc-stat"><div class="v">'+ins+'</div><div class="l">in bed</div></div>'
     +'<div class="noc-stat"><div class="v">'+wek+'</div><div class="l">op</div></div>'
     +'<div class="noc-stat"><div class="v">'+sc+'</div><div class="l">score</div></div></div>';
+  var _ins=naarMin(ins), _ank=naarMin(lees('hrmny_anchor_bed')), _dur=durRaw?parseFloat(durRaw):null;
+  if(_ins!==null&&_ank!==null){var _dev=Math.abs(_ins-_ank);
+    if(_dev>=45&&_dur!==null&&_dur>=390)_html+='<div class="noc-zin" style="margin-top:.6rem">Je sliep genoeg, maar je ritme week af van je gewone uur. Hou het vandaag wat rustiger als het kan.</div>';
+    else if(_dev>=45)_html+='<div class="noc-zin" style="margin-top:.6rem">Je sliep later dan je gewone uur, en korter. Vandaag iets minder in de tank.</div>';}
+  host.innerHTML=_html;
 }
 function tekenNocturneWanneer(){
   var g=document.getElementById('noc-wanneer'), tx=document.getElementById('noc-wanneer-tekst');if(!g)return;

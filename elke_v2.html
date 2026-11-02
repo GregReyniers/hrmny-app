@@ -1645,7 +1645,7 @@ function tekenUitschieter(){
   el.querySelector('.us-kop').textContent=kop;
   el.querySelector('.us-regel').textContent=regel;
   if(oorz.length)el.querySelector('.us-oorzaak').textContent="Zo'n nacht komt vaak na "+uitschieterLijst(oorz)+'.';
-  else el.querySelector('.us-invul').textContent="Vul bij 'hoe voel je je' in wat er gisteren speelde — dan begrijpt HRMNY waarom.";
+  else el.querySelector('.us-invul').textContent="Vul bij 'hoe voel je je' in wat er gisteren speelde, dan begrijpt HRMNY waarom.";
   el.querySelector('.us-slot').textContent='Eén nacht, geen patroon.';
   el.style.display='block';
 }
@@ -1734,7 +1734,7 @@ function tekenSlaaptekort(){
   var gem=laatste.reduce(function(a,p){return a+p.m;},0)/laatste.length;
   var zin='Je sliep de laatste '+laatste.length+' nachten gemiddeld '+toonTijd(gem)+'.';
   if(eigen!==null&&Math.abs(gem-eigen)>=20)zin+=' Dat is '+(gem<eigen?'korter':'langer')+' dan je gewone nachtduur van ongeveer '+toonTijd(eigen)+'.';
-  if(venster!==null){var benut=Math.round(gem/venster*100);zin+=' Van je venster van '+toonTijd(venster)+' slaap je gemiddeld '+benut+'% — het verschil is deels gewone waaktijd.';if(venster-gem>=90)zin+=' Dit gat is groter dan gewoon. Als het blijft duren, bescherm dan je venster: op tijd beginnen bij je uur.';}
+  if(venster!==null){var benut=Math.round(gem/venster*100);zin+=' Van je venster van '+toonTijd(venster)+' slaap je gemiddeld '+benut+'%, het verschil is deels gewone waaktijd.';if(venster-gem>=90)zin+=' Dit gat is groter dan gewoon. Als het blijft duren, bescherm dan je venster: op tijd beginnen bij je uur.';}
   tx.textContent=zin;
 }
 function tekenSlaapritme(){
@@ -2948,10 +2948,15 @@ function nocVannacht(){
   var durRaw=lees('hrmny_slaapduur_'+dag), dur=durRaw?toonTijd(parseFloat(durRaw)):'--';
   var ins=lees('hrmny_inslaap_'+dag)||'--', wek=lees('hrmny_wektijd_'+dag)||'--';
   var sc=waarde('slaap',dag); sc=(sc===null)?'--':Math.round(sc);
-  host.innerHTML='<div class="noc-stats"><div class="noc-stat"><div class="v">'+dur+'</div><div class="l">slaap</div></div>'
+  var _html='<div class="noc-stats"><div class="noc-stat"><div class="v">'+dur+'</div><div class="l">slaap</div></div>'
     +'<div class="noc-stat"><div class="v">'+ins+'</div><div class="l">in bed</div></div>'
     +'<div class="noc-stat"><div class="v">'+wek+'</div><div class="l">op</div></div>'
     +'<div class="noc-stat"><div class="v">'+sc+'</div><div class="l">score</div></div></div>';
+  var _ins=naarMin(ins), _ank=naarMin(lees('hrmny_anchor_bed')), _dur=durRaw?parseFloat(durRaw):null;
+  if(_ins!==null&&_ank!==null){var _dev=Math.abs(_ins-_ank);
+    if(_dev>=45&&_dur!==null&&_dur>=390)_html+='<div class="noc-zin" style="margin-top:.6rem">Je sliep genoeg, maar je ritme week af van je gewone uur. Hou het vandaag wat rustiger als het kan.</div>';
+    else if(_dev>=45)_html+='<div class="noc-zin" style="margin-top:.6rem">Je sliep later dan je gewone uur, en korter. Vandaag iets minder in de tank.</div>';}
+  host.innerHTML=_html;
 }
 function tekenNocturneWanneer(){
   var g=document.getElementById('noc-wanneer'), tx=document.getElementById('noc-wanneer-tekst');if(!g)return;

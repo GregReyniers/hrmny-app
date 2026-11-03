@@ -783,6 +783,12 @@ body{padding-bottom:80px}
         <div id="noc-vannacht"></div>
       </div>
 
+      <div class="noc-card" id="noc-voorjou-kaart" style="border-color:rgba(201,168,76,.45);border-left:3px solid #C9A84C">
+        <div class="noc-kick">Voor jou</div>
+        <div class="noc-ct">Eén klein ding</div>
+        <div id="noc-voorjou"></div>
+      </div>
+
       <div class="noc-card">
         <div class="noc-venster-kop" onclick="nocVensterToggle()">
           <div><div class="noc-kick">Je venster</div><div class="noc-ct" style="margin-bottom:0">Jouw ritme per dag</div></div>
@@ -1153,7 +1159,7 @@ function toonLaag(n){
   if(n===4){tekenVeritas();window.scrollTo(0,0);}
   if(n===2)tekenSignalen();
   if(n===3)tekenStrook();
-  if(n===5){if(typeof nocVannacht==='function')nocVannacht();if(typeof nocVensterInit==='function')nocVensterInit();if(typeof tekenDoel==='function')tekenDoel();if(typeof tekenNocturne==='function')tekenNocturne();if(typeof tekenNocturneWanneer==='function')tekenNocturneWanneer();}
+  if(n===5){if(typeof nocVannacht==='function')nocVannacht();if(typeof tekenVoorJou==='function')tekenVoorJou();if(typeof nocVensterInit==='function')nocVensterInit();if(typeof tekenDoel==='function')tekenDoel();if(typeof tekenNocturne==='function')tekenNocturne();if(typeof tekenNocturneWanneer==='function')tekenNocturneWanneer();}
   if(typeof updateTabbalk==='function')updateTabbalk(n);
   window.scrollTo(0,0);
 }
@@ -2975,6 +2981,21 @@ function nocVannacht(){
     if(_dev>=45&&_dur!==null&&_dur>=390)_html+='<div class="noc-zin" style="margin-top:.6rem">Je sliep genoeg, maar je ritme week af van je gewone uur. Hou het vandaag wat rustiger als het kan.</div>';
     else if(_dev>=45)_html+='<div class="noc-zin" style="margin-top:.6rem">Je sliep later dan je gewone uur, en korter. Vandaag iets minder in de tank.</div>';}
   host.innerHTML=_html;
+}
+function tekenVoorJou(){
+  var host=document.getElementById('noc-voorjou');if(!host)return;
+  var N=14, tijden=[];
+  for(var i=0;i<N;i++){var m=naarMin(lees('hrmny_inslaap_'+dagenTerug(i)));if(m!==null)tijden.push(m);}
+  var anker=naarMin(lees('hrmny_anchor_bed'));
+  function wrap(t){host.innerHTML='<div class="noc-zin" style="border-left-color:#C9A84C;margin-top:0">'+t+'</div>';}
+  if(tijden.length<4){wrap('Zodra er een paar nachten binnen zijn, geef ik je hier telkens één klein, persoonlijk ding om op te letten. Geen opdracht, een uitnodiging.');return;}
+  if(anker===null){wrap('Stel eerst je slaapuur in bij Je venster hierboven. Dat ene vaste uur is je grootste hefboom, meer dan hoe lang je slaapt. Daarna kijken we samen hoe vast je het houdt.');return;}
+  var lo=Math.min.apply(null,tijden), hi=Math.max.apply(null,tijden);
+  if((hi-lo)>=75){
+    wrap('Je slaapuur schommelt de laatste nachten flink, van vroeg tot laat. Je lichaam houdt het meest van voorspelbaarheid. Kies deze week één uur en probeer er binnen een uur van te blijven. Niet vroeger dan nu, wel vaster. Daar begint betere slaap, meer dan een uur extra. En lukt het een nacht niet, dan is dat geen mislukking.');
+  } else {
+    wrap('Je houdt je slaapuur de laatste nachten mooi vast. Dat is precies wat je herstel nodig heeft, blijf er rustig bij. Rust telt hier als bouwen.');
+  }
 }
 function tekenNocturneWanneer(){
   var g=document.getElementById('noc-wanneer'), tx=document.getElementById('noc-wanneer-tekst');if(!g)return;

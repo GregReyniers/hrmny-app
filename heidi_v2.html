@@ -237,7 +237,10 @@ button{font-family:'DM Sans',sans-serif}
 .vraag-sub{font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem}
 .chip{font-size:0.82rem;padding:0.48rem 0.85rem;border-color:rgba(26,45,90,0.18)}
 .chip.actief,.chip.actief:hover{border-color:var(--navy);background:var(--navy);color:var(--white)}
-textarea.notitie{width:100%;min-height:64px;padding:0.6rem 0.8rem;border-radius:9px;border:1.5px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);resize:vertical;outline:none}
+textarea.notitie{width:100%;min-height:120px;padding:0.7rem 0.85rem;border-radius:9px;border:1.5px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.9rem;line-height:1.5;color:var(--text);resize:vertical;outline:none}
+.form-nieuw{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.4);border-radius:10px;padding:0.7rem 0.85rem;margin:0 0 1rem;font-size:0.8rem;line-height:1.5;color:var(--navy)}
+.form-nieuw .fn-sluit{background:var(--navy);color:#fff;border:none;border-radius:999px;padding:0.3rem 0.8rem;font-size:0.72rem;font-weight:600;cursor:pointer;margin-top:0.5rem}
+.notitie-teller{font-size:0.68rem;color:var(--text-muted);text-align:right;margin-top:0.2rem}
 textarea.notitie:focus{border-color:var(--gold);background:var(--white)}
 details.horloge{border:1px solid var(--border);border-radius:10px;padding:0.6rem 0.8rem;margin-top:0.4rem}
 details.horloge summary{cursor:pointer;font-size:0.8rem;color:var(--navy);font-weight:600}
@@ -844,8 +847,9 @@ body{padding-bottom:80px}
   <div id="s-formulier" class="scherm">
     <div class="kaart">
       <button class="terug-knop" onclick="terugVanFormulier()">&lsaquo; Terug</button>
-      <div class="form-titel" style="font-size:1.1rem">Hoe gaat het met jou?</div>
+      <div class="form-titel" id="form-titel" style="font-size:1.1rem">Hoe gaat het met jou?</div>
       <div class="form-sub">Tik aan wat klopt. Alles is vrijblijvend, één tik is al genoeg. Wat jij voelt, telt voor HRMNY even zwaar als wat er gemeten wordt.</div>
+      <div class="form-nieuw" id="form-nieuw" style="display:none">We hebben dit invulvak uitgebreid dankzij jouw feedback<span id="fn-naam"></span>. Er zijn een paar keuzes bij, en je tekst mag nu langer, zodat je niet meer afgekapt wordt.<br><button type="button" class="fn-sluit" onclick="sluitFormNieuw()">Dankjewel</button></div>
       <div class="vraag"><div class="vraag-titel">Hoe voel je je?</div>
         <div class="chip-rij" data-vraag="gevoel">
           <button class="chip" type="button" data-w="leeg">Leeg</button><button class="chip" type="button" data-w="moe">Moe</button><button class="chip" type="button" data-w="oke">Oké</button><button class="chip" type="button" data-w="goed">Goed</button><button class="chip" type="button" data-w="fris">Fris</button>
@@ -868,11 +872,11 @@ body{padding-bottom:80px}
         </div></div>
       <div class="vraag"><div class="vraag-titel">Wat speelde er gisteren?</div><div class="vraag-sub">Meerdere mag.</div>
         <div class="chip-rij" data-vraag="gisteren" data-meer="1">
-          <button class="chip" type="button" data-w="zware_training">Zware training</button><button class="chip" type="button" data-w="zwaar">Zware dag</button><button class="chip" type="button" data-w="rustig">Rustige dag</button><button class="chip" type="button" data-w="topdag">Topdag</button><button class="chip" type="button" data-w="stress">Veel stress</button><button class="chip" type="button" data-w="alcohol">Alcohol</button><button class="chip" type="button" data-w="laat_eten">Laat gegeten</button><button class="chip" type="button" data-w="cafeine">Koffie na 14u</button><button class="chip" type="button" data-w="scherm">Lang op een scherm 's avonds</button><button class="chip" type="button" data-w="laat">Laat opgebleven</button><button class="chip" type="button" data-w="buiten">Veel buiten</button><button class="chip" type="button" data-w="ziek">Niet lekker</button><button class="chip" type="button" data-w="reizen">Reizen</button>
+          <button class="chip" type="button" data-w="zware_training">Zware training</button><button class="chip" type="button" data-w="zwaar">Zware dag</button><button class="chip" type="button" data-w="rustig">Rustige dag</button><button class="chip" type="button" data-w="topdag">Topdag</button><button class="chip" type="button" data-w="stress">Veel stress</button><button class="chip" type="button" data-w="alcohol">Alcohol</button><button class="chip" type="button" data-w="laat_eten">Laat gegeten</button><button class="chip" type="button" data-w="cafeine">Koffie na 14u</button><button class="chip" type="button" data-w="scherm">Lang op een scherm 's avonds</button><button class="chip" type="button" data-w="laat">Laat opgebleven</button><button class="chip" type="button" data-w="buiten">Veel buiten</button><button class="chip" type="button" data-w="ziek">Niet lekker</button><button class="chip" type="button" data-w="herstellen">Aan het herstellen</button><button class="chip" type="button" data-w="reizen">Reizen</button><button class="chip" type="button" data-w="gezeten">Veel gezeten</button><button class="chip" type="button" data-w="dutje">Dutje overdag</button><button class="chip" type="button" data-w="uiteten">Uit eten geweest</button>
         </div>
         <div class="hint" id="ctx-hint"></div></div>
       <div class="vraag"><div class="vraag-titel">Nog iets kwijt?</div><div class="vraag-sub">Eén zin is genoeg. Mag leeg.</div>
-        <textarea class="notitie" id="inp-notitie" maxlength="280" placeholder="bv. drukke week, slecht geslapen door de kinderen"></textarea></div>
+        <textarea class="notitie" id="inp-notitie" maxlength="700" oninput="noteTeller()" placeholder="Alles wat je kwijt wil, mag hier. Neem gerust de ruimte, je woorden worden niet afgekapt."></textarea><div class="notitie-teller" id="notitie-teller"></div>
       <details class="horloge"><summary>Waarden zelf aanvullen (komt normaal vanzelf binnen)</summary>
       <div class="fields-2">
         <div class="field"><label>Rusthartslag <small>bpm</small></label><input id="inp-rhr" type="number" inputmode="numeric" placeholder="overslaan" min="30" max="120"></div>
@@ -1473,7 +1477,11 @@ var CTX_HINTS={
   laat_eten:'Laat eten houdt je lichaam ook in de nacht bezig. HRMNY neemt het mee.',
   cafeine:'Koffie in de namiddag kan Night Work lichter maken. HRMNY neemt het mee.',
   scherm:'Licht van een scherm stelt je slaap soms uit. HRMNY neemt het mee.',
-  buiten:'Daglicht helpt The Rhythm. HRMNY noteert het.'
+  buiten:'Daglicht helpt The Rhythm. HRMNY noteert het.',
+  herstellen:'Na een ziekte heeft je lichaam tijd nodig. HRMNY geeft je die ruimte, rust telt hier als bouwen.',
+  gezeten:'Veel stilzitten vraagt iets anders dan rust. HRMNY leest The Stillness mee.',
+  dutje:'Een dutje overdag telt mee voor je herstel. HRMNY noteert het.',
+  uiteten:'Een fijne avond uit mag er zijn. HRMNY noteert het, zonder oordeel.'
 };
 var LABELS={};
 var ANTW={};
@@ -1500,6 +1508,8 @@ function gevoelVandaag(){try{return JSON.parse(lees('hrmny_subj_'+vandaagStr())|
 var TERUG_LAAG=1;
 function huidigeLaag(){return document.getElementById('s-dashboard').classList.contains('actief')?(document.getElementById('laag2').style.display==='flex'?2:document.getElementById('laag3').style.display==='flex'?3:document.getElementById('laag4').style.display==='flex'?4:1):1;}
 function terugVanFormulier(){toonDashboard();toonLaag(TERUG_LAAG);}
+function sluitFormNieuw(){schrijf('hrmny_form_nieuw_gezien','1');var e=document.getElementById('form-nieuw');if(e)e.style.display='none';}
+function noteTeller(){var t=document.getElementById('inp-notitie'),c=document.getElementById('notitie-teller');if(t&&c)c.textContent=t.value.length+' / 700';}
 function toonFormulier(){
   TERUG_LAAG=huidigeLaag();
   ANTW={};var opgeslagen=gevoelVandaag()||{};
@@ -1509,6 +1519,10 @@ function toonFormulier(){
     rij.querySelectorAll('.chip').forEach(function(b){var w=b.getAttribute('data-w');b.classList.toggle('actief',Array.isArray(v)?v.indexOf(w)>=0:v===w);});
   });
   document.getElementById('inp-notitie').value=opgeslagen.notitie||'';
+  var _nm=lees('hrmny_naam')||'';
+  var _ft=document.getElementById('form-titel');if(_ft)_ft.textContent=_nm?('Hoe gaat het met jou, '+_nm+'?'):'Hoe gaat het met jou?';
+  var _fn=document.getElementById('form-nieuw');if(_fn){var _s=document.getElementById('fn-naam');if(_s)_s.textContent=_nm?(', '+_nm):'';_fn.style.display=lees('hrmny_form_nieuw_gezien')?'none':'block';}
+  noteTeller();
   document.querySelectorAll('#s-formulier input[type=number]').forEach(function(i){var k=i.id.replace('inp-','');var x=lees('hrmny_'+k+'_'+vandaagStr());i.value=x!==null?x:'';});
   document.getElementById('ctx-hint').classList.remove('zichtbaar');
   document.getElementById('form-melding').style.display='none';

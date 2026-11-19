@@ -423,6 +423,8 @@ html,body{background-color:var(--cream)}
 .causa-link .cl-lbl{display:block;font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:#B08F35;margin-bottom:0.15rem}
 .causa-link .cl-t{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--navy);border-bottom:1px dotted #C9A84C}
 .causa-link.gelezen .cl-t{color:var(--text-muted);font-size:0.95rem}
+.verklaring-knop{display:block;margin:0.55rem auto 0;background:none;border:1px solid #C9A84C;border-radius:999px;cursor:pointer;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:#B08F35;padding:0.42rem 1.05rem;transition:background .2s}
+.verklaring-knop:hover{background:rgba(201,168,76,0.09)}
 #causa{position:fixed;inset:0;z-index:220;background:rgba(10,20,45,0.9);display:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
 #causa.open{display:block}
 .ca-binnen{max-width:420px;margin:0 auto;padding:1.4rem 1rem 2.5rem;min-height:100%;display:flex;flex-direction:column;justify-content:center}
@@ -667,6 +669,7 @@ body{padding-bottom:80px}
         <div class="fase-label" id="fase-label"></div>
         <div class="dagzin" id="dagzin"></div>
         <button class="causa-link" id="causa-link" type="button" style="display:none" onclick="openCausaVandaag()"></button>
+        <button class="verklaring-knop" type="button" onclick="toonLiber()">Alle verklaringen bekijken &rsaquo;</button>
         <button class="waarom-btn" id="waarom-btn" onclick="toggleWaarom()" style="display:none">Het verhaal erachter</button>
         <div class="waarom-blok" id="waarom-blok">
           <div class="reden" id="reden"></div>
@@ -1238,11 +1241,11 @@ function zetCausa(data){
   var el=document.getElementById('causa-link');if(!el)return;
   if(!data){el.style.display='none';return;}
   var c=causaVanVandaag(data),o=causaeOpen();
-  if(!c){el.className='causa-link gelezen';el.innerHTML='<span class="cl-lbl">Rerum Causae</span><span class="cl-t">Al je verklaringen zijn compleet &rsaquo;</span>';el.onclick=toonLiber;el.style.display='block';return;}
+  if(!c){el.className='causa-link gelezen';el.innerHTML='<span class="cl-lbl">Verklaring van vandaag</span><span class="cl-t">Alle kaarten zijn compleet &rsaquo;</span>';el.onclick=toonLiber;el.style.display='block';return;}
   var gelezen=!!o[c.id];
   el.className='causa-link'+(gelezen?' gelezen':'');
-  el.innerHTML='<span class="cl-lbl">Rerum Causae</span><span class="cl-t"></span>';
-  el.querySelector('.cl-t').textContent=gelezen?'In Verklaringen: '+c.titel+' \u203a':c.vraag+' \u203a';
+  el.innerHTML='<span class="cl-lbl">Verklaring van vandaag</span><span class="cl-t"></span>';
+  el.querySelector('.cl-t').textContent=gelezen?'Opnieuw lezen: '+c.titel+' \u203a':c.vraag+' \u203a';
   el.onclick=openCausaVandaag;el.style.display='block';
 }
 function openCausaVandaag(){
